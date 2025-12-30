@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/headerfooter.css}">
+<link rel="stylesheet" th:href="@{/css/originating_period.css}">
+<title>Originating Period Earning</title>
+</head>
+<body>
+
+	<!-- Header Section  -->
+	<div th:replace="~{fragments/header_footer :: custom_header}"></div>
+	<main class="page">
+		<div id="div_main_content">
+		
+			<div id="div_topform">
+			
+				<h3 style="text-align: center;text-decoration: underline; padding: 0px;margin: 0px;">ORIGINATING PERIODIC EARNING</h3>
+				<span id="span-status"></span>
+				<fieldset name="top-fieldset" id="top-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+				
+					<form id="top-form" name="top-form" action="">
+					<table class="top-table-design">
+						<!-- <tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>							
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td rowspan="2">
+								<button id="btn_go" type="button" onclick="goClicked(this)" >Go</button>						 							  
+							</td>
+						</tr> -->
+					
+						<tr>
+							<td>
+								<p class="para-design">Financial year:</p>
+								<input type="text" id="txt-financial-year-1" placeholder="YYYY" maxlength="4" pattern="\d{4}" 
+								title="Please enter exactly 4 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="min-width: 40px; width: 85%;  box-sizing: border-box;" onblur="fyValueChanged(this)" required >
+								
+								<input type="text" id="txt-financial-year-2"  placeholder="YY" maxlength="2" pattern="\d{2}" 
+								title="Please enter exactly 2 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width: 30px;" disabled="disabled" required >
+								
+								
+							</td>
+							
+							<!-- <td>
+								<label for="txt-financial-year-2" ></label>							
+								<input type="text" id="txt-financial-year-2"  placeholder="YY" maxlength="2" pattern="\d{2}" 
+								title="Please enter exactly 2 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width: 30px;" disabled="disabled" required >
+							</td> -->
+							
+							<td>
+								<p class="para-design">For Month:</p>
+								<select id="for-month" name="for-month" class="top-cell-input">
+								  <option value="04">Apr</option>
+								  <option value="05">May</option>							  
+								  <option value="06">June</option>
+								  <option value="07">July</option>							  
+								  <option value="08">Aug</option>
+								  <option value="09">Sep</option>
+								  <option value="10">Oct</option>
+								  <option value="11">Nov</option>
+								  <option value="12">Dec</option>
+								  <option value="01">Jan</option>
+								  <option value="02">Feb</option>
+								  <option value="03">Mar</option>
+								</select>
+							</td>
+							
+							<td>
+								<p class="para-design">Period:</p>
+								<select id="period" name="period" onchange="periodChanged(this)" class="top-cell-input">
+								  <option value="I">I</option>
+								  <option value="II">II</option>
+								  <option value="III">III</option>
+								  <option value="MON">MONTHLY</option>		
+								</select>
+							</td>
+							
+							<td>
+								<p class="para-design">Entry Type:</p> 
+								<select	id="entry-type" name="entry-type" onchange="entryTypeChanged(this)" class="top-cell-input">
+									<option value="SW">Source Wise</option>
+									<option value="DW">Division Wise</option>
+									<option value="ZW">Zone Wise</option>									
+								</select>
+							</td>
+							
+							<td>
+								<p class="para-design">System:</p>
+								<select id="system" name="system" onchange="systemChanged(this)" class="top-cell-input">
+								  <option value="M">MANUAL</option>
+								  <!-- <option value="P">PRS</option> -->
+								</select>
+							</td>
+							
+							
+							<td>
+								<p class="para-design">Head Of Account:</p>
+								<select id="head_of_acct" name="head_of_acct" onchange="hoaChanged(this)" class="top-cell-input">
+								  <option value="PNSUB">PASSENGER[NON-SUB]</option>
+								  <option value="PSUB">PASSENGER[SUB]</option>
+								  <option value="OTHC">OTHER COACHING</option>
+								</select>
+							</td>
+							
+
+							
+							<td>
+								<p class="para-design">Division:</p>
+								<select id="division" name="division" class="top-cell-input" onchange="divisionChanged(this)">
+								  <option value="-1">-- Select --</option>
+								  <option value="KUR">KUR</option>
+								  <option value="SBP">SBP</option>							  
+								  <option value="WAT">WAT</option>
+								</select>
+							</td>
+							
+							<td>
+								<p class="para-design">Station Type:</p> 
+								<select	id="stn-type" name="stn-type" onchange="stnTypeChanged(this)" class="top-cell-input">
+									<option value="-1">--Select--</option>
+									<option value="90">90%</option>
+									<option value="10">10%</option>									
+								</select>
+							</td>
+							<td>
+								<p class="para-design">Station:</p>
+								<select id="station" name="station" class="top-cell-input">
+								  <option value="-1">-- Select --</option>								  
+								</select>
+							</td>
+							<td>
+								<p class="para-design">Value Type:</p>
+								<select id="value-type" name="value-type" class="top-cell-input" onchange="valueTypeChanged(this)">
+								  <option value="A">APPROXIMATE</option>
+								  <option value="O">ORIGINAL</option>							  
+								</select>
+							</td>
+							<td>
+								<p class="para-design">Received On:</p>
+								<input name="received_on" id="received_on"  type="date" class="top-cell-input" disabled>
+							</td>
+							<td>
+								<p class="para-design">Remarks:</p>
+								<select id="remarks" name="remarks" class="top-cell-input">
+								  <option value="Late Received">Late Received</option>
+								</select>
+							</td>	
+							<td >
+								<button id="btn_go" type="button" onclick="goClicked(this)" >Go</button>						 							  
+							</td>						
+						 </tr>
+					</table>	
+					</form>
+				</fieldset>
+			</div>			
+			
+
+			<!--PASSENGER EARNING FORM  -->			
+			<div class="bottom-section" id="PNSUB-DIV">
+				<fieldset name="pnsub-fieldset" id="pnsub-fieldset" style="padding: 0px;margin: 0px; border: none;" disabled="disabled">
+				<form action="" id="pnsub-bottom-form">
+					<table id="tbl-data" class="tableDesign">
+						<thead id="tbl-data-head">
+							<tr>
+								<th rowspan="2">Class</th>
+								<th colspan="2">Booked</th>
+								<th colspan="2">Refund</th>
+								<th colspan="2">Excess Fare</th>
+								<th colspan="2">Total</th>
+								<th>DFC</th>
+							</tr>
+							<tr>
+								<th>No.</th>
+								<th>Rs</th>
+								<th>No.</th>
+								<th>Rs</th>
+								<th>No.</th>
+								<th>Rs</th>
+								<th>No.</th>
+								<th>Rs</th>								
+								<th>Rs</th>
+							</tr>
+						</thead>
+						
+						<tbody id="tbl-data-body">						
+							<tr  th:each="class: ${classes}">						  						  				
+  								<td th:text="${class.value}" 
+  									th:classappend="${(class.value == 'AIR CONDITION' || class.value == 'FIRST CLASS' || class.value == 'SLEEPER CLASS' || class.value == 'SECOND CLASS') ? 'main-class-design':''} +
+  										${(class.value == 'TOTAL')?'tot-design':'' }"></td>
+		        				<td class="expand" th:each="i : ${#numbers.sequence(1, 9)}">
+		        					<!-- <input type="text" th:value="'input_' + ${class.key} +'_' + ${i}"> -->
+		            				<input type="text" th:name="'input_' + ${class.key} +'_' + ${i}" placeholder="" class="bot-cell-input" 
+		            				 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." onblur="captureFormValue(this)" oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
+		            				 .replace(/(?!^)-/g, '') 
+		            				 .replace(/(\..*)\./g, '$1')
+		            				 .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " th:readonly="${i>6 || class.key == 'AC' || class.key == 'FC' || class.key == 'SLC' || class.key == 'SC' || class.key == 'TOT'}"/>   		            				  
+		        				</td>
+							</tr>						
+						</tbody>						
+						</table>
+					</form>
+
+					<div
+						style="display: flex; justify-content: center; margin-top: 20px;">
+						<button type="button" onclick="submitClicked()">Submit</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<button type="button" onclick="clearClicked()">Clear</button>
+					</div>
+
+				</fieldset>
+			</div>
+	
+	
+			<!--OTHER COACHING EARNING FORM  -->			
+			<div  class="bottom-section" id="OTHC-DIV" style="display: none;">
+				<fieldset name="othc-fieldset" id="othc-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+				<form action="" id="othc-bottom-form">
+					<table id="oth-coaching-tbl-data" class="tableDesign">
+						<thead id="oth-coaching-tbl-data-head">
+							<tr>
+								<th>Item</th>
+								<th>Weight (Qty/Unit)</th>
+								<th>Earning (Rs.)</th>
+							</tr>
+						</thead>
+						
+						<tbody id="oth-coaching-data-body">						
+							<tr th:each="othcoach: ${othercoaching}">						  						  				
+  								<td th:text="${othcoach.value}"	th:classappend="${(othcoach.value == 'TOTAL')?'tot-design':'' }"></td>
+		        				<td class="expand" th:each="i : ${#numbers.sequence(1, 2)}">
+		        					<!-- <input type="text" th:value="'input_' + ${othcoach.key} +'_' + ${i}"> -->
+		            				<input type="text" th:name="'input_' + ${othcoach.key} +'_' + ${i}" placeholder="" class="bot-cell-input" 
+		            				 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." onblur="captureFormValue(this)" oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
+		            				 .replace(/(?!^)-/g, '') 
+		            				 .replace(/(\..*)\./g, '$1')
+		            				 .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " th:readonly="${othcoach.key == 'OTHC_TOT'}"/>   		            				  
+		        				</td>
+							</tr>						
+						</tbody>						
+						</table>
+					</form>
+				</fieldset>
+			</div>
+			
+			
+			<!--ORIGINATING GOODS EARNING FORM  -->			
+			<div  class="bottom-section" id="ORGG-DIV" style="display: none;">
+				<fieldset name="orgg-fieldset" id="orgg-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+				<form action="" id="orgg-bottom-form">
+					<table id="orgg-tbl-data" class="tableDesign">
+						<thead id="orgg-tbl-data-head">
+							<tr>
+								<th>Item</th>
+								<th>Earning (Rs.)</th>
+							</tr>
+						</thead>
+						
+						<tbody id="orgg-data-body">						
+							<tr th:each="orgg: ${originatinggoods}">						  						  				
+  								<td th:text="${orgg.value}"	th:classappend="${(orgg.value == 'TOTAL')?'tot-design':'' }"></td>
+		        				<td class="expand" >
+		        					<!-- <input type="text" th:value="'input_' + ${othcoach.key} +'_' + ${i}"> -->
+		            				<input type="text" th:name="'input_' + ${orgg.key} +'_1' " placeholder="" class="bot-cell-input" 
+		            				 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." onblur="captureFormValue(this)" oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
+		            				 .replace(/(?!^)-/g, '') 
+		            				 .replace(/(\..*)\./g, '$1')
+		            				 .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " th:readonly="${orgg.key == 'ORGG_TOT'}"/>   		            				  
+		        				</td>
+							</tr>						
+						</tbody>						
+						</table>
+					</form>
+				</fieldset>
+			</div>
+			
+			
+			<!--OTHER GOODS EARNING FORM  -->			
+			<div  class="bottom-section" id="OTHG-DIV" style="display: none;">
+				<fieldset name="othg-fieldset" id="othg-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+				<form action="" id="othg-bottom-form">
+					<table id="othg-tbl-data" class="tableDesign">
+						<thead id="othg-tbl-data-head">
+							<tr>
+								<th>Item</th>
+								<th>Earning (Rs.)</th>
+							</tr>
+						</thead>
+						
+						<tbody id="othg-data-body">						
+							<tr th:each="othg: ${othergoods}">						  						  				
+  								<td th:text="${othg.value}"	th:classappend="${(othg.value == 'TOTAL')?'tot-design':'' }"></td>
+		        				<td class="expand" >
+		        					<!-- <input type="text" th:value="'input_' + ${othcoach.key} +'_' + ${i}"> -->
+		            				<input type="text" th:name="'input_' + ${othg.key} +'_1' " placeholder="" class="bot-cell-input" 
+		            				 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." onblur="captureFormValue(this)" oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
+		            				 .replace(/(?!^)-/g, '') 
+		            				 .replace(/(\..*)\./g, '$1')
+		            				 .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " th:readonly="${othg.key == 'OTHG_TOT'}"/>   		            				  
+		        				</td>
+							</tr>						
+						</tbody>						
+						</table>
+					</form>
+				</fieldset>
+			</div>
+		
+			<!--SUNDRY EARNING FORM  -->			
+			<div  class="bottom-section" id="SUN-DIV" style="display: none;">
+				<fieldset name="sun-fieldset" id="sun-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+				<form action="" id="sun-bottom-form">
+					<table id="sun-tbl-data" class="tableDesign">
+						<thead id="sun-tbl-data-head">
+							<tr>
+								<th>Item</th>
+								<th>Earning (Rs.)</th>
+							</tr>
+						</thead>
+						
+						<tbody id="sun-data-body">						
+							<tr th:each="sun: ${sundry}">						  						  				
+  								<td th:text="${sun.value}"	th:classappend="${(sun.value == 'TOTAL')?'tot-design':'' }"></td>
+		        				<td class="expand" >
+		        					<!-- <input type="text" th:value="'input_' + ${othcoach.key} +'_' + ${i}"> -->
+		            				<input type="text" th:name="'input_' + ${sun.key} +'_1' " placeholder="" class="bot-cell-input" 
+		            				 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." onblur="captureFormValue(this)" oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
+		            				 .replace(/(?!^)-/g, '') 
+		            				 .replace(/(\..*)\./g, '$1')
+		            				 .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " th:readonly="${sun.key == 'SUN_TOT'}"/>   		            				  
+		        				</td>
+							</tr>						
+						</tbody>						
+						</table>
+					</form>
+				</fieldset>
+				</div>
+				
+		
+		</div>
+	</main>
+</body>
+
+<script type="text/javascript">
+
+let formdata = {};
+let currenthoa = "PNSUB"; 
+let isBottomFormdisabled = true;
+document.addEventListener('DOMContentLoaded', function () {
+    // Select all input fields inside your table
+    const inputs = document.querySelectorAll('#tbl-data-body input');
+
+    inputs.forEach((input, index) => {
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Stop form submission
+                
+                // Move to next input if it exists
+                const next = inputs[index + 1];
+                if (next) {
+                    next.focus();
+                }
+            }
+        });
+    });
+});
+
+$('#top-fieldset').on('change input', 'input, select', function() {
+	
+	console.log('Value changed in:');
+
+	if(!isBottomFormdisabled){
+		console.log('Inside form reset');
+		isBottomFormdisabled = !isBottomFormdisabled;
+		/* resetBottomForm();
+		$("#formFields").prop("disabled",true); */
+		$("#head_of_acct").trigger("change");
+	}
+		
+    
+});
+
+function resetBottomForm(){
+	
+	formdata = {};
+	const bottomform = document.getElementById("bottom-form");
+	bottomform.reset();
+}
+
+
+function fyValueChanged(ele){
+	
+	let year = ele.value;	
+	if(year !=null && year.length == 4){
+		
+		let nextyear = +year.slice(-2) + 1;
+		$("#txt-financial-year-2").val(nextyear);	
+		$("#span-status").text("");
+
+		/* getMaxBudgetNumber(); */
+	}
+	else{
+		
+		/* $("#formFields").prop('disabled', true); */	
+		/* $("#txt-financial-year-1").val(""); */
+		$("#txt-financial-year-2").val("");
+		$("#span-status").text("Enter valid year!");
+		$("#span-status").removeClass("success");
+		$("#span-status").addClass("error");
+		setTimeout(() => {
+            ele.focus();
+        }, 0);
+	}	
+}
+
+function entryTypeChanged(ele){
+	
+	$('#head_of_acct option[value!="-1"]').remove();
+	let option = null;
+	let entrytype = $(ele).val();	
+	if(entrytype === "SW"){
+		
+		//Update period
+		if (!$("#period option[value='MON']").length) {
+    		$('#period').append('<option value="MON">MONTHLY</option>');
+		}
+		
+		
+		
+		//Update System
+		$('#system option[value!="-1"]').remove();
+		option = '<option value="M">MANUAL</option>';		  		 	
+		$('#system').append(option);	
+		
+		//Update head of accounts
+		option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+			     '<option value="PSUB">PASSENGER[SUB]</option>' +
+			     '<option value="OTHC">OTHER COACHING</option>' ;
+		$('#head_of_acct').append(option);	
+		
+		
+		
+		
+		
+		$("#division").val("-1");
+		$("#division").prop("disabled",false);
+		
+		$("#stn-type").val("-1");
+		$("#stn-type").prop("disabled",false);
+		
+		$("#station").val("-1");
+		$("#station").prop("disabled",false);
+		
+	}else if(entrytype === "DW"){
+		
+		//Update period
+		$('#period option[value ="MON"]').remove();
+		
+		$('#system option[value!="-1"]').remove();
+		option = '<option value="M">MANUAL</option>' +
+				 '<option value="P">PRS</option>';		  		 	
+		$('#system').append(option);
+		
+		
+/* 		option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+	     '<option value="PSUB">PASSENGER[SUB]</option>' +
+	     '<option value="OTHC">OTHER COACHING</option>' ;
+		$('#head_of_acct').append(option);
+ */		
+		option = '<option value="ORGG" selected>ORIGINATING GOODS</option>';
+		$('#head_of_acct').append(option);	
+		
+		$("#division").val("-1");
+		$("#division").prop("disabled",false);
+		
+		$("#stn-type").val("-1");
+		$("#stn-type").prop("disabled",true);
+		
+		$("#station").val("-1");
+		$("#station").prop("disabled",true);
+		
+	}else if(entrytype === "ZW"){
+		
+		//Update period
+		$('#period option[value ="MON"]').remove();
+
+
+		//Update System
+		$('#system option[value!="-1"]').remove();
+		option = '<option value="M">MANUAL</option>';		  		 	
+		$('#system').append(option);	
+
+		
+		option = '<option value="OTHG">OTHER GOODS</option>' +
+			  	 '<option value="SUN">SUNDRY</option>' ;
+		$('#head_of_acct').append(option);	
+		
+		
+		$("#division").val("-1");
+		$("#division").prop("disabled",true);
+		
+		$("#stn-type").val("-1");
+		$("#stn-type").prop("disabled",true);
+		
+		$("#station").val("-1");
+		$("#station").prop("disabled",true);
+	}	
+	
+	$("#head_of_acct").trigger("change");
+}
+
+function hoaChanged(ele){
+	
+	console.log("hoaChanged called");
+	formdata = {};
+	currenthoa = $(ele).val();;
+    $(".bottom-section").hide();
+    if(currenthoa === "PNSUB" || currenthoa === "PSUB"){
+    	$("#PNSUB-DIV").show();
+    	$("#pusub-fieldset").prop("disabled",true);
+        const bottomform = document.getElementById("pnsub-bottom-form");     	
+        bottomform.reset();
+    }    	
+    else{
+    	
+    	let tempname = "#"+currenthoa+"-DIV";    	
+        $(tempname).show();	
+        
+        tempname = "#"+currenthoa.toLowerCase()+"-fieldset";
+        $(tempname).prop("disabled",true);
+        
+        tempname = currenthoa.toLowerCase()+"-bottom-form";
+        const bottomform = document.getElementById(tempname);
+    	bottomform.reset();
+    }
+        
+}
+
+function systemChanged(ele){
+	
+	$('#head_of_acct option[value!="-1"]').remove();
+	let systype = $(ele).val();
+	if(systype === 'P'){
+				
+		let option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+	     			 '<option value="PSUB">PASSENGER[SUB]</option>' +
+	     			 '<option value="OTHC">OTHER COACHING</option>' ;
+		$('#head_of_acct').append(option);
+				
+	}else if(systype === 'M'){
+				
+		option = '<option value="ORGG">ORIGINATING GOODS</option>';
+		$('#head_of_acct').append(option);	
+	} 
+		
+	$("#head_of_acct").trigger("change");
+}
+
+function valueTypeChanged(ele){
+	let valtype = $(ele).val();
+	if(valtype === 'A'){
+		
+		$("#received_on").val("");
+		$("#received_on").prop("disabled",true);
+	}else{
+		
+		$("#received_on").prop("disabled",false);
+	}
+}
+
+function divisionChanged(ele){
+	
+	/* let division = $(ele).val(); */
+	let entrytype = $("#entry-type").val();
+	if(entrytype !=null && entrytype === "SW"){		
+		$("#stn-type").val("-1");
+		$('#station option[value!="-1"]').remove();
+	}
+}
+
+function stnTypeChanged(ele){
+	
+	$('#station option[value!="-1"]').remove();
+
+	let stntype = $(ele).val();
+	let division = $("#division").val();
+	
+	if(stntype === "90"){
+		$("#period").val("I");
+	}else if(stntype === "10"){
+		$("#period").val("MON");
+	}
+	
+	
+	if(stntype == null || stntype.length != 2){
+		alert("Select station type.");
+	}else if(division == null || division.length != 3){
+		alert("Select division.");
+	}else{
+		
+		/* alert("Get station"); */
+		var jsondata = {
+				division: division,
+				percentage: stntype		
+			};
+
+			$.ajax({
+				url: "/station_earning/getstationdata",
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify(jsondata),
+				success: function(response) {
+
+					if (response.status === "success") {
+						
+						console.log("Success.");
+						$.each(response.data, function(index, stncode) {
+							
+							let option = '<option value="'+stncode+'">'+stncode+'</option>';
+							$('#station').append(option);		       		  
+		       			}); 
+						
+					} else {
+						console.log("Some error occured.");
+					}
+				},
+				error: function() {
+
+					console.log("Something went wrong!");
+					alert("Something went wrong!");
+				}
+			});
+	}
+}
+
+function captureFormValue(ele){
+	
+	if ($(ele).is('[readonly]')) {
+		console.log("readonly")
+		return;
+	}
+	
+	
+	let field_name = ele.name;
+	let field_value = ele.value.trim();			
+	let newvalue = (field_value !=null && field_value.length > 0)? (+field_value):0;
+	
+	if(field_value !=null && field_value.length > 0){
+		
+		
+		if (!formdata[field_name]) {
+		   formdata[field_name] = {};   
+		   
+		   formdata[field_name]["recordid"] = 0;
+		   formdata[field_name]["orgval"] = "";
+		   formdata[field_name]["isedited"] = 1;                			   
+		   formdata[field_name]["newval"] = newvalue;     
+		}else{
+			
+			let recid = formdata[field_name]["recordid"];
+			if(recid == 0){
+				
+				formdata[field_name]["isedited"] = 1;                			   
+				formdata[field_name]["newval"] = newvalue;	
+				 
+			}else{
+				
+				let oldval = +formdata[field_name]["orgval"];
+				if(oldval === newvalue){
+					formdata[field_name]["isedited"] = 0;
+				}					
+				else{
+					formdata[field_name]["isedited"] = 1;
+					formdata[field_name]["newval"] = newvalue;
+				}
+				
+			}
+			  
+		}
+		
+	}else if(field_value !=null && field_value.length == 0){
+		
+		if (formdata[field_name]) {
+			
+			if(formdata[field_name]["recordid"] !=0){
+				
+				 formdata[field_name]["isedited"] = 1;                			   
+				 formdata[field_name]["newval"] = newvalue;
+				 
+			}else{
+				
+				delete formdata[field_name];
+			}			   
+		}
+	}	
+	
+	
+	/* dynamicallyUpdateTotalValue(field_name); */	
+}
+
+function enableBottomForm(enable){
+	
+	isBottomFormdisabled = !enable;
+	let head_of_acct = $("#head_of_acct").val();
+	let tempname = (head_of_acct =="PNSUB" || head_of_acct =="PSUB")?"pnsub":head_of_acct.toLowerCase();
+	tempname = "#"+tempname+"-fieldset"
+	$(tempname).prop("disabled",isBottomFormdisabled); 		
+}
+
+
+function goClicked(ele){
+	
+	let fy1 = $("#txt-financial-year-1").val();
+	let fy2 = $("#txt-financial-year-2").val();
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let head_of_acct = $("#head_of_acct").val();
+	let system = $("#system").val();
+	let entry_type = $("#entry-type").val();
+	let division = $("#division").val();
+	let stn_type = $("#stn-type").val();
+	let station = $("#station").val();
+	let value_type = $("#value-type").val();
+/* 	let received_on = $("#received_on").val();
+	let remarks = $("#remarks").val();
+ */		
+	if(fy1 != null && fy1.length != 4){
+		alert("Enter valid financial year")
+	}else if(fy2 != null && fy2.length != 2){
+		alert("Enter valid financial year")
+	}else if(formonth == null || formonth.length != 2){
+		alert("Select for month.")
+	}else if(period == null || period.length == 0){
+		alert("Select period.")
+	}else if(head_of_acct == null || head_of_acct.length == 0){
+		alert("Select head of account.")
+	}else if(system == null || system.length == 0){
+		alert("Select system.")
+	}else if(entry_type == null || entry_type.length != 2){
+		alert("Select entry type.")
+	}else if(division == null || division.length != 3){
+		alert("Select division.")
+	}else if(entry_type == "SW" && (stn_type == null || stn_type === "-1")){
+		alert("Select station type.")
+	}else if(entry_type == "SW" && (station == null || station === "-1")){
+		alert("Select station.")
+	}else if(value_type == null || value_type === "-1"){
+		alert("Select value type.")
+	}
+	else{
+		
+		let fy = fy1+"-"+fy2;
+		
+		 var jsondata = {
+
+			financialyear: fy,
+			formonth: formonth,
+			period: period,
+			entrytype: entry_type,
+			systm: system,
+			headofaccount: head_of_acct,
+			divcode: division,
+			stntype: stn_type,
+			stncode: station,
+			valuetype: value_type
+  		};
+		
+		 console.log(" data to server = "+JSON.stringify(jsondata));
+					
+		$.ajax({
+          url: "/station_earning/getstationearningdata",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(jsondata),
+          success: function (response) {
+          	console.log("response ="+response.status);
+              if (response.status === "success") {
+              		
+            	  enableBottomForm(true);			
+
+          		console.log("data from DB ="+JSON.stringify(response.data));          		
+           	   renderData(response.data);
+           	 
+           	   /* updateTotalValues(); */
+           	 /* console.log("my constructed data = "+JSON.stringify(formdata)); */
+           	   
+              } else {
+              	
+            	  enableBottomForm(false);		
+                  alert("Some error occured.");
+              }
+          },
+          error: function () {
+        	  enableBottomForm(false);
+              alert("Something went wrong!");
+          }
+      }); 
+	}
+	
+}
+
+function submitClicked(){
+	
+	let fy1 = $("#txt-financial-year-1").val();
+	let fy2 = $("#txt-financial-year-2").val();
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let stn_type = $("#stn-type").val();
+	let station = $("#station").val();
+	let value_type = $("#value-type").val();
+ 	let received_on = $("#received_on").val() == null?"":$("#received_on").val();
+	let remarks = $("#remarks").val() == null?"":$("#remarks").val();
+		
+	if(fy1 != null && fy1.length != 4){
+		alert("Enter valid financial year")
+	}else if(fy2 != null && fy2.length != 2){
+		alert("Enter valid financial year")
+	}else if(formonth == null || formonth.length != 2){
+		alert("Select for month.")
+	}else if(period == null || period.length == 0){
+		alert("Select period.")
+	}else if(head_of_acct == null || head_of_acct.length == 0){
+		alert("Select head of account.")
+	}else if(system == null || system.length == 0){
+		alert("Select system.")
+	}else if(entry_type == null || entry_type.length != 2){
+		alert("Select entry type.")
+	}else if(division == null || division.length != 3){
+		alert("Select division.")
+	}else if(entry_type == "SW" && (stn_type == null || stn_type === "-1")){
+		alert("Select station type.")
+	}else if(entry_type == "SW" && (station == null || station === "-1")){
+		alert("Select station.")
+	}else if(value_type == null || value_type === "-1"){
+		alert("Select value type.")
+	}else if(value_type =="ORG" && (received_on == null || received_on.length == 0)){
+		alert("Enter received on date");
+	}
+	else{
+		
+		let fy = fy1+"-"+fy2;
+		
+		 var jsondata = {
+
+			financialyear: fy,
+			formonth: formonth,
+			period: period,
+			entrytype: entry_type,
+			system: system,
+			headofaccount: head_of_acct,
+			divcode: division,
+			stntype: stn_type,
+			stncode: station,
+			valuetype: value_type,
+			receivedon: received_on,
+			remarks: remarks,
+			data : formdata			
+  		};
+		
+		 console.log(" data to server = "+JSON.stringify(jsondata));
+		 		
+		$.ajax({
+          url: "/station_earning/savestationearningdata",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(jsondata),
+          success: function (response) {
+          	console.log("response ="+response.status);
+              if (response.status === "success") {
+              		
+            	  alert("Data saved successfully");
+				/* isBottomFormdisabled = false;
+          		$("#formFields").prop("disabled",false); */				
+
+          		/* console.log("data from DB ="+JSON.stringify(response.data)); */
+          		
+           	  /* renderData(response.data); */
+           	 
+           	   /* updateTotalValues(); */
+           	 /* console.log("my constructed data = "+JSON.stringify(formdata)); */
+           	   
+              } else {
+              	
+					isBottomFormdisabled = true;
+					$("#formFields").prop("disabled",true);
+                  alert("Some error occured.");
+              }
+          },
+          error: function () {
+				isBottomFormdisabled = true;
+				$("#formFields").prop("disabled",true);
+              alert("Something went wrong!");
+          }
+      }); 
+	}
+	
+}
+
+function renderData(data){
+	
+	console.log("inside renderData");
+	 $.each(data, function(index, stationearning) { 		   
+ 	
+		 console.log("currenthoa = "+currenthoa);
+		 if(currenthoa === "PNSUB" ||currenthoa === "PSUB"){
+			 let ecat = stationearning.earningcat;
+			 let esubcat = stationearning.earningsubcat;
+			 let tempindex = getIndexForSubcat(esubcat);
+			 console.log("ecat = "+ecat +", esubcat ="+esubcat+", tempindex ="+tempindex);
+			 if(stationearning.quantity > 0){
+				 
+				 let fieldnoname = "input_"+ecat+"_"+tempindex;
+				 if (!formdata[fieldnoname]){
+					 formdata[fieldnoname] = {};   // create new key
+				 }
+					   				   
+				formdata[fieldnoname]["recordid"] = stationearning.recordid;
+				formdata[fieldnoname]["orgval"] = stationearning.quantity;
+				formdata[fieldnoname]["isedited"] = 0;                			   
+				formdata[fieldnoname]["newval"] = stationearning.quantity;
+				
+				console.log("fieldnoname = "+fieldnoname);
+				let inputfiield =  document.getElementsByName(fieldnoname);
+				$(inputfiield).val(stationearning.quantity);
+
+			 }
+			 
+			 if(stationearning.amount > 0){
+				 
+				 let fieldrsname = "input_"+ecat+"_"+(++tempindex);
+				 console.log("fieldrsname = "+fieldrsname);
+				 if (!formdata[fieldrsname]){
+					 formdata[fieldrsname] = {};   // create new key
+				 }
+					   				   
+				formdata[fieldrsname]["recordid"] = stationearning.recordid;
+				formdata[fieldrsname]["orgval"] = stationearning.amount;
+				formdata[fieldrsname]["isedited"] = 0;                			   
+				formdata[fieldrsname]["newval"] = stationearning.amount;
+				
+				let inputfiield =  document.getElementsByName(fieldrsname);
+				$(inputfiield).val(stationearning.amount);
+
+			 }
+			 
+		 }
+		 
+		}); 
+}
+
+function getIndexForSubcat(subcat){
+	
+	let  index =-1; 
+	if(subcat === "BKD"){
+		index = 1;
+	}else if(subcat === "RFD"){
+		index = 3;
+	}else if(subcat === "EF"){
+		index = 5;
+	}
+	return index;
+}
+
+function updateTotalValues(){
+	
+}
+</script>
+
+
+
+</html>

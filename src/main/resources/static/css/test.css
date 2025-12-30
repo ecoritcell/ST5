@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+.top-table-design {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.top-table-design td {
+  border: 1px solid black;
+}
+
+/* remove the top border of any row that follows another row */
+.top-table-design tr:not(:first-child) td {
+  border-top: none;
+}
+
+.top-table-design tr:not(:last-child) td {
+  border-bottom: none;
+}
+
+
+/* Remove the middle border between the two rows */
+/* .top-table-design tr:first-child td {
+  border-bottom: none;
+} */
+
+/* .top-table-design tr:last-child td {
+  border-top: none;    this is the important one
+} */
