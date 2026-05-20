@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div  th:fragment = "ORG-REV-REPORT-DIV" >
+	
+	
+		<table class = "report-table-design">
+			<thead>
+				<tr>
+					<th colspan="9">EAST COAST RAILWAY</th>				
+				</tr>
+				<tr>
+					<th colspan="9">10 DAYS ADVANCES STATEMENT OF GROSS REVENUE &amp; TRAFFIC HANDLED ON ORIGINATING BASIS</th>				
+				</tr>
+				<tr>
+					<th colspan="5" style="text-align: left; padding-left: 10px;">Period:-      <span th:text="${fromPeriod}"></span> to <span th:text="${toPeriod}">  </th>
+					<th colspan="4" style="text-align: right; padding-right: 10px;">Dated of Report: <span th:text="${#dates.format(#dates.createNow(), 'dd-MM-yyyy')}"></span> </th>				
+				</tr>
+				<tr>
+					<th colspan="9" style="text-align:left; padding-left: 50px;"><br> To,</th>								
+				</tr>
+				
+				<tr>
+					<th colspan="9" style="text-align:left; padding-left: 70px">Secy. to GM for kind information of GM, FA &amp; CAO,CCM,COM and DRM/KUR/WAT/SBP</th>								
+				</tr>
+				<!-- <tr>
+					<th colspan="9" style="text-align: right; padding-right: 10px;">(FIGS. IN <span style="text-transform: uppercase;" th:text=" ${unit}"></span> )</th>								
+				</tr>	 -->		
+			</thead>
+			
+			<tbody>
+				
+				<th:block th:if ="${#lists.isEmpty(periodreport)}" >
+				
+					<tr>
+						<td colspan="9">No Data Found</td>
+					</tr>
+			
+				</th:block>
+				
+				<th:block th:if ="${not #lists.isEmpty(periodreport)}">
+					<tr>
+						<td colspan="9">[A] ORIGINATING REVENUE (Figs. in Rs.Crs)</td>
+					</tr>
+				
+					<tr>
+						<td rowspan="2"  colspan="2" style="text-align: center;"></td>
+						<td rowspan="2" style="text-align: center;">BUDGET</td>
+						<td rowspan="2" style="text-align: center;" th:text="${prev_fy}"></td>
+						<td rowspan="2" style="text-align: center;" th:text="${curr_fy}"></td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Pr. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Actual Diff.</td>
+						<td style="text-align: center;">% Vari.</td>
+						<td style="text-align: center;">Actual Diff.</td>
+						<td style="text-align: center;">% Vari.</td>
+					</tr>
+					
+					<tr>
+						<td colspan="9" style="font-style: italic;">(i)For the period <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></td>
+					</tr>
+					
+					
+					 <tr th:each="row,rowStat : ${periodreport}" th:class="${rowStat.index == 2 || rowStat.index == 5 || rowStat.index == 8 ||  rowStat.index == 10} ? 'bold-row' : ''">
+					
+					 	<!-- First column design  -->
+					 	<td th:if="${rowStat.index == 0}" rowspan="3">Passenger</td>
+    					<td th:if="${rowStat.index == 3}" rowspan="3">O/Coaching</td>	
+    					<td th:if="${rowStat.index == 6}" rowspan="3">Total Goods</td>	
+    					<td th:if="${rowStat.index == 9}" colspan="2">Sundry</td>	
+        				<td th:if="${rowStat.index == 10}" colspan="2"  style="text-align: center;">GRAND TOTAL</td>	
+					 	
+					 	<!-- Second column design  -->
+		                <td th:if="${rowStat.index == 0 || rowStat.index == 3}" th:text="PRS"></td>
+		                <td th:if="${rowStat.index == 1 || rowStat.index == 4}" th:text="Non-PRS"></td>
+		                <td th:if="${rowStat.index == 2 || rowStat.index == 5 || rowStat.index == 8}" th:text="Total"></td>
+		                <td th:if="${rowStat.index == 6}" th:text="Goods"></td>
+		                <td th:if="${rowStat.index == 7}" th:text="Oth-Goods"></td>
+		                
+		                <!-- Other columns -->
+		                <td style="text-align: right;" th:text="${row.budget == 0 ?'':row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal == 0 ?'':row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal == 0 ?'':row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget == 0 ?'':row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget == 0 ?'':row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear == 0 ?'':row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear == 0 ?'':row.pctVarOverPrevYear}"></td>	                
+	           		 </tr>	
+	           		 	
+	           	</th:block>
+	           	
+	          
+				
+				<th:block th:if ="${not #lists.isEmpty(totreport)}">
+					<tr>
+						<td colspan="9" style="font-style: italic;">(ii)Upto the period (<span th:text="${cumFromPeriod}"></span> to <span th:text="${cumToPeriod}"></span>)</td>
+					</tr>
+					
+					
+					 <tr th:each="row,rowStat : ${totreport}" th:class="${rowStat.index == 2 || rowStat.index == 5 || rowStat.index == 8 ||  rowStat.index == 10} ? 'bold-row' : ''">
+					
+					 	<!-- First column design  -->
+					 	<td th:if="${rowStat.index == 0}" rowspan="3">Passenger</td>
+    					<td th:if="${rowStat.index == 3}" rowspan="3">O/Coaching</td>	
+    					<td th:if="${rowStat.index == 6}" rowspan="3">Total Goods</td>	
+    					<td th:if="${rowStat.index == 9}" colspan="2">Sundry</td>	
+        				<td th:if="${rowStat.index == 10}" colspan="2"  style="text-align: center;">GRAND TOTAL</td>	
+					 	
+					 	<!-- Second column design  -->
+		                <td th:if="${rowStat.index == 0 || rowStat.index == 3}" th:text="PRS"></td>
+		                <td th:if="${rowStat.index == 1 || rowStat.index == 4}" th:text="Non-PRS"></td>
+		                <td th:if="${rowStat.index == 2 || rowStat.index == 5 || rowStat.index == 8}" th:text="Total"></td>
+		                <td th:if="${rowStat.index == 6}" th:text="Goods"></td>
+		                <td th:if="${rowStat.index == 7}" th:text="Oth-Goods"></td>
+		                
+		                <!-- Other columns -->
+		                <td style="text-align: right;" th:text="${row.budget == 0 ?'':row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal == 0 ?'':row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal == 0 ?'':row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget == 0 ?'':row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget == 0 ?'':row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear == 0 ?'':row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear == 0 ?'':row.pctVarOverPrevYear}"></td>	                
+	           		 </tr>	
+	           		 	
+	           	</th:block>
+				
+	       	           	
+	           	
+	           	<!-- NO. OF PASSENGER BLOCK -->
+	           	
+	         	<th:block th:if ="${not #lists.isEmpty(periodpassenger)}">
+					
+					<tr>
+						<td colspan="9"><br> [B] NO. OF PASSENGER ORIGINATING FROM (Figs in Million)</td>
+					</tr>
+					
+					<tr>
+						<td colspan="9" style="font-style: italic;">(i) For the Period</td>
+					</tr>
+									
+					 <tr th:each="row,rowStat : ${periodpassenger}">
+					 
+					 	<!-- First column design  -->
+		                <td colspan="2" th:if="${rowStat.index == 0}" th:text="PRS"></td>
+		                <td colspan="2" th:if="${rowStat.index == 1}" th:text="Non-PRS"></td>
+		                <td colspan="2" th:if="${rowStat.index == 2}" th:text="Total"></td>
+		                
+					 
+		                <!-- Other columns -->
+		                <td style="text-align: right;" th:text="${row.budget == 0 ?'':row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal == 0 ?'':row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal == 0 ?'':row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget == 0 ?'':row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget == 0 ?'':row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear == 0 ?'':row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear == 0 ?'':row.pctVarOverPrevYear}"></td>
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(totalpassenger)}">
+					<tr>
+						<td colspan="9" style="font-style: italic;">(ii) Upto the Period (From: <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span>)</td>
+					</tr>
+									
+					 <tr th:each="row,rowStat : ${totalpassenger}">
+		              <!-- First column design  -->
+		                <td colspan="2" th:if="${rowStat.index == 0}" th:text="PRS"></td>
+		                <td colspan="2" th:if="${rowStat.index == 1}" th:text="Non-PRS"></td>
+		                <td colspan="2" th:if="${rowStat.index == 2}" th:text="Total"></td>
+		                
+					 
+		                <!-- Other columns -->
+		                <td style="text-align: right;" th:text="${row.budget == 0 ?'':row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal == 0 ?'':row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal == 0 ?'':row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget == 0 ?'':row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget == 0 ?'':row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear == 0 ?'':row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear == 0 ?'':row.pctVarOverPrevYear}"></td>            
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	     	    <!-- NO OF WAGONS LOADED SECTION  FOR THE PERIOD -->
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(noofwagon)}">
+
+					<tr>
+						<td colspan="9"><br> [C] NO. OF WAGON LOADED (Figs. in EWU)</td>
+					</tr>
+					
+					 <tr th:each="row,rowStat : ${noofwagon}">		 
+					 
+					 	 <!-- First column design  -->
+		                <td colspan="2" th:if="${rowStat.index == 0}" style="font-style: italic;"> (i) For the Perod</td>
+		                
+					 
+		                <!-- Other columns -->
+		                <td></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal == 0 ?'':row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal == 0 ?'':row.cfytotal}"></td>
+		                <td></td>
+		                <td></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy == 0 ?'':row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy == 0 ?'':row.pctVarOverPfy}"></td>     
+		                  
+	           		 </tr>	
+	           		 
+	           		 <tr th:each="row : ${noofwagon}">		 
+					 
+					 	 <!-- First column design --> 
+		                <td colspan="2" th:if="${rowStat.index == 0}" style="font-style: italic;">(ii) Per Day</td>
+		                
+		                <!-- Other columns -->
+		                <td></td>
+		                <td style="text-align: right;" th:text="${row.pfy_load_perday == 0 ?'':row.pfy_load_perday}"></td>
+		                <td style="text-align: right;" th:text="${row.cfy_load_perday == 0 ?'':row.cfy_load_perday}"></td>
+		                <td></td>
+		                <td></td>
+		                <td></td>
+		                <td></td>
+					               
+	           		 </tr>		
+	           		 
+	           	</th:block>
+	           	
+	           	
+	          <!--   NO OF TONNES LOADED SECTION FOR THE PERIOD -->
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(tonneperiod)}">
+					<tr>
+						<td colspan="9"><br> [D] ORIGINATING LOADING (Figs. in Million Tonnes)</td>
+					</tr>
+					
+					 <tr th:each="row : ${tonneperiod}">
+					 
+					  <!-- First column design  -->
+		              <td colspan="2" th:if="${rowStat.index == 0}" style="font-style: italic;"> (i) For the Period</td>
+		                
+		                <!-- Other columns -->
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>		
+	           		 
+	           		 <tr th:each="row : ${tonnecumm}">
+	           		 	
+	           		 	 <!-- First column design  -->
+		              	<td colspan="2" th:if="${rowStat.index == 0}" style="font-style: italic;"> (ii) Upto the Period</td>
+		              	
+		              	<!-- Other Column -->
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>
+	           		 
+		                	                
+	           	</th:block>
+	           	
+	         <!--    	  	NO OF TONNES LOADED SECTION FOR THE CUMMULATIVE PERIOD
+	           	<th:block th:if ="${not #lists.isEmpty(tonnecumm)}">
+					<tr>
+						<td colspan="8">(F) NO OF TONNES LOADED  FROM: <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span> [Million]</td>
+					</tr>
+					
+					<tr>
+						<td rowspan="3" style="text-align: center;">GOODS</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					 <tr th:each="row : ${tonnecumm}">
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>		
+		                	                
+	           	</th:block> -->
+	           		
+			</tbody>
+			
+			
+			
+		</table>
+		
+	</div>	
+
+</body>
+</html>

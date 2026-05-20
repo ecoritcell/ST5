@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+		<div  id="BUDGET-DETAIL-DIV" th:fragment = "BUDGET-DETAIL-DIV" th:object="${budgetForm}">		
+			
+			<fieldset name="budget-detail-fieldset" id="budget-detail-fieldset" style="padding: 0px; margin: 0px; border: none;" disabled="disabled">
+			
+			<div style="display: flex;justify-content: space-between;">
+				<span id="status_span"></span>
+				<span style="margin: 0px;padding: 0px;text-align: right;">(Units: in Millions, Amount: in Crs)</span>					 
+			</div>
+			
+				<table id="tbl_budget" class="tableDesign">
+					
+				<thead id = "tbl_budget_head">								
+					<tr>							
+							<th colspan="2">Head</th>
+							<th id="thead-04">Apr</th>
+							<th id="thead-05">May</th>
+							<th id="thead-06">Jun</th>
+							<th id="thead-07">Jul</th>
+							<th id="thead-08">Aug</th>
+							<th id="thead-09">Sep</th>
+							<th id="thead-10">Oct</th>
+							<th id="thead-11">Nov</th>
+							<th id="thead-13">Dec</th>
+							<th id="thead-01">Jan</th>
+							<th id="thead-02">Feb</th>
+							<th id="thead-03">Mar</th>
+							<th>Total</th>
+						</tr>
+				</thead>
+				
+				<tbody id="tbl_budget_body" >	
+										
+					<tr th:each="class,rowStat : ${classes}">
+						
+						<!-- ✅ HIDDEN RECORD ID -->
+						<!-- <td hidden="true"><input type="text" hidden="true"	th:field="*{details[__${rowStat.index}__].detailid}" th:readonly="true"> </td> -->											
+						<td th:if="${class.group}" th:rowspan="${class.rowspan}" th:text="${class.headLabel}" th:classappend="${!class.saveable?'tot-design':'' }" class="nowrap-design"></td>
+						<td th:text="${class.measure}" th:classappend="${!class.saveable?'tot-design':'' }" class="nowrap-design"></td>
+						
+						<th:block th:each="month, monRowStat:${months}"
+								  th:with="key=${class.headCode + '_' + class.measure + '_' + month.code}" >
+								
+								<!-- <td th:text="*{values[__${key}__]}"></td> -->
+								
+							<td>
+								<input type="text" class = "cell-input"
+								th:name="|values[${key}]|"
+								th:value="*{values[__${key}__] == 0?'':values[__${key}__]}" 
+								th:readonly="${!class.saveable or  month.code == 'TOT'}" th:disabled="${!class.saveable or  month.code == 'TOT'}" 
+								onblur="recalculate(this)"       
+								th:data-row="${class.headCode + '_' + class.measure}"
+       							th:data-col="${month.code}"
+								 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
+	            				 .replace(/(?!^)-/g, '') 
+	            				 .replace(/(\..*)\./g, '$1')
+	            				  .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " />
+	            			</td>							
+						</th:block>
+						
+					</tr>
+									
+				</tbody>
+				</table>								
+				
+				<div style="display: flex; justify-content: center; margin-top: 20px;" >
+				    <button type="submit" name="action" value="save" >Submit</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    <button type="button" onclick="clearClicked()" >Clear</button>
+				</div>			
+			</fieldset>
+			
+			<script th:inline="javascript">
+			(function () {
+			    let bheaderId = /*[[${bheaderid}]]*/ null;
+			    
+			    const el = document.querySelector("input[name='bheaderid']");
+		        if (el){
+		        	console.log("Element found");
+		        	el.value = bheaderId;
+		        }
+		        else{
+		        	console.log("Element not found");
+		        }			    
+			    
+			    console.log("bheaderId test = " +bheaderId);
+			})();
+		</script>
+			
+			
+		</div>
+
+</body>
+</html>

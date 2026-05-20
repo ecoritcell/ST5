@@ -250,7 +250,14 @@ body {
 	/*box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;*/	
 }
 .submenu li {
+	position: relative;
 	width: 100%;
+}
+
+.has-submenu > a::after {
+    content: "▶";
+    float:right;
+    font-size: 10px;
 }
 
 .submenu a {
@@ -277,6 +284,16 @@ body {
 
 .menu li:hover>.submenu {
 	display: block;
+}
+
+.submenu .submenu {
+    top: 0;
+    left: 100%;
+    display: none;
+}
+
+.submenu li:hover > .submenu {
+    display: block;
 }
 
 .actions {
@@ -501,6 +518,30 @@ Global error design
 }
 
 /*=============================================
+Global bold design
+=============================================*/
+.bold-design{
+	font-weight: bold;	
+}
+
+.bold-row td {
+    font-weight: bold;
+    /* font-size: 20px; */
+}
+
+.centerd-row td {
+    text-align: center;
+}
+
+.right-row td {
+    text-align: right;
+}
+
+.centerd-cell {
+    text-align: center;
+}
+
+/*=============================================
 Logout menu design
 =============================================*/
 .profile-container {
@@ -615,7 +656,216 @@ Logout menu design
     }
 }
 
+#print-area{
+	padding: 10px;
+}
+@media print {
+
+    /* Hide everything */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Show only report */
+    #print-area,
+    #print-area * {
+        visibility: visible;
+    }
+
+    /* Position report at top */
+    #print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        right:10px;        
+        width: 100%;
+    }
+}
 
 
+/*=============================================
+Flash message design
+=============================================*/
 
+
+.flash-msg {
+    position: fixed;
+    top: 20px;    
+    left: 50%;
+    transform: translateX(-50%);
+    
+    z-index: 9999;
+    padding: 12px 25px;
+    border-radius: 6px;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    opacity: 1;
+    transition: opacity 0.6s ease, top 0.6s ease;
+    
+   
+    
+    
+}
+
+.flash-success {
+    
+    background-color: #28a745;
+    color: white;
+}
+
+.flash-error {
+    background-color: #dc3545;
+    color: white;
+}
+
+.flash-hide {
+    opacity: 0;
+    top: 0;
+}
+
+/*=============================================
+Overlay Screen Design
+=============================================*/
+/* ✅ Full screen overlay */
+#modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* dark transparent background */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ✅ Center modal box */
+#modal_box {
+    background-color: #ffffff;
+    width: 550px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* ✅ Modal header */
+#modal_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3a7bd5;
+    color: white;
+    padding: 14px 18px;
+}
+
+#modal_header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* ✅ Close button */
+#modal_close {
+    font-size: 22px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#modal_close:hover {
+    color: #ffdddd;
+}
+
+/* ✅ Modal body */
+#modal_body {
+    padding: 20px 18px;
+}
+
+/* ✅ Each input field row */
+.modal_field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.modal_field label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.modal_field input {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+}
+
+.modal_field input:focus {
+    border-color: #3a7bd5;
+    box-shadow: 0 0 4px rgba(58, 123, 213, 0.3);
+}
+
+/* ✅ Modal footer */
+#modal_footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 18px;
+    border-top: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+#btn_modal_confirm {
+    background-color: #3a7bd5;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btn_modal_confirm:hover {
+    background-color: #2f65b8;
+}
+
+#btn_modal_cancel {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btn_modal_cancel:hover {
+    background-color: #c8c8c8;
+}
+
+
+#table_model_design{	
+	border-collapse: collapse;	
+	width: 100%;
+}
+
+#table_model_design tr th{
+	
+	text-align: left;
+}
+
+#chkbox_div{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	 
+}
+
+/* #table_model_design tr th{
+	border: 1px solid;
+}
+
+#table_model_design tr td{
+	border: 1px solid;
+} */
 

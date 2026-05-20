@@ -16,7 +16,7 @@ public interface StationEarningRepo extends JpaRepository<StationEarning, Intege
 	@Procedure(procedureName = "getStationEarning")
 	public List<StationEarning> getStationEarning(String fy, String formonth, String period, 
 			String entrytype,String system,String headofacct,   
-			String divcode,String stntype,String stncode, String valtype);
+			int divisionid,String stntype,String stncode, String valtype);
 
 	
 	@Procedure(procedureName = "inserOrUpdateStnEarning")

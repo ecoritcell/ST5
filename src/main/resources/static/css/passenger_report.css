@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+.top-table-design{
+	border-collapse: collapse;	
+	width: 100%;
+}
+
+.top-table-design td{
+	border: 1px solid black;
+	padding: 2px;
+}
+
+.report-table-design{
+	width: 100%;
+	/* border: 1px solid; */
+	border-collapse: collapse;	
+}
+
+
+.report-table-design  td{
+	/* border: 1px solid var(--white); */
+	border: 1px solid;
+}
+
+
+.sub-report-table-design{
+	width: 100%;
+	border-collapse: collapse;	
+}
+
+
+.sub-report-table-design  td{
+	/* border: 1px solid var(--white); */
+	border: 1px solid;
+}

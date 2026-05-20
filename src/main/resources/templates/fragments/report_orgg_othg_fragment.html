@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<div  th:fragment = "ORGG-OTHG-REV-REPORT-DIV" >	
+	
+		<table class = "report-table-design">
+			<thead>
+				<tr>
+					<th colspan="8" style="padding-top: 10PX;">EAST COAST RAILWAY</th>				
+				</tr>
+				<tr>
+					<th colspan="8">DIVISION-WISE ORIGINATING GOODS &amp; OTHER GOODS REVENUES</th>				
+				</tr>
+				<tr>
+					<th colspan="8">FOR THE PERIOD FROM: <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></th>				
+				</tr>
+				<tr>
+					<th colspan="8" style="padding-bottom: 10PX">FIGS. IN -</th>				
+				</tr>
+							
+			</thead>
+			
+			<tbody>
+				
+				<th:block th:if ="${not #lists.isEmpty(periodreport)}">
+				
+					<tr>
+						<td rowspan="2" style="text-align: center;">DIVISIONS</td>
+						<td rowspan="2" style="text-align: center;">BUDGET</td>
+						<td rowspan="2" style="text-align: center;">Previous Year <span th:text="${prev_fy}"></span></td>
+						<td rowspan="2" style="text-align: center;">Current Year <span th:text="${curr_fy}"></span></td>
+						<td colspan="2" style="text-align: center;">Variation Over Budget</td>
+						<td colspan="2" style="text-align: center;">Variation Over Prev Yr.</td>
+					</tr>
+					<tr>						
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Vari.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Vari.</td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${periodreport}">
+		                <td th:text="${row.divCode}"></td>
+		                <td style="text-align: right;" th:text="${row.budgetAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.prevFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.currFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetPctAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyPctAmt}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	<th:block th:if ="${#lists.isEmpty(periodreport)}" >
+				
+					<tr>
+						<td colspan="8">No Data Found</td>
+					</tr>
+			
+				</th:block>
+	           	
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(totreport)}">
+				
+					<tr>
+						<td colspan="8" style="text-align: center; padding: 10PX;font-weight: bold;">CUMULATIVE FROM: <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span></td>
+					</tr>
+					<tr>
+						<td rowspan="2" style="text-align: center;">DIVISIONS</td>
+						<td rowspan="2" style="text-align: center;">BUDGET</td>
+						<td rowspan="2" style="text-align: center;">Previous Year <span th:text="${prev_fy}"></span></td>
+						<td rowspan="2" style="text-align: center;">Current Year <span th:text="${curr_fy}"></span></td>
+						<td colspan="2" style="text-align: center;">Variation Over Budget</td>
+						<td colspan="2" style="text-align: center;">Variation Over Prev Yr.</td>
+					</tr>
+					<tr>						
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Vari.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Vari.</td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${totreport}">
+		                <td th:text="${row.divCode}"></td>
+		                <td style="text-align: right;" th:text="${row.budgetAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.prevFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.currFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetPctAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyPctAmt}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	           	
+	           		
+			</tbody>
+			
+			
+			
+		</table>
+		
+	</div>	
+
+</body>
+</html>

@@ -17,7 +17,8 @@ public class StationMaster {
 	private int stnid; 
 	private String stncode; 
 	private String stnname; 
-	private String percentage; 
+	private String percentage;
+	private int divid; 
 	private String divcode; 
 	private int isactive; 
 	private Date creationdate; 
@@ -50,6 +51,14 @@ public class StationMaster {
 	public void setPercentage(String percentage) {
 		this.percentage = percentage;
 	}
+	
+	
+	public int getDivid() {
+		return divid;
+	}
+	public void setDivid(int divid) {
+		this.divid = divid;
+	}
 	public String getDivcode() {
 		return divcode;
 	}
@@ -74,12 +83,15 @@ public class StationMaster {
 	public void setLastupdated(Date lastupdated) {
 		this.lastupdated = lastupdated;
 	}
+	
 	@Override
 	public String toString() {
 		return "StationMaster [stnid=" + stnid + ", stncode=" + stncode + ", stnname=" + stnname + ", percentage="
-				+ percentage + ", divcode=" + divcode + ", isactive=" + isactive + ", creationdate=" + creationdate
-				+ ", lastupdated=" + lastupdated + "]";
+				+ percentage + ", divid=" + divid + ", divcode=" + divcode + ", isactive=" + isactive
+				+ ", creationdate=" + creationdate + ", lastupdated=" + lastupdated + "]";
 	}
+	
+	
 	
 	
 

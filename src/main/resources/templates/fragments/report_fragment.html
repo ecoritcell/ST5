@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div  th:fragment = "PASSENGER-REPORT-DIV" th:object="${report}">
+	
+	
+		<table class="report-table-design">
+			<thead>
+			<tr>
+				<th colspan="15">EAST COAST RAILWAY</th>
+			</tr>
+			<tr>
+				<th colspan="15">ORIGINATING NO &amp; REVENUE</th>
+			</tr>
+			<tr>
+				<th colspan="15" style="text-align: right;">FIGS. IN(THOUSANDS)</th>
+			</tr>
+			</thead>
+			
+			<tbody >
+				
+				<th:block th:if ="${not #lists.isEmpty(for_theperiod)}">
+					<tr>
+						<td colspan="15" style="text-align: center;">PASSENGER</td>
+					</tr>
+					<tr>
+						<td colspan="15" style="text-align: center;">For the Period From: <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></td>
+					</tr>
+					<tr>
+						<td colspan="8" style="text-align: center;"> No of Passenger</td>
+						<td colspan="7" style="text-align: center;"> Passenger Revenues</td>
+					</tr>
+					
+					<tr>
+						<td rowspan="2">DIVNS</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Variation over Budget </td>
+						<td colspan="2">Variation over Prv Yr.</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Variation over Budget</td>
+						<td colspan="2">Variation over Prv Yr.</td>
+					</tr>
+					<tr>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+					</tr>
+					
+					 <tr th:each="row : ${for_theperiod}">
+		                <td th:text="${row.divCode}"></td>
+		                <td th:text="${row.budgetUnit}"></td>
+		                <td th:text="${row.prevFyCount}"></td>
+		                <td th:text="${row.currFyCount}"></td>
+		                <td th:text="${row.varOverBudgetActCount}"></td>
+		                <td th:text="${row.varOverBudgetPctCount}"></td>
+		                <td th:text="${row.varOverPrevFyActCount}"></td>
+		                <td th:text="${row.varOverPrevFyPctCount}"></td>
+		                
+		                <td th:text="${row.budgetAmt}"></td>
+		                <td th:text="${row.prevFyAmt}"></td>
+		                <td th:text="${row.currFyAmt}"></td>
+		                <td th:text="${row.varOverBudgetActAmt}"></td>
+		                <td th:text="${row.varOverBudgetPctAmt}"></td>
+		                <td th:text="${row.varOverPrevFyActAmt}"></td>
+		                <td th:text="${row.varOverPrevFyPctAmt}"></td>
+		                
+	           		 </tr>		
+           		 </th:block>	
+           		 
+           		 <th:block th:if ="${#lists.isEmpty(for_theperiod)}" >				
+					<tr><td colspan="15">No Data Found</td>	</tr>			
+				</th:block>
+           		 
+           		 
+           		 <th:block th:if ="${not #lists.isEmpty(upto_theperiod)}">
+           		 	<tr>
+           		 		<td colspan="15" style="text-align: center;">CUMMULATIVE FROM <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span></td>
+           		 	</tr>					
+					<tr>
+						<td rowspan="2">DIVNS</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Variation over Budget </td>
+						<td colspan="2">Variation over Prv Yr.</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Variation over Budget</td>
+						<td colspan="2">Variation over Prv Yr.</td>
+					</tr>
+					<tr>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+					</tr>
+					
+					 <tr th:each="row : ${upto_theperiod}">
+		                <td th:text="${row.divCode}"></td>
+		                <td th:text="${row.budgetUnit}"></td>
+		                <td th:text="${row.prevFyCount}"></td>
+		                <td th:text="${row.currFyCount}"></td>
+		                <td th:text="${row.varOverBudgetActCount}"></td>
+		                <td th:text="${row.varOverBudgetPctCount}"></td>
+		                <td th:text="${row.varOverPrevFyActCount}"></td>
+		                <td th:text="${row.varOverPrevFyPctCount}"></td>
+		                
+		                <td th:text="${row.budgetAmt}"></td>
+		                <td th:text="${row.prevFyAmt}"></td>
+		                <td th:text="${row.currFyAmt}"></td>
+		                <td th:text="${row.varOverBudgetActAmt}"></td>
+		                <td th:text="${row.varOverBudgetPctAmt}"></td>
+		                <td th:text="${row.varOverPrevFyActAmt}"></td>
+		                <td th:text="${row.varOverPrevFyPctAmt}"></td>
+		                
+	           		 </tr>		
+           		 </th:block>
+           		 
+           		 
+           		 
+           		 <th:block th:if ="${not #lists.isEmpty(othc_for_theperiod)}">           		 
+           		 	<tr>
+           		 		<td colspan="15" style="text-align: center;">OTHER COACHING</td>
+           		 	</tr>
+           		 	<!-- <tr>
+           		 		<td colspan="8" style="text-align: center;">For the Period From <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></td>
+           		 		<td colspan="7" style="text-align: center;">Cumulative From <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></td>
+           		 	</tr>	 -->				
+					<!-- <tr>
+						<td rowspan="2">DIVNS</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Variation over Budget </td>
+						<td colspan="2">Variation over Prv Yr.</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Variation over Budget</td>
+						<td colspan="2">Variation over Prv Yr.</td>
+					</tr>
+					<tr>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+						<td>ACT. DIFF</td>
+						<td>% Vari.</td>
+					</tr> -->
+					
+					 <tr>
+					 	<td colspan="8">
+					 		<table class="sub-report-table-design">
+					 			<tr>
+           		 					<td colspan="8" style="text-align: center;">For the Period From <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></td>
+           		 				</tr>
+           		 				<tr>
+									<td rowspan="2">DIVNS</td>
+									<td rowspan="2">Budget</td>
+									<td rowspan="2" th:text="${prev_fy}"></td>
+									<td rowspan="2" th:text="${curr_fy}"></td>
+									<td colspan="2">Variation over Budget </td>
+									<td colspan="2">Variation over Prv Yr.</td>
+								</tr>
+								<tr>
+									<td>ACT. DIFF</td>
+									<td>% Vari.</td>
+									<td>ACT. DIFF</td>
+									<td>% Vari.</td>
+								</tr>
+								
+					 			<tr th:each="row : ${othc_for_theperiod}">
+					 			
+					 				<td th:text="${row.divCode}"></td>
+					                <td th:text="${row.budgetAmt}"></td>
+					                <td th:text="${row.prevFyAmt}"></td>
+					                <td th:text="${row.currFyAmt}"></td>
+					                <td th:text="${row.varOverBudgetActAmt}"></td>
+					                <td th:text="${row.varOverBudgetPctAmt}"></td>
+					                <td th:text="${row.varOverPrevFyActAmt}"></td>
+					                <td th:text="${row.varOverPrevFyPctAmt}"></td>
+					 				
+					 			</tr>
+					 		</table>
+					 	</td>
+					 	
+					 	<td colspan="7">
+					 		<table class="sub-report-table-design">
+					 			<tr>
+			           		 		<td colspan="7" style="text-align: center;">Cumulative From <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span></td>
+           		 				</tr>	
+					 			<tr>
+									<td rowspan="2">Budget</td>
+									<td rowspan="2" th:text="${prev_fy}"></td>
+									<td rowspan="2" th:text="${curr_fy}"></td>
+									<td colspan="2">Variation over Budget</td>
+									<td colspan="2">Variation over Prv Yr.</td>
+								</tr>
+								<tr>
+									<td>ACT. DIFF</td>
+									<td>% Vari.</td>
+									<td>ACT. DIFF</td>
+									<td>% Vari.</td>
+								</tr>
+					 			<tr th:each="row : ${othc_upto_theperiod}">
+					 			
+					                <td th:text="${row.budgetAmt}"></td>
+					                <td th:text="${row.prevFyAmt}"></td>
+					                <td th:text="${row.currFyAmt}"></td>
+					                <td th:text="${row.varOverBudgetActAmt}"></td>
+					                <td th:text="${row.varOverBudgetPctAmt}"></td>
+					                <td th:text="${row.varOverPrevFyActAmt}"></td>
+					                <td th:text="${row.varOverPrevFyPctAmt}"></td>
+					 				
+					 			</tr>
+					 		</table>
+					 	</td>
+					 	
+		                
+		                
+	           		 </tr>		
+           		 </th:block>
+           		 
+           		            		 
+			</tbody>
+			
+			
+			
+		</table>
+		
+	</div>	
+
+</body>
+</html>

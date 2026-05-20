@@ -78,12 +78,13 @@ public class AnnualBudgetServiceImp  implements AnnualBudgetService{
 	}
 	
 	@Transactional
-	public int getMaxBudgetNumber(String fy) {
+	public int getMaxBudgetNumber(String fy,String division) {
 		
-		int budgetno = -1;
+		int budgetno = -1;	
 		try {
 
-			budgetno = abr.getMaxBudgetNumber(fy);
+			int divint = Integer.parseInt(division);
+			budgetno = abr.getMaxBudgetNumber(fy,divint);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -95,12 +96,13 @@ public class AnnualBudgetServiceImp  implements AnnualBudgetService{
 	
 	
 	@Transactional
-	public String getForMonthForBudgetnumber(String fy,String budgte_no) {
+	public String getForMonthForBudgetnumber(String fy,String division, String budgte_no) {
 		
 		String formonth = "-1";
 		try {
 
-			formonth = abr.getForMonthForBudgetnumber(fy,budgte_no);
+			int divint = Integer.parseInt(division);
+			formonth = abr.getForMonthForBudgetnumber(fy,divint,budgte_no);
 
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+<script th:src="@{/js/global.js}"></script>
+<link rel="stylesheet" th:href="@{/css/headerfooter.css}">
+<link rel="stylesheet" th:href="@{/css/signatory_detail.css}">
+<title>Signatory Detail</title>
+</head>
+<body>
+
+	<!-- Header Section  -->
+	<div th:replace="~{fragments/header_footer :: custom_header}"></div>
+	<main class="page">
+	
+		<div th:if="${msg}"
+		     id="flash-message"
+		     th:text="${msg}"
+		     th:class="'flash-msg ' + (${msgType} == 'success' ? 'flash-success' : 'flash-error')">
+		</div>
+	
+		<div class="section-div">
+		
+			<form action="/update_signatory_detail" method="post" th:object="${signatory}">
+				<p class="p-design">UPDATE SIGNATORY DETAIL</p>
+				<table id="signatory-tbl" class="table-design">
+					<tbody>
+					
+						<tr>
+							<td colspan="2" class="section-design">Railway Details</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" hidden="true" ><input type="text" style="width: 100%;" hidden="true" th:field="*{recordid}"></td>
+						</tr>
+						
+						<tr>
+							<td width="41%"><label for="railwayname">Railway Name:</label></td>
+							<td width="59%"><input type="text"  style="width: 100%;" th:field="*{railwayname}"></td>
+						</tr>
+						
+						<tr>
+							<td><label for="address">Address:</label></td>
+							<td><textarea rows="3" cols=""  style="width: 100%;" th:field="*{address}"></textarea></td>
+						</tr>
+					</tbody>
+					
+					<tbody>					
+						<tr><td colspan="2" class="section-design">Signatory Details</td></tr>
+						<tr>
+							<td><label for="signatoryname">Signatory Name:</label></td> 
+							<td><input type="text"  style="width: 100%;" th:field="*{signatoryname}"></td>
+						</tr>
+						
+						<tr>
+							<td><label for="signatorydesg">Signatory Designation:</label> </td>
+							<td><input type="text" style="width: 100%;" th:field="*{signatorydesg}"></td>
+						</tr>						
+					</tbody>
+					
+					<tbody>					
+						<tr><td colspan="2" style="text-align: center;padding: 10px;"> <br><br><br><br> <input type="submit" value="UPDATE"></td></tr>
+					</tbody>
+					
+				</table>
+			</form>
+			
+		</div>
+	
+	</main>
+
+</body>
+</html>

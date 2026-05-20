@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div  th:fragment = "PASSENGER-REPORT-DIV" th:object="${report}">
+	
+	
+		<table class="report-table-design">
+			<thead>
+				<tr>
+					<th colspan="16">EAST COAST RAILWAY</th>
+				</tr>
+				<tr>
+					<th colspan="16">DIVISION WISE ORIGINATING NO OF PASSENGER REVENUE &amp; OTHER COACHING REVENUE (FIGS. IN THOUSANDS)</th>
+				</tr>
+				<tr>
+					<th colspan="16">FOR THE PERIOD: FROM <span th:text="${fromPeriod}"></span> TO  <span th:text="${toPeriod}"></span></th>
+				</tr>
+				<tr>
+					<th colspan="15" style="text-align: left;">A. NON SUB-URBAN PASSENGER TRAFFIC</th>
+				</tr>
+			</thead>
+			
+			<tbody >
+				
+				<th:block th:if ="${#lists.isEmpty(for_theperiod)}" >				
+					<tr><td colspan="16">No Data Found</td>	</tr>			
+				</th:block>
+				
+				
+				<th:block th:if ="${not #lists.isEmpty(for_theperiod)}">
+					<tr>
+						<td rowspan="3" style="text-align: center;">DIVNS</td>
+						<td colspan="8" style="text-align: center;"> No of Passenger</td>
+						<td colspan="7" style="text-align: center;"> Passenger Revenues</td>
+					</tr>
+					
+					<tr class="centerd-row">
+						<td rowspan="2"></td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Vari. over BP </td>
+						<td colspan="2">Vari. over Pr. Yr.</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Vari. over BP </td>
+						<td colspan="2">Vari. over Pr. Yr.</td>
+					</tr>
+					<tr class="centerd-row">
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+					</tr>
+					<tr>
+						<td colspan="16" style="font-style: italic;">(i) For the Period (from <span th:text="${fromPeriod}"></span> to  <span th:text="${toPeriod}"></span>)</td>
+					</tr>
+					 <tr th:each="row,rowStat : ${for_theperiod}" class="right-row">
+					 	
+					 	<td th:if="${rowStat.index == 0}" rowspan="3" style="text-align: center;"> KUR</td>
+					 	<td th:if="${rowStat.index == 3}" rowspan="3" style="text-align: center;"> SBP</td>
+					 	<td th:if="${rowStat.index == 6}" rowspan="3" style="text-align: center;"> WAT</td>
+					 	<td th:if="${rowStat.index == 9}" rowspan="3" style="text-align: center;"> TOTAL</td>
+					 	
+		              	<td th:text="${row.sytemTypeDesc}" style="text-align: left;"></td>
+		                <td th:text="${row.budgetUnit == 0 ?'':row.budgetUnit}"></td>
+		                <td th:text="${row.prevFyCount == 0 ?'':row.prevFyCount}"></td>
+		                <td th:text="${row.currFyCount == 0 ?'':row.currFyCount}"></td>
+		                <td th:text="${row.varOverBudgetActCount == 0 ?'':row.varOverBudgetActCount}"></td>
+		                <td th:text="${row.varOverBudgetPctCount == 0 ?'':row.varOverBudgetPctCount}"></td>
+		                <td th:text="${row.varOverPrevFyActCount == 0 ?'':row.varOverPrevFyActCount}"></td>
+		                <td th:text="${row.varOverPrevFyPctCount == 0 ?'':row.varOverPrevFyPctCount}"></td>
+		                
+		                <td th:text="${row.budgetAmt == 0 ?'':row.budgetAmt}"></td>
+		                <td th:text="${row.prevFyAmt == 0 ?'':row.prevFyAmt}"></td>
+		                <td th:text="${row.currFyAmt == 0 ?'':row.currFyAmt}"></td>
+		                <td th:text="${row.varOverBudgetActAmt == 0 ?'':row.varOverBudgetActAmt}"></td>
+		                <td th:text="${row.varOverBudgetPctAmt == 0 ?'':row.varOverBudgetPctAmt}"></td>
+		                <td th:text="${row.varOverPrevFyActAmt == 0 ?'':row.varOverPrevFyActAmt}"></td>
+		                <td th:text="${row.varOverPrevFyPctAmt == 0 ?'':row.varOverPrevFyPctAmt}"></td>
+		                
+	           		 </tr>		
+           		 </th:block>	
+           		 
+           		 <tr>
+						<td colspan="16" style="font-style: italic;">(ii) Upto the Period (from <span th:text="${cumFromPeriod}"></span> to  <span th:text="${cumToPeriod}"></span>)</td>
+				</tr>
+           		 
+           		 <th:block th:if ="${not #lists.isEmpty(upto_theperiod)}">
+           		 
+           		 	 <tr th:each="row,rowStat : ${upto_theperiod}" class="right-row">
+					 	
+					 	<td th:if="${rowStat.index == 0}" rowspan="3" style="text-align: center;"> KUR</td>
+					 	<td th:if="${rowStat.index == 3}" rowspan="3" style="text-align: center;"> SBP</td>
+					 	<td th:if="${rowStat.index == 6}" rowspan="3" style="text-align: center;"> WAT</td>
+					 	<td th:if="${rowStat.index == 9}" rowspan="3" style="text-align: center;"> TOTAL</td>
+					 	
+		                <td th:text="${row.sytemTypeDesc}" style="text-align: left;"></td>
+		                <td th:text="${row.budgetUnit == 0 ?'':row.budgetUnit}"></td>
+		                <td th:text="${row.prevFyCount == 0 ?'':row.prevFyCount}"></td>
+		                <td th:text="${row.currFyCount == 0 ?'':row.currFyCount}"></td>
+		                <td th:text="${row.varOverBudgetActCount == 0 ?'':row.varOverBudgetActCount}"></td>
+		                <td th:text="${row.varOverBudgetPctCount == 0 ?'':row.varOverBudgetPctCount}"></td>
+		                <td th:text="${row.varOverPrevFyActCount == 0 ?'':row.varOverPrevFyActCount}"></td>
+		                <td th:text="${row.varOverPrevFyPctCount == 0 ?'':row.varOverPrevFyPctCount}"></td>
+		                
+		                <td th:text="${row.budgetAmt == 0 ?'':row.budgetAmt}"></td>
+		                <td th:text="${row.prevFyAmt == 0 ?'':row.prevFyAmt}"></td>
+		                <td th:text="${row.currFyAmt == 0 ?'':row.currFyAmt}"></td>
+		                <td th:text="${row.varOverBudgetActAmt == 0 ?'':row.varOverBudgetActAmt}"></td>
+		                <td th:text="${row.varOverBudgetPctAmt == 0 ?'':row.varOverBudgetPctAmt}"></td>
+		                <td th:text="${row.varOverPrevFyActAmt == 0 ?'':row.varOverPrevFyActAmt}"></td>
+		                <td th:text="${row.varOverPrevFyPctAmt == 0 ?'':row.varOverPrevFyPctAmt}"></td>
+		                
+	           		 </tr>
+           		 
+           		 </th:block>
+           		 
+           		 <tr style="border: none;"><td colspan="16" style="border: none;"> <br>  <br> </td> </tr>
+           		 
+           		 <!-- OTHER COACHING BLOCK  -->
+           		 
+           		 <th:block th:if ="${not #lists.isEmpty(othc_combined)}">           		 
+           		 	<tr>
+           		 		<td colspan="16">B. OTHER COACHING REVENUE</td>
+           		 	</tr>
+           		 	<tr>
+						<td rowspan="3" style="text-align: center;">DIVNS</td>
+						<td colspan="8" style="text-align: center;"> (i) For the Period </td>
+						<td colspan="7" style="text-align: center;"> (ii) Upto the Period</td>
+					</tr>
+					
+					<tr class="centerd-row">
+						<td rowspan="2"></td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Vari. over BP </td>
+						<td colspan="2">Vari. over Pr. Yr.</td>
+						<td rowspan="2">Budget</td>
+						<td rowspan="2" th:text="${prev_fy}"></td>
+						<td rowspan="2" th:text="${curr_fy}"></td>
+						<td colspan="2">Vari. over BP </td>
+						<td colspan="2">Vari. over Pr. Yr.</td>
+					</tr>
+					<tr class="centerd-row">
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+						<td>Actual. DIFF</td>
+						<td>% Vari.</td>
+					</tr>
+					
+					<tr th:each="row,rowStat : ${othc_combined}" class="right-row">
+					
+					
+						<td th:if="${rowStat.index == 0}" rowspan="3" style="text-align: center;"> KUR</td>
+					 	<td th:if="${rowStat.index == 3}" rowspan="3" style="text-align: center;"> SBP</td>
+					 	<td th:if="${rowStat.index == 6}" rowspan="3" style="text-align: center;"> WAT</td>
+					 	<td th:if="${rowStat.index == 9}" rowspan="3" style="text-align: center;"> TOTAL</td>
+					 						 	
+					 	<td th:text="${row.sytemTypeDesc}" style="text-align: left;"></td>
+					 	
+					 	
+						<td th:text="${row.forPeriodBudgetAmt == 0?'':row.forPeriodBudgetAmt}"></td>
+						<td th:text="${row.forPeriodPrevFyAmt == 0?'':row.forPeriodPrevFyAmt}"></td>
+						<td th:text="${row.forPeriodCurrFyAmt == 0?'':row.forPeriodCurrFyAmt}"></td>
+						<td th:text="${row.forPeriodVarOverBudgetActAmt == 0?'':row.forPeriodVarOverBudgetActAmt}"></td>
+						<td th:text="${row.forPeriodVarOverBudgetPctAmt == 0?'':row.forPeriodVarOverBudgetPctAmt}"></td>
+						<td th:text="${row.forPeriodVarOverPrevFyActAmt == 0?'':row.forPeriodVarOverPrevFyActAmt}"></td>
+						<td th:text="${row.forPeriodVarOverPrevFyPctAmt == 0?'':row.forPeriodVarOverPrevFyPctAmt}"></td>
+
+
+						<td th:text="${row.uptoperiodBudgetAmt == 0?'':row.uptoperiodBudgetAmt}"></td>
+						<td th:text="${row.uptoPeriodPrevFyAmt == 0?'':row.uptoPeriodPrevFyAmt}"></td>
+						<td th:text="${row.uptoPeriodCurrFyAmt == 0?'':row.uptoPeriodCurrFyAmt}"></td>
+						<td th:text="${row.uptoPeriodVarOverBudgetActAmt == 0?'':row.uptoPeriodVarOverBudgetActAmt}"></td>
+						<td th:text="${row.uptoPeriodVarOverBudgetPctAmt == 0?'':row.uptoPeriodVarOverBudgetPctAmt}"></td>
+						<td th:text="${row.uptoPeriodVarOverPrevFyActAmt == 0?'':row.uptoPeriodVarOverPrevFyActAmt}"></td>
+						<td th:text="${row.uptoPeriodVarOverPrevFyPctAmt == 0?'':row.uptoPeriodVarOverPrevFyPctAmt}"></td>
+
+					</tr>
+           		 </th:block>
+           		 
+           		            		 
+			</tbody>
+			
+			
+			
+		</table>
+		
+	</div>	
+
+</body>
+</html>

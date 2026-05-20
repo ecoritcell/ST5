@@ -24,37 +24,7 @@ public class StationEarningController {
 	@Autowired
 	private StationEarningServiceImp sesimp;
 	
-	@PostMapping("/getstationdata")
-	public Map<String, Object> getstationdata(@RequestBody Map<String, Object> data,HttpSession session) {
-					
-		System.out.println("inside getstationdata ");
-		Map<String, Object> response = new HashMap<>();
-		response.put("status", "error");		
-		try {
-			
-			String division = (String) data.get("division");
-			String percentage = (String) data.get("percentage");
-
-			System.out.println("division = "+division+"percentage = "+percentage);
-			
-			if(division != null && division.length() ==3 && 
-				percentage !=null && percentage.length() ==2) {
-				
-				List<String> dataList = sesimp.getStationsByDivByPercentage(division,percentage);
-				response.put("status", "success");
-				response.put("data", dataList);				
-			}else {
-				System.out.println("Some error in data");
-			}
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			
-		}
-		
-		return response;
-	}
+	
 	
 	@PostMapping("/getstationearningdata")
 	public Map<String, Object> getstationearningdata(@RequestBody StationEarning seobj,HttpSession session) {
@@ -80,6 +50,7 @@ public class StationEarningController {
 				String stncode = seobj.getStncode() != null?seobj.getStncode():"";
 				String stntype = seobj.getStntype() != null?seobj.getStntype():""; 
 				String division = seobj.getDivcode() !=null?seobj.getDivcode():"";
+				int divisionint = Integer.parseInt(division);
 				
 				List<StationEarning> dataList = sesimp.getStationEarning(seobj.getFinancialyear(),
 						seobj.getFormonth(),
@@ -87,7 +58,7 @@ public class StationEarningController {
 						seobj.getEntrytype(),
 						seobj.getSystm(),
 						seobj.getHeadofaccount(),
-						division,
+						divisionint,
 						stntype,
 						stncode,
 						seobj.getValuetype());

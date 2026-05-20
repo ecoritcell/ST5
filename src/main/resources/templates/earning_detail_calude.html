@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+<script th:src="@{/js/global.js}"></script>
+<link rel="stylesheet" th:href="@{/css/headerfooter.css}">
+<link rel="stylesheet" th:href="@{/css/originating_period.css}">
+<title>Originating Period Earning</title>
+</head>
+<body>
+
+	<!-- Header Section  -->
+	<div th:replace="~{fragments/header_footer :: custom_header}"></div>
+	<main class="page">
+	
+		<div th:if="${msg}"
+		     id="flash-message"
+		     th:text="${msg}"
+		     th:class="'flash-msg ' + (${msgType} == 'success' ? 'flash-success' : 'flash-error')">
+		</div>
+	
+		<div id="div_main_content">
+		
+			<div id="div_topform">
+			
+				<h3 style="text-align: center;text-decoration: underline; padding: 0px;margin: 0px;">ORIGINATING PERIODIC EARNING</h3>
+				<span id="span-status"></span>
+				
+					<form id="top-form" name="top-form" th:action="@{/earning/process}" th:object="${earningHeader}" method="post">
+					
+						<div id="div_topform_container">
+						
+						
+							<fieldset name="top-fieldset" id="top-fieldset" style="padding: 0px;margin: 0px; border: none;" >				
+							
+							<table class="top-table-design">		
+								
+								<tr>								
+									<td style="white-space: nowrap; width: 270px;">
+
+										<!-- FIX #18: Use type="hidden" instead of type="text" hidden="true" -->
+										<input type="hidden" th:field="*{recordid}">
+										
+										<p class="para-design">Financial year:</p>
+										<input type="text" id="txt-financial-year-1" placeholder="YYYY" maxlength="4" pattern="\d{4}" 
+										title="Please enter exactly 4 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="min-width: 40px; width: 85%;  box-sizing: border-box;" onchange="fyValueEdited(this)" onblur="fyValueChanged(this)" required >
+										
+										<input type="text" id="txt-financial-year-2"  placeholder="YY" maxlength="2" pattern="\d{2}" 
+										title="Please enter exactly 2 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width: 30px;" disabled="disabled" required >
+										
+										<!-- FIX #18: Use type="hidden" instead of type="text" hidden="true" -->
+										<input type="hidden" th:field="*{financialyear}">
+										
+										
+									</td>
+									
+									<td>
+										<p class="para-design">For Month:</p>
+										<select id="for-month" name="for-month" class="top-cell-input" th:field="*{formonth}" onchange="monthChanged(this)">
+										  <option value="04">Apr</option>
+										  <option value="05">May</option>							  
+										  <option value="06">June</option>
+										  <option value="07">July</option>							  
+										  <option value="08">Aug</option>
+										  <option value="09">Sep</option>
+										  <option value="10">Oct</option>
+										  <option value="11">Nov</option>
+										  <option value="12">Dec</option>
+										  <option value="01">Jan</option>
+										  <option value="02">Feb</option>
+										  <option value="03">Mar</option>
+										</select>
+									</td>
+									
+									<td>
+										<p class="para-design">Period:</p>
+										<select id="period" name="period" onchange="periodChanged(this)" class="top-cell-input" th:field="*{period}">
+										  <option value="I">I</option>
+										  <option value="II">II</option>
+										  <option value="III">III</option>
+										  <option value="MON">MONTHLY</option>		
+										</select>
+									</td>
+									
+									<td>
+										<p class="para-design">Entry Type:</p> 
+										<select	id="entry-type" name="entry-type" onchange="entryTypeChanged(this)" class="top-cell-input" th:field="*{entrytype}">
+											<option value="SW">Source Wise</option>
+											<option value="DW">Division Wise</option>
+											<option value="ZW">Zone Wise</option>									
+										</select>
+									</td>
+									
+									<td>
+										<p class="para-design">System:</p>
+										<select id="system" name="system" onchange="systemChanged(this)" class="top-cell-input" th:field="*{systemtype}">
+										  <option value="M">MANUAL</option>
+										  <!-- <option value="P">PRS</option> -->
+										</select>
+									</td>
+									
+									
+									<td>
+										<p class="para-design">Head Of Account:</p>
+										<select id="head_of_acct" name="head_of_acct" onchange="hoaChanged()" class="top-cell-input" th:field="*{headofaccounts}">
+										  <option value="PNSUB">PASSENGER[NON-SUB]</option>
+										  <!-- <option value="PSUB">PASSENGER[SUB]</option> -->
+										  <option value="OTHC">OTHER COACHING</option>
+										</select>
+									</td>
+									
+								 </tr>
+								 
+								 <tr>
+								 	<td rowspan="2" style="padding: 0px; vertical-align: top; height: 1px;" >
+								 	
+								 		<!-- ROW 1: Zone + Division in one line -->
+    									<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 6px;">
+											
+											<div style="display: flex; align-items: center; gap: 4px;">
+												<label for="zone">Zone:</label> 
+												<select id="zone" name="zone" class="top-cell-input">
+													<option value="1">ECoR</option>
+												</select>
+											</div>
+
+											<div style="display: flex; align-items: center; gap: 4px;">
+												<label for="division">Division:</label> 
+												<select	id="division" name="division" class="top-cell-input"
+													onchange="divisionChanged()" th:field="*{divisionid}">
+													<option value="-1">-- Select --</option>
+													<option value="1">KUR</option>
+													<option value="2">SBP</option>
+													<option value="3">WAT</option>
+												</select>
+											</div>
+										</div> 
+										
+										<!-- ROW 2: Station Type + Station dropdown (updated by UL click) -->
+										
+										<div style="display: flex; gap: 10px; align-items: center;  margin-bottom: 6px;">
+										
+											<div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+												<label for="stn-type">Type:</label> 
+												<select	id="stn-type" name="stn-type" onchange="stnTypeChanged()" class="top-cell-input" th:field="*{stationtype}">
+													<option value="-1">--Select--</option>
+													<option value="90">90%</option>
+													<option value="10">10%</option>									
+												</select>
+											</div>
+										
+    									<div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+												<label for="station">Station:</label> 
+												<select id="station" name="station"	th:field="*{stationcode}" class="top-cell-input read-only">
+													<option value="-1">-- Select --</option>
+												</select>
+											</div> 
+											
+											
+										</div>
+										<!-- ROW 3: Station List -->
+										<ul id="station-list" >
+											<!-- Populated dynamically -->
+										</ul> 
+										
+								 	</td>
+								 	<td colspan="1" style="white-space: nowrap;">
+									 	<div style="display: flex;">
+										 	<label class="para-design">Value Type:</label>
+											<select id="value-type" name="value-type" class="top-cell-input" onchange="valueTypeChanged(this)" th:field="*{valuetype}">
+											  <option value="A">APPROXIMATE</option>
+											  <option value="O">ORIGINAL</option>							  
+											</select>
+									 	</div>
+									
+									</td>
+									<td colspan="3" style="white-space: nowrap;">
+										
+										<div style="display: flex;">
+										<label class="para-design" >Received On:</label>
+											<!-- FIX #3: Corrected name attributes (were all name="station") -->
+											<select id="receivedfy" name="receivedfy" class="top-cell-input" disabled="disabled" onchange="receivedFyChanged()" th:field="*{receivedfy}">
+											  <option value="-1">-- Financial Year --</option>								  
+											</select>
+											<select id="receivedmonth" name="receivedmonth" class="top-cell-input" disabled="disabled" onchange="receivedMonthChanged()" th:field="*{receivedmonth}">
+											  <option value="-1">-- Month --</option>								  
+											</select>
+											<select id="receivedperiod" name="receivedperiod" class="top-cell-input"  disabled="disabled" th:field="*{receivedperiod}">
+											  <option value="-1">-- Period --</option>								  
+											</select>
+										</div>
+									</td>
+									<td colspan="1">
+										<div style="display: flex;">
+											<label class="para-design">Remarks:</label>
+											<select id="remarks" name="remarks" class="top-cell-input" th:field="*{remarks}" disabled="disabled">
+											  <option value="-1">-- Select --</option>
+											  <option value="LR">Late Received</option>
+											</select>
+										</div>
+									</td>
+								 </tr>
+								 
+								 <tr>
+								 	<td colspan="5">
+										<div id='detail-container' class="bottom-section">
+											<th:block th:replace="~{fragments/earning_fragment :: PNSUB-DIV(null)}"></th:block>
+										</div>
+									</td>
+								 </tr>
+								 												 								
+							</table>	
+							
+							 </fieldset>
+							
+						</div>						
+				
+					</form>
+			</div>						
+		
+		</div>
+	</main>
+	
+	
+	<!-- Modal Overlay -->
+	<div id="modal_overlay" style="display:none;">
+    	<div id="modal_box">
+
+	        <!-- Header -->
+	        <div id="modal_header">
+	            <h3 id="modal_title">Get Approximate Data</h3>
+	            <span id="modal_close" onclick="closeModal()">&times;</span>
+	        </div>
+
+	        <!-- Body — Input Fields -->
+	        <div id="modal_body">
+	            <table id = "table_model_design">
+	            	<tr>
+	            		<th>Financial Year</th>
+	            		<th>Month</th>
+	            		<th>Period</th>
+	            		<th>Import From</th>
+	            	</tr>
+	            	<tr>
+	            		<td> 
+	            			<select id="aprx_fy" onchange="appxFyChanged()">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>
+	            		<td> 
+	            			<select id="aprx_month" onchange="appxMonthChanged()">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>
+	            		<td> 
+	            			<select id="aprx_period" onchange="appxPeriodChanged()">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>
+	            		<td> 
+	            			<select id="aprx_value_type">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>	            			            		
+	            	</tr>
+	            	
+	            </table>
+	        </div>
+
+	        <!-- Footer — Action Buttons -->
+	        <div id="modal_footer">
+	        	
+	        	<div id="chkbox_div">
+	        		<div>
+		        		<input id="chk_exact_value" type="checkbox">
+		        		<label for="chk_exact_value">Exact Value of The Period</label>
+	        		</div>
+	        	</div>
+	        	
+	        	<div>
+		            <button type="button" id="btn_modal_confirm" onclick="getDataClicked()">Get Data</button>
+		            <button type="button" id="btn_modal_cancel" onclick="closeModal()">Cancel</button>
+	            </div>
+	            
+	        </div>
+
+	    </div>
+	</div>
+	
+	
+</body>
+
+
+
+<script type="text/javascript">
+
+let formdata = {};
+let currenthoa = "PNSUB";
+let selectedDataId = null;
+let isBottomFormdisabled = true;
+
+// FIX #16: Removed dead IGNORE_FIELDS constant (was never actually used to gate anything)
+const COMPLETE_IGNORE_FIELDS = ["value-type","receivedfy","receivedmonth","receivedperiod","remarks"];
+
+// FIX #4: Removed "entry-type" and "head_of_acct" from FIELDS_TO_TRIGGER_DIV.
+// Those handlers call hoaChanged() themselves, so including them here caused a
+// double AJAX call to reload the bottom form on every entry-type / HOA change.
+const FIELDS_TO_TRIGGER_DIV = ["txt-financial-year-1","for-month","period","system"];
+
+const GROUPS = {
+	    AC:  ["EC","1AC","2AC","3AC","3E","CC"],
+	    FC:  ["FCSEA","FCME","FCORD"],
+	    SLC: ["SLSEA","SLME","SLORD"],
+	    SC:  ["SCSEA","SCME","SCORD"],
+	    TOT: ["AC","FC","SLC","SC"],
+	    OTHC_TOT: ["OTHC_LIMB","OTHC_CHDMT","OTHC_PCFIT","OTHC_PTPT","OTHC_PPT","OTHC_STARC","OTHC_LLDWSCP","OTHC_MOCE","OTHC_UDBS","OTHC_OABS"],
+	    OTHG_TOT: ["OTHG_DWSC","OTHG_OMGE","OTHG_UDBS","OTHG_OABS"],
+	    SUN_TOT: ["SUN_TE","SUN_SEBBO","SUN_SEBGO"]
+	};
+
+
+	
+document.addEventListener("DOMContentLoaded", function(){
+	
+	let financialYear = getFinancialYear();
+	const [fromYear, toYear] = financialYear.split("-");
+	$("#txt-financial-year-1").val(fromYear);
+	$("#txt-financial-year-2").val(toYear);
+	$("#financialyear").val(financialYear);
+	
+	let currMonth = getCurrentMonth();
+	$("#for-month").val(currMonth);
+	
+	let currPeriod = getCurrentPeriod();
+	$("#period").val(currPeriod);
+	
+		
+ }); 
+
+document.addEventListener('keydown', function (event) {
+
+    // Check Enter key
+    if (event.key !== 'Enter') return;
+
+    // Only act for inputs inside detail table
+    if (!event.target.matches('#tbl-data-body input')) return;
+
+    event.preventDefault();      // stop form submit
+    event.stopPropagation();     // stop bubbling
+
+    const inputs = Array.from(
+        document.querySelectorAll('#tbl-data-body input:not([readonly])')
+    );
+    const index = inputs.indexOf(event.target);
+    const next = inputs[index + 1];
+
+    if (next) {
+        next.focus();
+    }
+});
+
+
+// Close modal when clicking outside the modal box
+$("#modal_overlay").on('click', function(e) {
+   if ($(e.target).is('#modal_overlay')) {
+       closeModal();
+   }
+});
+
+// Close modal on ESC key
+$(document).on('keydown', function(e) {
+   if (e.key === 'Escape') {
+       closeModal();
+   }
+});
+
+$('#top-fieldset').on('change', 'select', function() {
+    let fieldId = $(this).attr('id');
+    console.log('Select changed: ' + fieldId);
+    handleTopFieldChange(fieldId);
+});
+
+
+// FIX #4 & #16: Simplified handleTopFieldChange.
+// - Removed IGNORE_FIELDS gate (dead code — those selects call hoaChanged() directly).
+// - FIELDS_TO_TRIGGER_DIV no longer includes entry-type/head_of_acct, so no double reload.
+function handleTopFieldChange(fieldId){
+		
+	console.log("handleTopFieldChange called for: " + fieldId);
+	if(COMPLETE_IGNORE_FIELDS.includes(fieldId))
+		return;
+	
+	$("#recordid").val("");
+	
+	if(FIELDS_TO_TRIGGER_DIV.includes(fieldId))
+		 divisionChanged(); 
+
+	if(!isBottomFormdisabled){
+		console.log('Inside form reset');
+		isBottomFormdisabled = !isBottomFormdisabled;
+		hoaChanged();
+	}
+}
+
+
+
+function getFinancialYear() {
+	
+    const today = new Date();
+    const month = today.getMonth() + 1; // getMonth() is 0-indexed
+    const year = today.getFullYear();
+
+    if (month >= 4) {
+        return year + "-" + String(year + 1).slice(-2);  // e.g., "2026-27"
+    } else {
+        return (year - 1) + "-" + String(year).slice(-2); // e.g., "2025-26"
+    }
+}
+
+// FIX #2: Added missing "const today = new Date();" so the function no longer
+// throws a ReferenceError when called.
+function getNextFinancialYear() {
+	
+	const today = new Date();   // FIX #2
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+
+    if (month >= 4) {
+        return (year + 1) + "-" + String(year + 2).slice(-2);  // e.g., "2027-28"
+    } else {
+        return year + "-" + String(year + 1).slice(-2);         // e.g., "2026-27"
+    }
+}
+
+function getCurrentMonth() {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+	return month;
+}
+
+function getCurrentPeriod() {
+    const today = new Date();
+    const date = today.getDate();
+    if(date<=10)
+    	return "I";
+    else if(date<=20)
+    	return "II";
+    else
+    	return "III";	
+}
+
+function loadReceivedOnFinancialYear() {
+	
+    // Remove all options except the default placeholder
+    $('#receivedfy option[value!="-1"]').remove();
+    $('#receivedmonth option[value!="-1"]').remove();
+    $('#receivedperiod option[value!="-1"]').remove();
+    
+    let valtype = $("#value-type").val();
+	if(valtype === 'A')
+		return;
+    
+	const financialyear = $("#financialyear").val();
+	const formonth = $("#for-month").val();
+	const period = $("#period").val();
+	
+	if(financialyear !=null && financialyear.length == 7 &&
+			formonth !=null && formonth.length == 2 &&
+			period !=null){
+		
+   	    const monthInt = parseInt(formonth);
+		
+	    const years = [financialyear];
+	    
+	    // Add next FY only if we're in Jan, Feb, or March (approaching new FY)
+	    if (monthInt < 4) {
+	    	
+			const [fromYear, toYear] = financialyear.split("-");
+			const nextFY = String(+fromYear + 1)+"-"+ String(+toYear + 1)	    	 
+	        years.push(nextFY);
+	    }
+
+	    years.forEach(fy => {
+	        $('#receivedfy').append(`<option value="${fy}">${fy}</option>`);
+	    });
+	    
+	    if(years.length > 0)
+	    	$('#receivedfy').val(years[0]);
+	    
+	    receivedFyChanged();
+	}
+    
+}
+
+function fyValueEdited(ele){
+	
+	$("#financialyear").val("");
+}
+
+// FIX #12: fyValueChanged previously called both hoaChanged() AND divisionChanged()
+// which triggered up to 3 redundant AJAX calls (divisionChanged -> stnTypeChanged,
+// plus hoaChanged, plus the generic listener also firing hoaChanged).
+// Now it calls only hoaChanged() for the blank-form reload, and divisionChanged()
+// only if the bottom form was already enabled (to reset the station list).
+// loadReceivedOnFinancialYear() is kept as it's a pure UI update (no AJAX).
+function fyValueChanged(ele){
+	
+	let year = ele.value;	
+	if(year !=null && year.length == 4){
+		
+		let nextyear = +year.slice(-2) + 1;
+		$("#txt-financial-year-2").val(nextyear);	
+		$("#span-status").text("");
+		let fy = year+"-"+nextyear;
+		$("#financialyear").val(fy);
+		
+	}
+	else{
+		
+		$("#financialyear").val("");
+		$("#txt-financial-year-2").val("");
+		$("#span-status").text("Enter valid year!");
+		$("#span-status").removeClass("success");
+		$("#span-status").addClass("error");
+		setTimeout(() => {
+            ele.focus();
+        }, 0);
+	}	
+	
+	// FIX #12: Single consolidated call — hoaChanged reloads the blank bottom form.
+	// The generic listener on #top-fieldset handles divisionChanged for select changes;
+	// fyValueChanged fires from onblur on a text input so we call it explicitly here.
+	divisionChanged();
+	hoaChanged();
+	loadReceivedOnFinancialYear();
+}
+
+function monthChanged(ele){
+	
+	loadReceivedOnFinancialYear();
+}
+
+function entryTypeChanged(ele){
+	
+	$('#head_of_acct option[value!="-1"]').remove();
+	let option = null;
+	let entrytype = $(ele).val();	
+	if(entrytype === "SW"){
+		
+		// FIX #6: Restore MONTHLY option when switching to SW (it may have been removed)
+		if (!$("#period option[value='MON']").length) {
+    		$('#period').append('<option value="MON">MONTHLY</option>');
+		}
+		
+		// Update System
+		$('#system option[value!="-1"]').remove();
+		option = '<option value="M">MANUAL</option>';		  		 	
+		$('#system').append(option);	
+		
+		// Update head of accounts
+		option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+			     '<option value="OTHC">OTHER COACHING</option>' ;
+		$('#head_of_acct').append(option);	
+		
+		$("#division").val("-1");
+		$('#division').removeClass('read-only');
+		
+		$("#stn-type").val("-1");
+		$('#stn-type').removeClass('read-only');
+		
+		$("#station").val("-1");
+		// FIX #8: Station is selectable for SW so remove read-only
+		$('#station').removeClass('read-only');
+		
+	}else if(entrytype === "DW"){
+		
+		// FIX #6: Remove MONTHLY from period — DW does not support it
+		$('#period option[value="MON"]').remove();
+		if($("#period").val() === "MON") $("#period").val("III");
+		
+		$('#system option[value!="-1"]').remove();
+		option = '<option value="M">MANUAL</option>' +
+				 '<option value="P">PRS</option>';		  		 	
+		$('#system').append(option);
+		
+		option = '<option value="ORGG" selected>ORIGINATING GOODS</option>';
+		$('#head_of_acct').append(option);	
+		
+		$("#division").val("-1");
+		$('#division').addClass('read-only');
+		
+		$("#stn-type").val("-1");
+		$('#stn-type').addClass('read-only');
+		
+		$("#station").val("-1");
+		// FIX #8: Station should also be read-only for DW (user selects from list)
+		$('#station').addClass('read-only');
+		
+	}else if(entrytype === "ZW"){
+		
+		// FIX #6: Remove MONTHLY from period — ZW does not support it
+		$('#period option[value="MON"]').remove();
+		if($("#period").val() === "MON") $("#period").val("III");
+
+		// Update System
+		$('#system option[value!="-1"]').remove();
+		option = '<option value="M">MANUAL</option>';		  		 	
+		$('#system').append(option);
+
+		option = '<option value="OTHG">OTHER GOODS</option>' +
+			  	 '<option value="SUN">SUNDRY</option>' ;
+		$('#head_of_acct').append(option);	
+		
+		$("#division").val("-1");
+		$('#division').addClass('read-only');
+		
+		$("#stn-type").val("-1");
+		$('#stn-type').addClass('read-only');
+		
+		$("#station").val("-1");
+		// FIX #8: Station should also be read-only for ZW (user selects from list)
+		$('#station').addClass('read-only');
+		
+	}	
+	
+	hoaChanged();
+}
+
+function hoaChanged(){
+
+	console.log("hoaChanged called");
+	selectedDataId = null;
+	currenthoa = $("#head_of_acct").val();
+	
+	let formData = $("#top-form").serialize();				
+	$.ajax({
+		
+	     url: "/earning/getdetails?mode=blank",
+	     type: "POST",        
+	     data: formData,
+	     success: function (response) {
+	   	  	   	  
+	   	  $("#detail-container").html(response);
+	   	  enableBottomForm(false);
+
+	     },
+	     error: function () {
+	   	  enableBottomForm(false);
+	         alert("Something went wrong!");
+	     }
+ 	}); 
+	
+}
+
+// FIX #7: systemChanged now reads the current entry type and sets HOA options
+// accordingly, instead of always showing DW/ORGG options regardless of context.
+function systemChanged(ele){
+	
+	$('#head_of_acct option[value!="-1"]').remove();
+	let systype = $(ele).val();
+	let entrytype = $("#entry-type").val();
+	let option = null;
+
+	if(entrytype === "SW"){
+		// SW always shows passenger/other coaching regardless of system
+		option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+	     		 '<option value="OTHC">OTHER COACHING</option>' ;
+		$('#head_of_acct').append(option);
+
+	}else if(entrytype === "DW"){
+		if(systype === 'P'){
+			option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+	     			 '<option value="OTHC">OTHER COACHING</option>' ;
+			$('#head_of_acct').append(option);
+		}else{
+			option = '<option value="ORGG">ORIGINATING GOODS</option>';
+			$('#head_of_acct').append(option);
+		}
+	}else if(entrytype === "ZW"){
+		option = '<option value="OTHG">OTHER GOODS</option>' +
+	     		 '<option value="SUN">SUNDRY</option>' ;
+		$('#head_of_acct').append(option);
+	}
+		
+	hoaChanged();
+	
+}
+
+// FIX #11: valueTypeChanged — when switching to Approximate (A), call hoaChanged()
+// to reload the blank bottom form instead of goClicked() which would try to load
+// data that doesn't exist for the A type (when switching from O to A).
+function valueTypeChanged(ele){
+	
+	$("#recordid").val(""); 
+	let valtype = $(ele).val();
+	if(valtype === 'A'){
+		
+		$("#receivedfy").val("-1");
+		$("#receivedmonth").val("-1");
+		$("#receivedperiod").val("-1");
+		$("#remarks").val("-1");
+		
+		$("#receivedfy").prop("disabled",true);
+		$("#receivedmonth").prop("disabled",true);
+		$("#receivedperiod").prop("disabled",true);
+		$("#remarks").prop("disabled",true);
+
+		// FIX #11: Reload the blank form for A type; goClicked() is wrong here
+		// because we have no station-level data to load yet for this value type.
+		hoaChanged();
+		
+	}else{
+		
+		$("#receivedfy").prop("disabled",false);
+		$("#receivedmonth").prop("disabled",false);
+		$("#receivedperiod").prop("disabled",false);
+		$("#remarks").prop("disabled",false);
+		
+		loadReceivedOnFinancialYear();
+
+		// For Original type, load the actual data if a station is already selected
+		goClicked();
+	}
+}
+
+function receivedFyChanged(){
+	
+	console.log("receivedFyChanged called");
+	$('#receivedmonth option[value!="-1"]').remove();
+	const rcvdFy = $("#receivedfy").val();
+	const fy = $("#financialyear").val();
+	const formonth = $("#for-month").val();
+	const monthint = parseInt(formonth);
+	const period = $("#period").val();
+	
+	// FY months with their corresponding month numbers
+    const months = [
+        { val: "04", label: "Apr" },
+        { val: "05", label: "May" },
+        { val: "06", label: "June" },
+        { val: "07", label: "July" },
+        { val: "08", label: "Aug" },
+        { val: "09", label: "Sep" },
+        { val: "10", label: "Oct" },
+        { val: "11", label: "Nov" },
+        { val: "12", label: "Dec" },
+        { val: "01", label: "Jan" },
+        { val: "02", label: "Feb" },
+        { val: "03", label: "Mar" }
+    ];
+	
+	let currentIndex  =  monthint >= 4 ? monthint - 4 : monthint + 8;
+	if(fy === rcvdFy){
+						
+		if(currentIndex <= 11){
+			const next = months[currentIndex];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+	        $('#receivedmonth').val(next.val);
+		}
+			
+		currentIndex ++;
+		if(currentIndex <= 11){
+			
+			const next = months[currentIndex];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+		}
+			
+		
+		currentIndex ++;
+		if(currentIndex <= 11){
+			const next = months[currentIndex];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+		}	
+		
+	}else{ // This is for the next financial year
+		
+		if(monthint === 2){
+			
+			const next = months[0];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+	        $('#receivedmonth').val(next.val);
+			
+		}else if(monthint === 3){
+			const next = months[0];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+	        $('#receivedmonth').val(next.val);
+	        
+	        const next1 = months[1];
+	        $('#receivedmonth').append(`<option value="${next1.val}">${next1.label}</option>`);
+		}
+	}
+	
+	receivedMonthChanged();
+	
+}
+
+function receivedMonthChanged(){
+	
+	const valuetype = $("#value-type").val();
+	if(valuetype === "A")
+		return;	
+	
+	$('#receivedperiod option[value !="-1"]').remove();
+	const fy = $("#financialyear").val();
+	const formonth = $("#for-month").val();
+	const period = $("#period").val();
+	
+	const receivedfy = $("#receivedfy").val();
+	const receivedmonth = $("#receivedmonth").val();
+	
+	if(fy === receivedfy && formonth === receivedmonth){
+		
+		if(period === "I"){
+			
+			 $('#receivedperiod').append(`<option value="I">I</option>`);
+			 $('#receivedperiod').append(`<option value="II">II</option>`);
+			 $('#receivedperiod').append(`<option value="III">III</option>`);	
+			 $('#receivedperiod').val("I");
+		}else if(period === "II"){
+		
+			 $('#receivedperiod').append(`<option value="II">II</option>`);
+			 $('#receivedperiod').append(`<option value="III">III</option>`);
+			 $('#receivedperiod').val("II");
+			 
+		}else if(period === "III" || period === "MON"){
+						 
+			 $('#receivedperiod').append(`<option value="III">III</option>`);
+			 $('#receivedperiod').val("III");
+		}		
+		
+	}else{
+		
+		 $('#receivedperiod').append(`<option value="I">I</option>`);
+		 $('#receivedperiod').append(`<option value="II">II</option>`);
+		 $('#receivedperiod').append(`<option value="III">III</option>`);		 	
+		 $('#receivedperiod').val("I");
+	}	
+	
+	
+}
+
+
+// FIX #5: periodChanged now calls loadReceivedOnFinancialYear() which recalculates
+// the full received-on chain (FY → month → period) per req §12.a.xi.
+// Previously only receivedMonthChanged() was called, so the FY dropdown was stale.
+function periodChanged(ele){
+	loadReceivedOnFinancialYear();
+}
+
+
+function divisionChanged(){
+	
+	selectedDataId = null;
+	stnTypeChanged();
+}
+
+// FIX #6: stnTypeChanged now manages the MONTHLY option in the period dropdown
+// based on station type. 10% allows MONTHLY; 90% does not (req §12.a.xii).
+function stnTypeChanged(){
+	
+	console.log("stnTypeChanged called");
+	$('#station option[value !="-1"]').remove();
+	$('#station-list').empty();
+	
+	let entrytype = $("#entry-type").val();
+	let stntype = $("#stn-type").val();
+
+	// FIX #6: Enforce period dropdown options based on station type
+	if(entrytype === "SW"){
+		if(stntype === "90"){
+			$('#period option[value="MON"]').remove();
+			if($("#period").val() === "MON") $("#period").val("III");
+		} else if(stntype === "10"){
+			if (!$("#period option[value='MON']").length) {
+				$('#period').append('<option value="MON">MONTHLY</option>');
+			}
+		}
+	}
+
+	if(entrytype === "SW" && (stntype === null || stntype === "-1"))
+			return;	
+	if(entrytype === "ZW" || entrytype === "DW")
+		$("#division").val("-1");
+	
+	let fy = $("#financialyear").val();
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let hoa = $("#head_of_acct").val();
+	let system = $("#system").val();
+	let division = $("#division").val();
+
+	let errormsg = null;
+	if(fy != null && fy.length != 7){
+		errormsg ="Enter valid financial year";
+	}else if(formonth == null || formonth.length != 2){
+		errormsg = "Select for month.";
+	}else if(period == null || period.length == 0){
+		errormsg = "Select period.";
+	}else if(hoa == null || hoa.length == 0){
+		errormsg = "Select head of account.";
+	}else if(system == null || system.length == 0){
+		errormsg = "Select system.";
+	}else if(entrytype == null || entrytype.length != 2){
+		errormsg = "Select entry type.";
+	}else if(entrytype === "SW" && (division == null || division === "-1")){
+		errormsg = "Select division.";
+	}else if(entrytype === "SW" && (stntype == null || stntype === "-1" || stntype.length != 2)){
+		errormsg = "Select station type.";
+	}
+	
+	 if (errormsg) {
+	        alert(errormsg);
+	        $("#stn-type").val("-1");
+	        return;
+	   }
+	
+	var jsondata = {
+			fy:fy,
+			formonth:formonth,
+			period:period,
+			hoa:hoa,
+			system:system,
+			entrytype:entrytype,
+			division: division,
+			stntype: stntype		
+		};
+
+		$.ajax({
+			url: "/earning/getstationdata",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+
+				if (response.status === "success") {
+					
+					console.log("Success.");
+					$.each(response.data, function(index, obj) {
+						
+						let colorcode = getColorCodeforValueTypeAndRemarks(obj.valuetype,obj.remarks);
+						if(entrytype === "SW"){
+							let option = '<option value="'+obj.code+'">'+obj.code+'</option>';
+							$('#station').append(option);			
+						}						
+						
+						let li = $('<li>')
+			            .text(obj.code)
+			            .attr('data-code', obj.code)
+			            .attr('data-id', obj.id)
+			            .attr('data-parentid', obj.parentrecordid)
+			            .attr('data-valuetype', obj.valuetype)
+			            .attr('data-rfy', obj.receivedfy)
+			            .attr('data-rmonth', obj.receivedmonth)
+			            .attr('data-rperiod', obj.receivedperiod)
+			            .attr('data-remarks', obj.remarks)
+			            .css('color', colorcode);
+
+			        li.on('click', function() {
+				            onListItemClick(this);
+				        });
+			        
+				        $('#station-list').append(li);
+			        
+	       			}); 
+					
+					selectItemById(); 
+
+					
+				} else {
+					console.log("Some error occured.");
+				}
+			},
+			error: function() {
+
+				console.log("Something went wrong!");
+				alert("Something went wrong!");
+			}
+		});		
+	
+}
+
+
+function selectItemById(){
+
+	if(selectedDataId != null){
+				
+		let liElement = $('#station-list li').filter(function() {
+		    return $(this).attr('data-id') == selectedDataId;  // == handles type coercion
+		})[0];
+		
+	    if (liElement) {
+	        onListItemClick(liElement);
+	    } else {
+	        console.log("Station not found in list for id: " + String(selectedDataId));
+	    }
+	}
+		
+}
+
+// FIX #10: value-type read-only logic corrected.
+// Previously read-only was set when dataparentid != null (monthly record exists),
+// but the requirement is that value-type becomes read-only when the saved record
+// is ORIGINAL (O) — the user cannot downgrade O to A freely (req §12.a.vii).
+// If parentrecordid is set it means this is a child record (III period auto-calc
+// from MONTHLY), so value-type should also be locked.
+function onListItemClick(liElement){
+	
+	$("#recordid").val("");
+	 let datacode = $(liElement).attr('data-code');
+	 let dataid = $(liElement).attr('data-id');
+	 let dataparentid = $(liElement).attr('data-parentid');
+	 selectedDataId = dataid;
+	 
+	 let valuetype = $(liElement).attr('data-valuetype');
+	 console.log("valuetype ="+valuetype);
+	 if(valuetype == null){
+		 $("#value-type").val("A");
+		 valuetype = "A";
+	 }
+	 else{
+		 $("#value-type").val(valuetype);
+	 }
+	 
+	 let entrytype = $("#entry-type").val();
+	    // Highlight selected item
+	    $('#station-list li').removeClass('selected-station');
+	    $(liElement).addClass('selected-station');
+
+	    if(entrytype === "ZW"){
+	    	 let select = $('#zone');
+			 select.val(dataid); 
+	    }else if(entrytype === "DW"){
+	    	
+	    	 let select = $('#division');
+			 select.val(dataid); 
+	    	
+	    }else if(entrytype === "SW"){
+	    	
+		    let select = $('#station');
+		    select.val(datacode);
+		
+	    }
+	    
+	    if(valuetype === "A"){
+	    	// FIX #10: A records — value-type is freely editable unless it's a child record
+	    	if(dataparentid != null){
+	    		$("#value-type").addClass("read-only");
+	    	}else{
+	    		$("#value-type").removeClass("read-only");
+	    	}
+
+	    	$("#receivedfy").val("-1");
+			$("#receivedmonth").val("-1");
+			$("#receivedperiod").val("-1");
+			$("#remarks").val("-1");
+			
+			$("#receivedfy").prop("disabled",true);
+			$("#receivedmonth").prop("disabled",true);
+			$("#receivedperiod").prop("disabled",true);
+			$("#remarks").prop("disabled",true);
+	    	
+	    }else if(valuetype === "O"){
+	    
+	    	// FIX #10: O records — lock value-type so user cannot switch O back to A
+	    	// (requirement §12.a.vii). Child records are also locked.
+	    	$("#value-type").addClass("read-only");
+
+			loadReceivedOnFinancialYear();	
+
+			 let rfy = $(liElement).attr('data-rfy');
+			 let rmonth = $(liElement).attr('data-rmonth');
+			 let rperiod = $(liElement).attr('data-rperiod');
+			 let remarks = $(liElement).attr('data-remarks');
+			 
+	    	$("#receivedfy").prop("disabled",false);
+			$("#receivedmonth").prop("disabled",false);
+			$("#receivedperiod").prop("disabled",false);
+			$("#remarks").prop("disabled",false);
+			
+			$("#receivedfy").val(rfy);
+			receivedFyChanged();			
+			$("#receivedmonth").val(rmonth);
+			receivedMonthChanged();
+			$("#receivedperiod").val(rperiod);
+			$("#remarks").val(remarks);
+	    }
+	    else{ // null valuetype: new station with no existing data
+	    	$("#value-type").removeClass("read-only");
+	    }
+  		 
+	    goClicked();
+}
+
+function getColorCodeforValueTypeAndRemarks(valtype,remark){
+	
+	if(valtype == null)
+		return "black";
+	
+	if(valtype === "O" && remark === "LR")
+		return "red";
+	else if(valtype === "O")
+		return "green";
+	else if(valtype === "A")
+		return "blue";
+	else
+		return "black";
+}
+
+function loadDetails(ele){
+	
+}
+
+function enableBottomForm(enable){
+	
+	isBottomFormdisabled = !enable;
+	let head_of_acct = $("#head_of_acct").val();
+	let tempname = (head_of_acct =="PNSUB" || head_of_acct =="PSUB")?"pnsub":head_of_acct.toLowerCase();
+	tempname = "#"+tempname+"-fieldset";
+	$(tempname).prop("disabled",isBottomFormdisabled); 		
+}
+
+
+// FIX #9: Division validation corrected.
+// Original code checked (entry_type != "ZW") which also forced DW users to pick
+// a division from the dropdown — but for DW/ZW the division is selected by
+// clicking the station-list <li>, not from the dropdown. Validation now only
+// requires the division dropdown for SW entry type.
+function goClicked(){
+	
+	let fy1 = $("#txt-financial-year-1").val();
+	let fy2 = $("#txt-financial-year-2").val();
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let head_of_acct = $("#head_of_acct").val();
+	let system = $("#system").val();
+	let entry_type = $("#entry-type").val();
+	let division = $("#division").val();
+	let stn_type = $("#stn-type").val();
+	let station = $("#station").val();
+	let value_type = $("#value-type").val();
+	
+	if(fy1 != null && fy1.length != 4){
+		alert("Enter valid financial year");
+	}else if(fy2 != null && fy2.length != 2){
+		alert("Enter valid financial year");
+	}else if(formonth == null || formonth.length != 2){
+		alert("Select for month.");
+	}else if(period == null || period.length == 0){
+		alert("Select period.");
+	}else if(head_of_acct == null || head_of_acct.length == 0){
+		alert("Select head of account.");
+	}else if(system == null || system.length == 0){
+		alert("Select system.");
+	}else if(entry_type == null || entry_type.length != 2){
+		alert("Select entry type.");
+	}else if(entry_type === "SW" && (division == null || division === "-1")){
+		// FIX #9: Only require division dropdown selection for SW
+		alert("Select division.");
+	}else if(entry_type == "SW" && (stn_type == null || stn_type === "-1")){
+		alert("Select station type.");
+	}else if(entry_type == "SW" && (station == null || station === "-1")){
+		alert("Select station.");
+	}else if(value_type == null || value_type === "-1"){
+		alert("Select value type.");
+	}else if(entry_type == "SW" && period == 'MON' && stn_type !='10'){
+		
+		alert("For period = MONTHLY station type should be 10%.");
+	}
+	else{
+		
+  		 let formData = $("#top-form").serialize();
+					
+		$.ajax({
+          url: "/earning/getdetails?mode=load",
+          type: "POST",        
+          data: formData,
+          success: function (response) {
+        	  
+        	  $("#detail-container").html(response);
+        	  enableBottomForm(true);
+
+          },
+          error: function () {
+        	  enableBottomForm(false);
+              alert("Something went wrong!");
+          }
+      }); 
+	}
+	
+}
+
+// FIX #9: submitClicked division validation also corrected to SW-only (same fix as goClicked)
+function submitClicked(){
+	
+	let fy1 = $("#txt-financial-year-1").val();
+	let fy2 = $("#txt-financial-year-2").val();
+	let fy = $("#financialyear").val();
+	
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let stn_type = $("#stn-type").val();
+	let station = $("#station").val();
+	let value_type = $("#value-type").val();
+	
+ 	let receivedfy = $("#receivedfy").val();
+ 	let receivedmonth = $("#receivedmonth").val();
+ 	let receivedperiod = $("#receivedperiod").val();
+ 	
+	let remarks = $("#remarks").val() == null?"":$("#remarks").val();
+		
+	if(fy1 != null && fy1.length != 4){
+		alert("Enter valid financial year");
+	}else if(fy2 != null && fy2.length != 2){
+		alert("Enter valid financial year");
+	}else if(formonth == null || formonth.length != 2){
+		alert("Select for month.");
+	}else if(period == null || period.length == 0){
+		alert("Select period.");
+	}else if(head_of_acct == null || head_of_acct.length == 0){
+		alert("Select head of account.");
+	}else if(system == null || system.length == 0){
+		alert("Select system.");
+	}else if(entry_type == null || entry_type.length != 2){
+		alert("Select entry type.");
+	}else if(entry_type === "SW" && (division == null || division === "-1")){
+		// FIX #9: Only require division dropdown selection for SW
+		alert("Select division.");
+	}else if(entry_type == "SW" && (stn_type == null || stn_type === "-1")){
+		alert("Select station type.");
+	}else if(entry_type == "SW" && (station == null || station === "-1")){
+		alert("Select station.");
+	}else if(value_type == null || value_type === "-1"){
+		alert("Select value type.");
+	}else if(entry_type == "SW" && period == 'MON' && stn_type !='10'){
+		
+		alert("For period = MONTHLY station type should be 10%.");
+	}else if(value_type === "O" && !(fy === receivedfy && formonth === receivedmonth && period === receivedperiod) 
+			&& (remarks == null || remarks === "-1")){
+		
+		alert("Select remarks.");
+	}
+	else{
+		
+		let formData = $("#top-form").serialize();
+		 		
+		$.ajax({
+          url: "/earning/process?action=save",
+          type: "POST",
+          data: formData,
+          success: function (response) {
+        	  
+        	  if(response.status === "success"){
+        		  alert("Data saved successfully.");
+        		  enableBottomForm(true);
+        		  stnTypeChanged();
+        	  }else{
+        		  alert(response.msg);
+        	  }
+          
+          },
+          error: function () {
+              alert("Something went wrong!");
+          }
+      }); 
+	}
+	
+}
+
+function renderData(data){
+	
+	console.log("inside renderData");
+	 $.each(data, function(index, stationearning) { 		   
+ 	
+		 console.log("currenthoa = "+currenthoa);
+		 if(currenthoa === "PNSUB" ||currenthoa === "PSUB"){
+			 let ecat = stationearning.earningcat;
+			 let esubcat = stationearning.earningsubcat;
+			 let tempindex = getIndexForSubcat(esubcat);
+			 console.log("ecat = "+ecat +", esubcat ="+esubcat+", tempindex ="+tempindex);
+			 if(stationearning.quantity > 0){
+				 
+				 let fieldnoname = "input_"+ecat+"_"+tempindex;
+				 if (!formdata[fieldnoname]){
+					 formdata[fieldnoname] = {};   // create new key
+				 }
+					   				   
+				formdata[fieldnoname]["recordid"] = stationearning.recordid;
+				formdata[fieldnoname]["orgval"] = stationearning.quantity;
+				formdata[fieldnoname]["isedited"] = 0;                			   
+				formdata[fieldnoname]["newval"] = stationearning.quantity;
+				
+				console.log("fieldnoname = "+fieldnoname);
+				let inputfiield =  document.getElementsByName(fieldnoname);
+				$(inputfiield).val(stationearning.quantity);
+
+			 }
+			 
+			 if(stationearning.amount > 0){
+				 
+				 let fieldrsname = "input_"+ecat+"_"+(++tempindex);
+				 console.log("fieldrsname = "+fieldrsname);
+				 if (!formdata[fieldrsname]){
+					 formdata[fieldrsname] = {};   // create new key
+				 }
+					   				   
+				formdata[fieldrsname]["recordid"] = stationearning.recordid;
+				formdata[fieldrsname]["orgval"] = stationearning.amount;
+				formdata[fieldrsname]["isedited"] = 0;                			   
+				formdata[fieldrsname]["newval"] = stationearning.amount;
+				
+				let inputfiield =  document.getElementsByName(fieldrsname);
+				$(inputfiield).val(stationearning.amount);
+
+			 }
+			 
+		 }
+		 
+		}); 
+}
+
+function getIndexForSubcat(subcat){
+	
+	let  index =-1; 
+	if(subcat === "BKD"){
+		index = 1;
+	}else if(subcat === "RFD"){
+		index = 3;
+	}else if(subcat === "EF"){
+		index = 5;
+	}
+	return index;
+}
+
+function updateTotalValues(){
+	
+}
+
+/* Recalculate Totals */
+
+function recalcAll() {
+
+	if(currenthoa === "PNSUB" || currenthoa === "PSUB"){
+		
+		 // Recalc all atomic rows
+		   document.querySelectorAll("input.calc")
+		        .forEach(el => recalcRow(el.dataset.class));
+
+		    // Recalc derived groups in order
+		    ["AC","FC","SLC","SC"].forEach(recalcGroup);
+
+		    // Grand total
+		    recalcGroup("TOT");
+		    
+	}else if(currenthoa === "OTHC"){
+		
+		recalcOtherCoaching("OTHC_TOT");
+		
+	}else if(currenthoa === "OTHG"){
+		
+		recalcOtherGoods("OTHG_TOT");
+		
+	}else if(currenthoa === "SUN"){
+		
+		recalcOtherGoods("SUN_TOT");
+	}
+   
+}
+
+function recalcOtherGoods(groupCode){
+	
+	let totEarning=0;
+
+    GROUPS[groupCode].forEach(code => {
+    	
+    	totEarning += get(code,"earning");
+    });
+    
+    set(groupCode,"earning", totEarning);
+}
+
+function recalcOtherCoaching(groupCode){
+	
+	let totWeight=0, totEarning=0;
+
+    GROUPS[groupCode].forEach(code => {
+    	
+    	totWeight += get(code,"weight");
+    	totEarning += get(code,"earning");
+    });
+
+    
+    set(groupCode,"weight", totWeight);
+    set(groupCode,"earning", totEarning);
+}
+
+function recalcRow(cls) {
+    const totalNo =
+        get(cls,"bookedcount") -
+        get(cls,"refundcount") +
+        get(cls,"excesscount");
+
+    const totalRs =
+        get(cls,"bookedamt") -
+        get(cls,"refundamt") +
+        get(cls,"excessamt");
+
+    set(cls,"totalno", totalNo);
+    set(cls,"totalrs", totalRs);
+}
+
+function recalcGroup(groupCode) {
+
+    let bookedCnt=0, refundCnt=0, excessCnt=0;
+    let bookedAmt=0, refundAmt=0, excessAmt=0;
+
+    GROUPS[groupCode].forEach(code => {
+        bookedCnt += get(code,"bookedcount");
+        refundCnt += get(code,"refundcount");
+        excessCnt += get(code,"excesscount");
+
+        bookedAmt += get(code,"bookedamt");
+        refundAmt += get(code,"refundamt");
+        excessAmt += get(code,"excessamt");
+    });
+
+    set(groupCode,"bookedcount", bookedCnt);
+    set(groupCode,"refundcount", refundCnt);
+    set(groupCode,"excesscount", excessCnt);
+
+    set(groupCode,"bookedamt", bookedAmt);
+    set(groupCode,"refundamt", refundAmt);
+    set(groupCode,"excessamt", excessAmt);
+
+    recalcRow(groupCode);
+}
+
+
+
+function get(classCode, field) {
+	
+    const el = document.querySelector(
+        `input[data-class="${classCode}"][data-field="${field}"]`
+    );
+    
+    return el ? getsafevalue(el.value) : 0;
+}
+
+function set(classCode, field, value) {
+    const el = document.querySelector(
+        `input[data-class="${classCode}"][data-field="${field}"]`
+    );
+    
+    if (el) el.value = value ? value : "";
+}
+
+function getsafevalue(v) {
+    return parseFloat(v) || 0;
+}
+
+
+function clearClicked(){
+	location.reload();
+}
+
+
+function toggleValueType(){
+	
+	let headerid = $("#recordid").val();	
+	if(headerid.length >0){
+		
+		var jsondata = {
+				headerid: headerid
+			};
+
+			$.ajax({
+				url: "/earning/toggle_value_type",
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify(jsondata),
+				success: function(response) {
+					
+					if (response.status === "success") {
+
+						if(response.valuetype === 'O'){							
+							$("#btn_approx_to_org").text('Original to Approximate');
+							alert("Converted to Original.");
+						}							
+						else if(response.valuetype === 'A'){
+							
+							$("#btn_approx_to_org").text('Approximate to Original');
+							alert("Converted to Approximate.");
+						}else{
+							
+							alert("Invalid value type!");
+						}				
+						
+						stnTypeChanged();
+						
+					} else {
+						
+						alert("Something went wrong!");
+					}
+				},
+				error: function() {
+
+					alert("Something went wrong!");
+				}
+			});
+		
+	}else{
+		alert("Some exception occured. Please try later");
+	}
+	
+}
+
+function getApproximateData(){
+	
+	// Show overlay
+    $("#modal_overlay").fadeIn(200);
+    $('#aprx_fy option[value!="-1"]').remove();
+	$('#aprx_month option[value!="-1"]').remove();
+    $('#aprx_period option[value!="-1"]').remove();
+    $('#aprx_value_type option[value!="-1"]').remove();
+    getLast3EarningFy();
+}
+
+function deleteData(){
+
+	
+	let recordid = $("#recordid").val();
+	if(recordid != null && recordid.length >0){
+		
+		let formData = $("#top-form").serialize();		
+		$.ajax({
+			url: "/earning/deleteData",
+			type: "POST",
+			data: formData,
+			success: function(response) {
+			
+				if(response === "SUCCESS"){
+					
+					 alert("Data deleted successfully.");
+					 enableBottomForm(false);
+					 stnTypeChanged();
+					 
+				}else{
+					alert("Something went wrong!");
+				}
+			
+			},
+			error: function() {				
+				enableBottomForm(false);
+				alert("Something went wrong!");
+			}
+		});
+	}
+}
+
+// Close modal
+function closeModal() {
+	
+    $("#modal_overlay").fadeOut(200);
+}
+
+function getDataClicked(){
+		
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	let period = $("#aprx_period").val();
+	let valuetype = $("#aprx_value_type").val();
+	
+	
+	let org_period = $("#period").val();
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	
+	
+	if(fy == null || fy === "-1"  || fy.length != 7 )
+		alert("Select financial year !");
+	else if(formonth == null || formonth.length == 0 || formonth === "-1" )
+		alert("Select month !");
+	else if(period == null || period.length == 0 || period === "-1" )
+		alert("Select period !");
+	else if(valuetype == null || valuetype.length == 0 || valuetype === "-1" )
+		alert("Select value type !");
+	else{
+		
+			$.ajax({
+				url: "/earning/getApproximateData",
+				type: "POST",
+				data: {
+					
+					financialyear:fy,
+					formonth:formonth,
+					period:period,
+					entrytype: entry_type,
+					systemtype:system,
+					headofaccounts:head_of_acct,
+					divisionid:division,
+					stationcode:station,
+					valuetype:valuetype,
+					org_period:org_period
+				},
+				success: function(response) {
+				
+					 $("#detail-container").html(response);   
+					 enableBottomForm(true);
+					 closeModal();
+				
+				},
+				error: function() {
+
+					closeModal();
+					enableBottomForm(false);
+					alert("Something went wrong!");
+				}
+			});
+	}
+	
+}
+
+function appxFyChanged(){
+	
+	$('#aprx_month option[value!="-1"]').remove();
+	$("#aprx_month").trigger("change");
+	let fy = $("#aprx_fy").val();
+	if(fy != null && fy.length >0 && fy !="-1")
+		getEarningMonths();	
+}
+
+function appxMonthChanged(){
+	$('#aprx_period option[value!="-1"]').remove();
+	$("#aprx_period").trigger("change");
+	
+	let month = $("#aprx_month").val();
+	if(month != null && month.length >0 &&  month !="-1")
+		getEarningPeriod();
+}
+
+function appxPeriodChanged(){
+	
+	$('#aprx_value_type option[value!="-1"]').remove();
+	
+	let period = $("#aprx_period").val();
+	if(period != null && period.length >0 && period != "-1")
+		getEarningValueType();
+	
+}
+
+function getLast3EarningFy(){
+	
+	$('#aprx_fy option[value!="-1"]').remove();
+	
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getLast3EarningFy",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, fy) {
+						
+						let option = '<option value="'+fy+'">'+fy+'</option>';
+						$('#aprx_fy').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+}
+
+function getEarningMonths(){
+	
+	$('#aprx_month option[value!="-1"]').remove();	
+	let fy = $("#aprx_fy").val();
+	
+	// FIX: Corrected typo "fy.lebgth" -> "fy.length"
+	if(fy == null || fy.length == 0 || fy === "-1")
+		return;
+	
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			fy: fy,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningMonths",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, month) {
+						
+						let option = '<option value="'+month.monthNumber+'">'+month.monthName+'</option>';
+						$('#aprx_month').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+}
+
+// FIX #1: Removed duplicate getEarningPeriod() definition (was declared twice,
+// second definition silently overwrote the first — no error, just confusing).
+function getEarningPeriod(){
+	
+	$('#aprx_period option[value!="-1"]').remove();
+	
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	
+	if(fy == null || fy.length != 7 || formonth == null || formonth.length != 2)
+		return;
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			
+			fy:fy,
+			formonth:formonth,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningPeriod",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, fy) {
+						
+						let option = '<option value="'+fy+'">'+fy+'</option>';
+						$('#aprx_period').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+}
+
+function getEarningValueType(){
+	
+	
+	$('#aprx_value_type option[value!="-1"]').remove();
+	
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	let period = $("#aprx_period").val();
+	
+	if(fy == null || fy.length != 7 || formonth == null || formonth.length != 2 || period == null || period.length == 0)
+		return;
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			
+			fy:fy,
+			formonth:formonth,
+			period:period,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningValueType",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, valuetype) {
+						
+						let option ="";
+						if(valuetype === "O")
+							option = '<option value="'+valuetype+'">'+"ORIGINAL"+'</option>';
+						else if(valuetype === "A")
+							option = '<option value="'+valuetype+'">'+"APPROXIMATE"+'</option>';
+					
+						if(option.length > 0)
+							$('#aprx_value_type').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+		
+}
+
+function handleFlashMessage() {
+
+    const msg = document.getElementById("flash-message");
+
+    if (msg) {
+        setTimeout(() => {
+            msg.classList.add("flash-hide");
+        }, 3000);
+
+        setTimeout(() => {
+            msg.remove();
+        }, 3800);
+    }
+}
+
+
+</script>
+
+
+
+</html>

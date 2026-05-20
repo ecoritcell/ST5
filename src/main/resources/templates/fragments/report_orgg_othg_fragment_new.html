@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<div  th:fragment = "ORGG-OTHG-REV-REPORT-DIV" >	
+	
+		<table class = "report-table-design">
+			<thead>
+				<tr>
+					<th colspan="8" style="padding-top: 10PX;">EAST COAST RAILWAY</th>				
+				</tr>
+				<tr>
+					<th colspan="8">DIVISION-WISE ORIGINATING GOODS &amp; OTHER GOODS REVENUES</th>				
+				</tr>
+				<tr>
+					<th colspan="8" style="padding-right: 10PX; text-align: right;">(Figs. in Crs.)</th>				
+				</tr>			
+							
+			</thead>
+			
+			<tbody>
+				
+				
+				<tr>
+					<td colspan="8" style="text-align: center;">FOR THE PERIOD: FROM <span th:text="${fromPeriod}"></span> TO <span th:text="${toPeriod}"></span></td>				
+				</tr>
+				
+				<tr>
+					<td rowspan="2"></td>
+					<td rowspan="2" style="text-align: center;">BUDGET</td>
+					<td rowspan="2" style="text-align: center;"><span th:text="${prev_fy}"></span></td>
+					<td rowspan="2" style="text-align: center;"><span th:text="${curr_fy}"></span></td>
+					<td colspan="2" style="text-align: center;">Vari. Over Budget</td>
+					<td colspan="2" style="text-align: center;">Vari. Over Prev Yr.</td>
+				</tr>
+				
+				<tr>						
+					<td style="text-align: center;">Actual Diff.</td>
+					<td style="text-align: center;">% Vari.</td>
+					<td style="text-align: center;">Actual Diff.</td>
+					<td style="text-align: center;">% Vari.</td>
+				</tr>
+				
+				<tr>
+					<td colspan="8">A.REVENUE (Figs. in Crs)</td>				
+				</tr>
+				
+				
+				<th:block th:if ="${#lists.isEmpty(periodreport)}" >
+				
+					<tr>
+						<td colspan="8">No Data Found</td>
+					</tr>
+			
+				</th:block>
+				
+				<th:block th:if ="${not #lists.isEmpty(periodreport)}">
+									
+					<tr>
+						<td colspan="8">(i) For the Period <span th:text="${fromPeriod}"></span> -   <span th:text="${toPeriod}"></span></td>				
+					</tr>
+					<tr>
+						<td>a. Originating Goods</td>
+						<td colspan="7"></td>				
+					</tr>
+					
+					 <tr th:each="row,rowStat : ${periodreport}">
+		                		                
+		                <td th:if="${rowStat.index <= 2}" th:text="${row.divCode}" style="text-align: right;"></td>
+		                <td th:if="${rowStat.index == 3}" style="text-align: right;"> TOTAL</td>
+		                <td th:if="${rowStat.index == 4}" > b. Other Goods</td>
+		                <td th:if="${rowStat.index == 5}" > c. Total Goods (a+b)</td>
+		                
+		                
+		                <td style="text-align: right;" th:text="${row.budgetAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.prevFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.currFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetPctAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyPctAmt}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	           	
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(totreport)}">
+				
+					<tr>
+						<td colspan="8"><br> (ii) Upto the Period <span th:text="${cumFromPeriod}"></span> -   <span th:text="${cumToPeriod}"></span></td>				
+					</tr>
+					<tr>
+						<td>a. Originating Goods</td>
+						<td colspan="7"></td>				
+					</tr>					
+					
+					 <tr th:each="row : ${totreport}">
+		                <td th:if="${rowStat.index <= 2}" th:text="${row.divCode}"  style="text-align: right;"></td>
+		                <td th:if="${rowStat.index == 3}"  style="text-align: right;"> TOTAL</td>
+		                <td th:if="${rowStat.index == 4}" > b. Other Goods</td>
+		                <td th:if="${rowStat.index == 5}" > c. Total Goods (a+b)</td>
+		                <td style="text-align: right;" th:text="${row.budgetAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.prevFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.currFyAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverBudgetPctAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyActAmt}"></td>
+		                <td style="text-align: right;" th:text="${row.varOverPrevFyPctAmt}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(tonnesPeriodData)}">
+				
+					<tr>
+						<td colspan="8"><br>B. LOADING (Figs. in Million Tonnes)</td>				
+					</tr>
+					<tr>
+						<td colspan="8">(i) For the Period (from <span th:text="${fromPeriod}"></span>  to   <span th:text="${toPeriod}"></span>)</td>				
+					</tr>					
+					 <tr th:each="row : ${tonnesPeriodData}">
+		                
+		                <td style="text-align: right;" th:text="${row.headofaccounts}"></td>
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(tonnesCummData)}">
+				
+					<tr>
+						<td colspan="8">(i) Upto the Period (from <span th:text="${cumFromPeriod}"></span> to  <span th:text="${cumToPeriod}"></span>)</td>				
+					</tr>					
+					 <tr th:each="row : ${tonnesCummData}">
+		                
+		                <td style="text-align: right;" th:text="${row.headofaccounts}"></td>
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           		
+			</tbody>
+						
+		</table>
+		
+		<br>
+		<br>
+		
+		
+	</div>	
+
+</body>
+</html>

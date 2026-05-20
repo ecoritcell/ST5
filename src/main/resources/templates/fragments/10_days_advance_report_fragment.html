@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div  th:fragment = "ORG-REV-REPORT-DIV" >
+	
+	
+		<table class = "report-table-design">
+			<thead>
+				<tr>
+					<th colspan="8">EAST COAST RAILWAY</th>				
+				</tr>
+				<tr>
+					<th colspan="8">10 DAYS ADVANCES STATEMENT OF GROSS REVENUE &amp; TRAFFIC HANDLED</th>				
+				</tr>
+				<tr>
+					<th colspan="4" style="text-align: left; padding-left: 10px;">FAX</th>
+					<th colspan="4" style="text-align: right; padding-right: 10px;">Dated: <span th:text="${#dates.format(#dates.createNow(), 'dd-MM-yyyy')}"></span> </th>				
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align:left; padding-left: 50px;">To,</th>								
+				</tr>
+				
+				<tr>
+					<th colspan="8" style="text-align:left; padding-left: 70px">Secy. to GM for kind information of GM, FA &amp; CAO,CCM,COM and DRM/KUR/WAT/SBP</th>								
+				</tr>
+				<tr>
+					<th colspan="8" style="text-align: right; padding-right: 10px;">(FIGS. IN <span style="text-transform: uppercase;" th:text=" ${unit}"></span> )</th>								
+				</tr>			
+			</thead>
+			
+			<tbody>
+				
+				<th:block th:if ="${not #lists.isEmpty(periodreport)}">
+					<tr>
+						<td colspan="8">
+							(A) ORIGINATING REVENUE FOR THE PERIOD FROM: <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td rowspan="2" style="text-align: center;">REVENUE</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${periodreport}">
+		                <td th:text="${row.revenuehead}"></td>
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	<th:block th:if ="${#lists.isEmpty(periodreport)}" >
+				
+					<tr>
+						<td colspan="8">No Data Found</td>
+					</tr>
+			
+				</th:block>
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(totreport)}">
+					<tr>
+						<td colspan="8">
+							(B) ORIGINATING REVENUE FROM: <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span>
+						</td>
+					</tr>
+				
+					<tr>
+						<td rowspan="2" style="text-align: center;">REVENUE</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${totreport}">
+		                <td th:text="${row.revenuehead}"></td>
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(periodpassenger)}">
+					<tr>
+						<td colspan="8">
+							(C) NO. OF PASSENGER ORIGINATING FROM: <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span> [IN MILLIONS]
+						</td>
+					</tr>
+				
+					<tr>
+						<td rowspan="2" style="text-align: center;">PASSENGER</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${periodpassenger}">
+		                <td th:text="${row.revenuehead}"></td>
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(totalpassenger)}">
+					<tr>
+						<td colspan="8">
+							(D) NO. OF PASSENGER ORIGINATING FROM: <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span> [IN MILLIONS]
+						</td>
+					</tr>
+				
+					<tr>
+						<td rowspan="2" style="text-align: center;">PASSENGER</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${totalpassenger}">
+		                <td th:text="${row.revenuehead}"></td>
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPrevYear}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPrevYear}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	           	<!-- NO OF WAGONS LOADED SECTION  FOR THE PERIOD-->
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(noofwagon)}">
+					<tr>
+						<td colspan="8">(E) NO. OF WAGON LOADED FOR THE PERIOD FROM: <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span></td>
+					</tr>
+				
+					<tr>
+						<td rowspan="4" colspan="2" style="text-align: center;">GOODS</td>						
+					</tr>
+					
+					<tr>
+						<td colspan="4" style="text-align: center;">NO. OF WAGON LOADED</td>
+						<td colspan="2" style="text-align: center;">AVG. NO. OF WAGON LOADED PER DAY</td>					
+					</tr>
+					
+					<tr>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+					</tr>
+					
+					
+					 <tr th:each="row : ${noofwagon}">		                
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pfy_load_perday}"></td>
+		                <td style="text-align: right;" th:text="${row.cfy_load_perday}"></td>	                
+	           		 </tr>		
+	           	</th:block>
+	           	
+	           	
+	           	<!-- NO OF TONNES LOADED SECTION FOR THE PERIOD-->
+	           	
+	           	<th:block th:if ="${not #lists.isEmpty(tonneperiod)}">
+					<tr>
+						<td colspan="8">(F) NO OF TONNES LOADED  FROM: <span th:text="${fromPeriod}"></span> - To:  <span th:text="${toPeriod}"></span> [Million]</td>
+					</tr>
+					
+					<tr>
+						<td rowspan="3" style="text-align: center;">GOODS</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					 <tr th:each="row : ${tonneperiod}">
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>		
+		                	                
+	           	</th:block>
+	           	
+	           	<!-- NO OF TONNES LOADED SECTION FOR THE CUMMULATIVE PERIOD-->
+	           	<th:block th:if ="${not #lists.isEmpty(tonnecumm)}">
+					<tr>
+						<td colspan="8">(F) NO OF TONNES LOADED  FROM: <span th:text="${cumFromPeriod}"></span> - To:  <span th:text="${cumToPeriod}"></span> [Million]</td>
+					</tr>
+					
+					<tr>
+						<td rowspan="3" style="text-align: center;">GOODS</td>
+						<td colspan="3" style="text-align: center;">Originating Basis</td>
+						<td colspan="2" style="text-align: center;">Vari. Over B.P.</td>
+						<td colspan="2" style="text-align: center;">Vari. Over Prev. Year</td>
+					</tr>
+					<tr>
+						<td style="text-align: center;">Budget</td>
+						<td style="text-align: center;" th:text="${prev_fy}"></td>
+						<td style="text-align: center;" th:text="${curr_fy}"></td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+						<td style="text-align: center;">Actual Difference</td>
+						<td style="text-align: center;">% age of Variation.</td>
+					</tr>
+					 <tr th:each="row : ${tonnecumm}">
+		                <td style="text-align: right;" th:text="${row.budget}"></td>
+		                <td style="text-align: right;" th:text="${row.pfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.cfytotal}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverBudget}"></td>
+		                <td style="text-align: right;" th:text="${row.actVarOverPfy}"></td>
+		                <td style="text-align: right;" th:text="${row.pctVarOverPfy}"></td>	                
+	           		 </tr>		
+		                	                
+	           	</th:block>
+	           		
+			</tbody>
+			
+			
+			
+		</table>
+		
+	</div>	
+
+</body>
+</html>

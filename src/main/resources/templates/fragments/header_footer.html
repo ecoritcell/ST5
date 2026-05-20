@@ -54,29 +54,83 @@
 					<ul class="submenu">
 						<!-- <li><a href="/originating_period">Originating Periodic Earning</a></li> -->
 						<li><a href="/earning/earning_detail">Originating Periodic Earning</a></li>
-						<li><a href="/annual_budget">ST-5 Annual Budget</a></li>
+						<li><a href="/budget/budget_detail">ST-5 Annual Budget</a></li>
 					</ul>
 				</li>
 				<li><a href="#">Reports &amp; Statements</a>
 					<ul class="submenu">
-						<li><a href="#">ST-5 Statement</a></li>
+						<li class="has-submenu"><a>ST-5 Statement</a>
+							<ul class="submenu">
+								<li><a href="/reports/passenger">Division Wise Originating No &amp; Earnings</a></li>
+								<li><a href="/reports/orgg_othg_report">Division Wise Originating Goods &amp; Other Goods Earnings</a></li>
+								<li><a href="/reports/10_days_advance_report">10 Days Advance Statement of Gross Earning &amp; Traffic Handled</a></li>
+								<li><a href="#">Statement of Approximate Gross Earnings And Traffic Handled</a></li>
+								
+								<li><a href="#">Telegraphic Report of Advance Gross Earning</a></li>
+								<li><a href="#">Telegraphic Report of Advance Gross Earning (Excluding PRS) </a></li>
+								<li><a href="#">Telegraphic Report of Parcel &amp; Luggage Traffic</a></li>
+								<li><a href="#">Annexure For Goods Earnings</a></li>
+								<li><a href="#">Division Wise Passenger No Graph</a></li>
+								<li><a href="#">Periodic Position of Other Coaching Earnings (Division Wise)</a></li>
+								<li><a href="#">Periodic Position of Other Coaching Earnings (Zonal)</a></li>
+								<li><a href="#">Telegraphic Report Of Advance Gross Earning -1 </a></li>
+								<li><a href="#">Telegraphic Report Of Advance Gross Earning (Excluding PRS) -1 </a></li>
+								<li><a href="#">Telegraphic Report Of Parcel &amp; Luggage Traffic -1</a></li>
+								
+							</ul>
+						</li>
 						<li><a href="#">Station-Wise Monthly Statement</a></li>
-						<li><a href="#">Monthly Statement</a></li>
-						<li><a href="#">Passenger</a></li>
-						<li><a href="#">Other Couching</a></li>
+						<li class="has-submenu"><a href="#">Monthly Statement</a>
+							<ul class="submenu">
+								<li><a href="#">Monthly Evaluation Report</a></li>
+								<li><a href="#">Monthly Evaluation Report1</a></li>
+								<li><a href="#">Monthly Position of Other Coaching Earnings (Division Wise)</a></li>
+								<li><a href="#">Monthly Position of Other Coaching Earnings (Zonal)</a></li>
+							</ul>
+							
+						</li>
+						<li  class="has-submenu"><a>Passenger</a>
+							<ul class="submenu">
+								<li><a href="#">Statement on Passenger Earnings (Periodic)</a></li>
+								<li><a href="#">Statement on Passenger No (Periodic)</a></li>
+								<li><a href="#">Statement on Passenger Earnings (Monthly)</a></li>
+								<li><a href="#">Statement on Passenger No (Monthly)</a></li>
+								<li><a href="#">Statement on Approximate/Actual Passenger Earnings (Monthly)</a></li>
+								<li><a href="#">Statement on Approximate/Actual Passenger NOS (Monthly)</a></li>
+							</ul>
+						
+						</li>
+						<li class="has-submenu"><a href="#">Other Couching</a>
+							<ul class="submenu">
+								<li><a href="#">Statement on Other Coaching Earnings (Periodic)</a></li>
+								<li><a href="#">Statement on Other Coaching Earnings (Monthly)</a></li>
+								<li><a href="#">Statement on Approximate/Actual Other Coaching Earnings (Monthly)</a></li>								
+							</ul>
+						</li>
 						<li><a href="#">Originating Goods</a></li>
 						<li><a href="#">Other Goods</a></li>
 						<li><a href="#">Sundry</a></li>
-						<li><a href="#">Data Availability Analysis</a></li>
+						<li  class="has-submenu"><a href="#">Data Availability Analysis</a>
+							<ul class="submenu">
+								<li><a href="#">Non Receipt Station List (Period Wise)</a></li>
+								<li><a href="#">Late Receipt Station List (Period Wise) </a></li>															
+							</ul>
+						</li>
 					</ul>
 				</li>
-				<li><a href="#">Master Data Definition</a>
+				<li ><a href="#">Master Data Definition</a>
 					<ul class="submenu">
-						<li><a href="#">Originating Source</a></li>
+						<li class="has-submenu"><a href="#">Originating Source</a>
+							<ul class="submenu">
+								<li><a href="#">Division Master</a></li>
+								<li><a href="#">Station Master</a></li>
+								<li><a href="#">Other Source Master</a></li>															
+							</ul>
+						</li>
 						<li><a href="#">Earning Statement Capture Strategy</a></li>
 						<li><a href="#">Item Master</a></li>
 						<li><a href="#">Adjustment Remarks</a></li>
-						<li><a href="#">Default Value Setup</a></li>
+						<li><a href="/signatory_detail">Default Value Setup</a></li>
 					</ul>
 				</li>
 				<li><a href="#about">Utilities</a>
@@ -113,500 +167,7 @@
 	</table>						
 </div>
 
-	<!--PASSENGER EARNING FORM  -->
-	<div  id="PNSUB-DIV" th:fragment = "PNSUB-DIV(headerId)" th:object="${earningHeader}">
-	
-		
-	
-		<fieldset name="pnsub-fieldset" id="pnsub-fieldset"
-			style="padding: 0px; margin: 0px; border: none;" disabled="disabled">
-			<!-- <form id="pnsub-bottom-form" > -->
-			<table id="tbl-data" class="tableDesign">
-				<thead id="tbl-data-head">
-					<tr>
-						<th rowspan="2">Class</th>
-						<th colspan="2">Booked</th>
-						<th colspan="2">Refund</th>
-						<th colspan="2">Excess Fare</th>
-						<th colspan="2">Total</th>
-						<th>DFC</th>
-					</tr>
-					<tr>
-						<th>No.</th>
-						<th>Rs</th>
-						<th>No.</th>
-						<th>Rs</th>
-						<th>No.</th>
-						<th>Rs</th>
-						<th>No.</th>
-						<th>Rs</th>
-						<th>Rs</th>
-					</tr>
-				</thead>
 
-				<tbody id="tbl-data-body">
-					<tr th:each="class, rowStat: ${classes}">
-						<td th:text="${class.label}"
-							th:classappend="${!class.saveable?'tot-design':'' }">
-						</td>
-						<!-- <td class="expand" th:each="i : ${#numbers.sequence(1, 9)}">
-						        					<input type="text" th:value="'input_' + ${class.key} +'_' + ${i}">
-						            				<input type="text" th:name="'input_' + ${class.key} +'_' + ${i}" placeholder="" class="bot-cell-input" 
-						            				 pattern="-?\d*(\.\d+)?" title="Only numbers allowed." onblur="captureFormValue(this)" oninput="this.value = this.value.replace(/[^0-9.\-]/g, '')
-						            				 .replace(/(?!^)-/g, '') 
-						            				 .replace(/(\..*)\./g, '$1')
-						            				 .replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') " th:readonly="${i>6 || class.key == 'AC' || class.key == 'FC' || class.key == 'SLC' || class.key == 'SC' || class.key == 'TOT'}"/>   		            				  
-						        				</td> -->
-
-
-						<!-- ✅ HIDDEN RECORD ID -->
-						<td hidden="true"><input type="text" hidden="true" 
-							th:field="*{details[__${rowStat.index}__].recordid}" th:readonly="true"> </td>
-							
-						<!-- ✅ HIDDEN CLASS CODE -->
-						<td hidden="true"><input type="text" hidden="true" 
-							th:field="*{details[__${rowStat.index}__].classcode}" th:readonly="true"></td>
-							
-						<!-- ✅ BOOKED -->
-						<td><input class="bot-cell-input calc" type="text"
-							th:data-class="${class.code}"
-							data-field = "bookedcount"
-							th:name="|details[__${rowStat.index}__].bookedcount|"
-       						th:value="*{details[__${rowStat.index}__].bookedcount == 0 ? '' : details[__${rowStat.index}__].bookedcount}"
-       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-							title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-
-						<td><input class="bot-cell-input calc" type="text"
-							th:data-class="${class.code}"
-							data-field = "bookedamt"
-							th:name="|details[__${rowStat.index}__].bookedamt|"
-							th:value="*{details[__${rowStat.index}__].bookedamt == 0.0 ? '' : details[__${rowStat.index}__].bookedamt}"  	
-							oninput="this.value = this.value.replace(/[^0-9.\-]/g, '').replace(/(?!^)-/g, '').replace(/(\..*)\./g, '$1').replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') "						
-							th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-
-						<!-- ✅ REFUND -->
-						<td><input class="bot-cell-input calc" type="text"		
-							th:data-class="${class.code}"					
-							data-field = "refundcount"
-							th:name="|details[__${rowStat.index}__].refundcount|"
-       						th:value="*{details[__${rowStat.index}__].refundcount == 0 ? '' : details[__${rowStat.index}__].refundcount}"
-       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-							th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-
-						<td><input class="bot-cell-input calc" type="text"
-							th:data-class="${class.code}"
-							data-field = "refundamt"
-							th:name="|details[__${rowStat.index}__].refundamt|"
-							th:value="*{details[__${rowStat.index}__].refundamt == 0.0 ? '': details[__${rowStat.index}__].refundamt} " 
-							oninput="this.value = this.value.replace(/[^0-9.\-]/g, '').replace(/(?!^)-/g, '').replace(/(\..*)\./g, '$1').replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') "
-							th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-
-						<!-- ✅ EXCESS -->
-						<td><input class="bot-cell-input calc" type="text"
-							th:data-class="${class.code}"
-							data-field = "excesscount"
-							th:name="|details[__${rowStat.index}__].excesscount|"
-       						th:value="*{details[__${rowStat.index}__].excesscount == 0 ? '' : details[__${rowStat.index}__].excesscount}"
-       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-							th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-
-						<td><input class="bot-cell-input calc" type="text"
-							th:data-class="${class.code}"
-							data-field = "excessamt"
-							th:name="|details[__${rowStat.index}__].excessamt|"
-							th:value="*{details[__${rowStat.index}__].excessamt  == 0.0 ? '' : details[__${rowStat.index}__].excessamt}" 
-							oninput="this.value = this.value.replace(/[^0-9.\-]/g, '').replace(/(?!^)-/g, '').replace(/(\..*)\./g, '$1').replace(/^(-?\d+(\.\d{0,2})?).*/, '$1') "
-							th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-
-						<!-- ✅ TOTAL -->
-						<td><input class="bot-cell-input" type="text"							 														
-							th:data-class="${class.code}"
-                   			data-field="totalno"
-       						th:value="*{details[__${rowStat.index}__].totalno == 0 ? '' : details[__${rowStat.index}__].totalno}"
-							readonly="readonly" disabled="disabled"></td>
-
-						<td><input class="bot-cell-input" type="text"
-							 
-							th:data-class="${class.code}"
-                   			data-field="totalrs"
-							th:value="*{details[__${rowStat.index}__].totalrs == 0 ? '' : details[__${rowStat.index}__].totalrs}"
-							readonly="readonly" disabled="disabled"></td>
-
-						<!-- ✅ DFC -->
-						<td><input class="bot-cell-input" type="text"
-							th:data-class="${class.code}"
-                   			data-field="dfcrs"
-							value="" readonly="readonly" disabled="disabled"></td>
-					</tr>
-				</tbody>
-			</table>
-			<!-- </form> -->
-
-			<div
-				style="display: flex; justify-content: center; margin-top: 20px;">
-				<!-- <button type="button" onclick="submitClicked()">Submit</button> -->
-				<button type="submit" name="action" value="save">Submit</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button type="button" onclick="clearClicked()">Clear</button>
-			</div>
-
-		</fieldset>
-		
-		<script th:inline="javascript">
-			(function () {
-			    let headerId = /*[[${headerId}]]*/ null;
-			    
-			    const el = document.querySelector("input[name='recordid']");
-		        if (el){
-		        	console.log("Element found");
-		        	el.value = headerId;
-		        }
-		        else{
-		        	console.log("Element not found");
-		        }			    
-			    
-			    console.log("headerId test = " +headerId);
-			})();
-		</script>
-    
-	</div>
-
-
-
-	<!--ORIGINATING GOODS EARNING FORM  -->
-	<div id="ORGG-DIV" th:fragment = "ORGG-DIV(headerId)" th:object="${earningHeader}">
-		<fieldset name="orgg-fieldset" id="orgg-fieldset"
-			style="padding: 0px; margin: 0px; border: none;" disabled="disabled">
-			
-				<table id="tbl-data" class="tableDesign">
-					<thead id="tbl-data-head">
-						<tr>
-							<th>Item</th>
-							<th>Previous Month Wagon</th>
-							<th>Previous Month Tonne</th>
-							<th>Tonne Per Wagon</th>
-							<th>Wagon</th>
-							<th>Tonne</th>
-							<th>Rate</th>
-							<th>Amount in (Rs.)</th>
-						</tr>
-					</thead>
-
-					<tbody id="tbl-data-body">
-						<tr th:each="class, rowStat: ${classes}">
-							<td th:text="${class.label}"
-								th:classappend="${!class.saveable?'tot-design':'' }"></td>
-								
-								<!-- ✅ HIDDEN RECORD ID -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].recordid}" th:readonly="true"> </td>
-								
-							<!-- ✅ HIDDEN CLASS CODE -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].classcode}" th:readonly="true"></td>
-								
-							<!-- ✅ PREVIOUS MONTH WAGON -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "pmwagon"
-								th:name="|details[__${rowStat.index}__].pmwagon|"
-	       						th:value="*{details[__${rowStat.index}__].pmwagon == 0 ? '' : details[__${rowStat.index}__].pmwagon}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-									
-							<!-- ✅ PREVIOUS MONTH TONNE -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "pmtonne"
-								th:name="|details[__${rowStat.index}__].pmtonne|"
-	       						th:value="*{details[__${rowStat.index}__].pmtonne == 0 ? '' : details[__${rowStat.index}__].pmtonne}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-							<!-- ✅ TONNE PER WAGON -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "tpwagon"
-								th:name="|details[__${rowStat.index}__].tpwagon|"
-	       						th:value="*{details[__${rowStat.index}__].tpwagon == 0 ? '' : details[__${rowStat.index}__].tpwagon}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-							<!-- ✅ WAGON -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "wagon"
-								th:name="|details[__${rowStat.index}__].wagon|"
-	       						th:value="*{details[__${rowStat.index}__].wagon == 0 ? '' : details[__${rowStat.index}__].wagon}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-
-							<!-- ✅ TONNE -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "tonne"
-								th:name="|details[__${rowStat.index}__].tonne|"
-	       						th:value="*{details[__${rowStat.index}__].tonne == 0 ? '' : details[__${rowStat.index}__].tonne}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-																			
-							<!-- ✅ TONNE -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "rate"
-								th:name="|details[__${rowStat.index}__].rate|"
-	       						th:value="*{details[__${rowStat.index}__].rate == 0 ? '' : details[__${rowStat.index}__].rate}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-							<!-- ✅ TONNE -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "amount"
-								th:name="|details[__${rowStat.index}__].amount|"
-	       						th:value="*{details[__${rowStat.index}__].amount == 0 ? '' : details[__${rowStat.index}__].amount}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-						</tr>
-					</tbody>
-				</table>
-				
-				<div
-				style="display: flex; justify-content: center; margin-top: 20px;">
-				<!-- <button type="button" onclick="submitClicked()">Submit</button> -->
-				<button type="submit" name="action" value="save">Submit</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button type="button" onclick="clearClicked()">Clear</button>
-			</div>
-				
-		</fieldset>
-				<script th:inline="javascript">
-			(function () {
-			    let headerId = /*[[${headerId}]]*/ null;
-			    
-			    const el = document.querySelector("input[name='recordid']");
-		        if (el){
-		        	console.log("Element found");
-		        	el.value = headerId;
-		        }
-		        else{
-		        	console.log("Element not found");
-		        }			    
-			    
-			    console.log("headerId test = " +headerId);
-			})();
-		</script>
-		
-		
-	</div>
-
-
-	<!--OTHER GOODS EARNING FORM  -->
-	<div id="OTHG-DIV" th:fragment = "OTHG-DIV(headerId)" th:object="${earningHeader}">
-		<fieldset name="othg-fieldset" id="othg-fieldset"
-			style="padding: 0px; margin: 0px; border: none;">
-				<table id="tbl-data" class="tableDesign">
-					<thead id="tbl-data-head">
-						<tr>
-							<th>Item</th>
-							<th>Earning (Rs.)</th>
-						</tr>
-					</thead>
-
-					<tbody id="tbl-data-body">
-						<tr th:each="class, rowStat: ${classes}">
-							<td th:text="${class.label}"
-								th:classappend="${!class.saveable?'tot-design':'' }"></td>
-							
-							<!-- ✅ HIDDEN RECORD ID -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].recordid}" th:readonly="true"> </td>
-								
-							<!-- ✅ HIDDEN CLASS CODE -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].classcode}" th:readonly="true"></td>
-								
-							<!-- ✅ EARNING -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "earning"
-								th:name="|details[__${rowStat.index}__].earning|"
-	       						th:value="*{details[__${rowStat.index}__].earning == 0 ? '' : details[__${rowStat.index}__].earning}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-							
-						</tr>
-					</tbody>
-				</table>
-				<div style="display: flex; justify-content: center; margin-top: 20px;">
-					<!-- <button type="button" onclick="submitClicked()">Submit</button> -->
-					<button type="submit" name="action" value="save">Submit</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button type="button" onclick="clearClicked()">Clear</button>
-				</div>
-		</fieldset>
-		
-		<script th:inline="javascript">
-			(function () {
-			    let headerId = /*[[${headerId}]]*/ null;
-			    
-			    const el = document.querySelector("input[name='recordid']");
-		        if (el){
-		        	console.log("Element found");
-		        	el.value = headerId;
-		        }
-		        else{
-		        	console.log("Element not found");
-		        }			    
-			    
-			    console.log("headerId test = " +headerId);
-			})();
-		</script>
-	</div>
-
-	<!--SUNDRY EARNING FORM  -->
-	<div id="SUN-DIV" th:fragment = "SUN-DIV(headerId)" th:object="${earningHeader}">
-		<fieldset name="sun-fieldset" id="sun-fieldset"
-			style="padding: 0px; margin: 0px; border: none;" disabled="disabled">
-				<table id="tbl-data" class="tableDesign">
-					<thead id="tbl-data-head">
-						<tr>
-							<th>Item</th>
-							<th>Earning (Rs.)</th>
-						</tr>
-					</thead>
-
-					<tbody id="tbl-data-body">
-						<tr th:each="class, rowStat: ${classes}">
-							<td th:text="${class.label}"
-								th:classappend="${!class.saveable?'tot-design':''}"></td>
-								
-							<!-- ✅ HIDDEN RECORD ID -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].recordid}" th:readonly="true"> </td>
-								
-							<!-- ✅ HIDDEN CLASS CODE -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].classcode}" th:readonly="true"></td>
-								
-							<!-- ✅ EARNING -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "earning"
-								th:name="|details[__${rowStat.index}__].earning|"
-	       						th:value="*{details[__${rowStat.index}__].earning == 0 ? '' : details[__${rowStat.index}__].earning}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-						</tr>
-					</tbody>
-				</table>
-				<div style="display: flex; justify-content: center; margin-top: 20px;">
-					<!-- <button type="button" onclick="submitClicked()">Submit</button> -->
-					<button type="submit" name="action" value="save">Submit</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button type="button" onclick="clearClicked()">Clear</button>
-				</div>
-		</fieldset>
-		<script th:inline="javascript">
-			(function () {
-			    let headerId = /*[[${headerId}]]*/ null;
-			    
-			    const el = document.querySelector("input[name='recordid']");
-		        if (el){
-		        	console.log("Element found");
-		        	el.value = headerId;
-		        }
-		        else{
-		        	console.log("Element not found");
-		        }			    
-			    
-			    console.log("headerId test = " +headerId);
-			})();
-		</script>
-		
-	</div>
-	
-	
-	<!--OTHER COACHING EARNING FORM  -->
-	<div id="OTHC-DIV" th:fragment = "OTHC-DIV(headerId)" th:object="${earningHeader}">
-		<fieldset name="othc-fieldset" id="othc-fieldset"
-			style="padding: 0px; margin: 0px; border: none;" disabled="disabled">
-				<table id="tbl-data" class="tableDesign">
-					<thead id="tbl-data-head">
-						<tr>
-							<th>Item</th>
-							<th>Weight (Qty/Unit)</th>
-							<th>Earning (Rs.)</th>
-						</tr>
-					</thead>
-
-					<tbody id="tbl-data-body">
-						<tr th:each="class, rowStat: ${classes}">
-							<td th:text="${class.label}"
-								th:classappend="${!class.saveable?'tot-design':''}"></td>
-								
-							<!-- ✅ HIDDEN RECORD ID -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].recordid}" th:readonly="true"> </td>
-								
-							<!-- ✅ HIDDEN CLASS CODE -->
-							<td hidden="true"><input type="text" hidden="true" 
-								th:field="*{details[__${rowStat.index}__].classcode}" th:readonly="true"></td>
-								
-							<!-- ✅ WEIGHT -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "weight"
-								th:name="|details[__${rowStat.index}__].weight|"
-	       						th:value="*{details[__${rowStat.index}__].weight == 0 ? '' : details[__${rowStat.index}__].weight}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-								
-							
-							<!-- ✅ EARNING -->
-							<td><input class="bot-cell-input calc" type="text"
-								th:data-class="${class.code}"
-								data-field = "earning"
-								th:name="|details[__${rowStat.index}__].earning|"
-	       						th:value="*{details[__${rowStat.index}__].earning == 0 ? '' : details[__${rowStat.index}__].earning}"
-	       						oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/^0+/, '')"
-								title="Only numbers allowed." th:readonly="${!class.saveable}" th:disabled="${!class.saveable}" onblur="recalcAll()"></td>
-									
-							
-						</tr>
-					</tbody>
-				</table>
-				
-				<div style="display: flex; justify-content: center; margin-top: 20px;">
-					<!-- <button type="button" onclick="submitClicked()">Submit</button> -->
-					<button type="submit" name="action" value="save">Submit</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button type="button" onclick="clearClicked()">Clear</button>
-				</div>
-				
-		</fieldset>
-		
-		<script th:inline="javascript">
-			(function () {
-			    let headerId = /*[[${headerId}]]*/ null;
-			    
-			    const el = document.querySelector("input[name='recordid']");
-		        if (el){
-		        	console.log("Element found");
-		        	el.value = headerId;
-		        }
-		        else{
-		        	console.log("Element not found");
-		        }			    
-			    
-			    console.log("headerId test = " +headerId);
-			})();
-		</script>
-		
-	</div>
 
 
 </body>

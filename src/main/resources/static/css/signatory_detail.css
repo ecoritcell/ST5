@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+
+.section-div{
+	margin:auto;
+	margin-top:30px;	
+	width:500px;
+	height:600px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+	overflow: hidden;
+}
+.section-design{
+
+	background-color: #006480;
+	color: white;
+	font-weight: bold;
+	/* height: 20px; */
+}
+.p-design{
+	padding-top:10px;	
+	text-decoration: underline;
+	font-weight: bold;
+	text-align: center;
+}
+
+.table-design{
+	width: 100%;
+}
+
+.table-design td{
+	padding: 10px;
+}

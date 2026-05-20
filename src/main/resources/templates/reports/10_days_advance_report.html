@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/headerfooter.css}">
+<link rel="stylesheet" th:href="@{/css/org_rev_report.css}">
+<title>Insert title here</title>
+</head>
+<body>
+<div th:replace="~{fragments/header_footer :: custom_header}"></div>
+<main class="page">
+	
+	<h3 style="text-align: center;text-decoration: underline; padding: 10px;margin: 0px;">10 Days Advance Statement of Gross Earning &amp; Traffic Handled</h3>
+	<div id="report-container-top">
+		<form action="">
+				<table>
+					<tr>
+						<td>						
+							<label for="txt-financial-year-1" >Financial Year:</label> 
+							<input type="text" id="txt-financial-year-1" placeholder="YYYY" maxlength="4"
+							pattern="\d{4}" title="Please enter exactly 4 digits"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+							style="min-width: 40px; box-sizing: border-box;" onblur="fyValueChanged(this)"
+							required> 
+							
+							<input type="text" id="txt-financial-year-2"
+							placeholder="YY" maxlength="2" pattern="\d{2}"
+							title="Please enter exactly 2 digits"
+							oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+							style="width: 30px;" disabled="disabled" required>
+						</td>
+
+						<td>
+							<label for="for-month" >For Month:</label>						
+							<select id="for-month" name="for-month" class="top-cell-input">
+								<option value="04">Apr</option>
+								<option value="05">May</option>
+								<option value="06">June</option>
+								<option value="07">July</option>
+								<option value="08">Aug</option>
+								<option value="09">Sep</option>
+								<option value="10">Oct</option>
+								<option value="11">Nov</option>
+								<option value="12">Dec</option>
+								<option value="01">Jan</option>
+								<option value="02">Feb</option>
+								<option value="03">Mar</option>
+							</select>
+						</td>
+
+						<td>
+							<label for="period" >Period:</label>		
+							 <select id="period" name="period" onchange="periodChanged(this)" class="top-cell-input">
+								<option value="I">I</option>
+								<option value="II">II</option>
+								<option value="III">III</option>
+							</select>
+						</td>
+						<td hidden="true">
+							<label for="unit" hidden="true">Unit:</label>		
+							 <select id="unit" name="unit" class="top-cell-input" hidden="true">
+							 	<option value="Crore">Crore</option>
+							 	<option value="Million">Million</option>
+								<option value="Thousand">Thousand</option>
+							</select>
+						</td>
+
+						<td>
+							<button id="btn_go" type="button" onclick="goClicked(this)">Go</button>
+						</td>
+
+					</tr>
+				</table>
+			</form>		
+	</div>
+	
+	<div id="print-area">
+		<div id="report-container">
+			
+		</div>	
+	</div>
+	
+
+</main>
+</body>
+
+<script type="text/javascript">
+
+function goClicked(ele){
+	
+	let fy1 = $("#txt-financial-year-1").val();
+	let fy2 = $("#txt-financial-year-2").val();
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let unit = $("#unit").val();
+
+	if(fy1 != null && fy1.length != 4){
+		alert("Enter valid financial year")
+	}else if(fy2 != null && fy2.length != 2){
+		alert("Enter valid financial year")
+	}else if(formonth == null || formonth.length != 2){
+		alert("Select for month.")
+	}else if(period == null || period.length == 0){
+		alert("Select period.")
+		
+	}else{
+		
+		let fy = fy1+"-"+fy2;
+		
+		 var formdata = {
+
+			financialyear: fy,
+			formonth: formonth,
+			period: period,
+			unit:unit
+  		};
+							
+		$.ajax({
+          url: "/reports/OriginatingRevenue",
+          type: "GET",        
+          data: formdata,
+          success: function (response) {
+        	  $("#report-container").html(response);
+          },
+          error: function () {
+        	 
+              alert("Something went wrong!");
+          }
+      }); 
+	}
+	
+}
+
+function fyValueChanged(ele){
+	
+	let year = ele.value;	
+	if(year !=null && year.length == 4){
+		
+		let nextyear = +year.slice(-2) + 1;
+		$("#txt-financial-year-2").val(nextyear);	
+		let fy = year+"-"+nextyear;
+		$("#financialyear").val(fy);
+	}
+	else{
+		
+		$("#txt-financial-year-2").val("");
+		alert("Enter valid year");
+	}	
+	
+}
+
+</script>
+
+</html>

@@ -22,10 +22,10 @@ public interface AnnualBudgetRepo extends JpaRepository<AnnualBudget, Integer>{
 	
 	
 	@Procedure(procedureName = "getMaxBudgetNumber")
-	public int getMaxBudgetNumber(String fy);
+	public int getMaxBudgetNumber(String fy,int div);
 	
 	
 	@Procedure(procedureName = "getForMonthForBudgetnumber")
-	public String getForMonthForBudgetnumber(String fy,String budget_no);
+	public String getForMonthForBudgetnumber(String fy,int division, String budget_no);
 		
 }

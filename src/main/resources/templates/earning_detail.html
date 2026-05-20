@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+<script th:src="@{/js/global.js}"></script>
 <link rel="stylesheet" th:href="@{/css/headerfooter.css}">
 <link rel="stylesheet" th:href="@{/css/originating_period.css}">
 <title>Originating Period Earning</title>
@@ -12,6 +13,13 @@
 	<!-- Header Section  -->
 	<div th:replace="~{fragments/header_footer :: custom_header}"></div>
 	<main class="page">
+	
+		<div th:if="${msg}"
+		     id="flash-message"
+		     th:text="${msg}"
+		     th:class="'flash-msg ' + (${msgType} == 'success' ? 'flash-success' : 'flash-error')">
+		</div>
+	
 		<div id="div_main_content">
 		
 			<div id="div_topform">
@@ -23,29 +31,13 @@
 					
 						<div id="div_topform_container">
 						
-							<fieldset name="top-fieldset" id="top-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+						
+							<fieldset name="top-fieldset" id="top-fieldset" style="padding: 0px;margin: 0px; border: none;" >				
 							
-							<table class="top-table-design">
-								<!-- <tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>							
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td rowspan="2">
-										<button id="btn_go" type="button" onclick="goClicked(this)" >Go</button>						 							  
-									</td>
-								</tr> -->
-							
-								<tr>
-									<td>
+							<table class="top-table-design">		
+								
+								<tr>								
+									<td style="white-space: nowrap; width: 270px;">
 										
 										<input type="text" hidden="true" th:field="*{recordid}">
 										
@@ -69,7 +61,7 @@
 									
 									<td>
 										<p class="para-design">For Month:</p>
-										<select id="for-month" name="for-month" class="top-cell-input" th:field="*{formonth}">
+										<select id="for-month" name="for-month" class="top-cell-input" th:field="*{formonth}" onchange="monthChanged(this)">
 										  <option value="04">Apr</option>
 										  <option value="05">May</option>							  
 										  <option value="06">June</option>
@@ -115,74 +107,257 @@
 									
 									<td>
 										<p class="para-design">Head Of Account:</p>
-										<select id="head_of_acct" name="head_of_acct" onchange="hoaChanged(this)" class="top-cell-input" th:field="*{headofaccounts}">
+										<select id="head_of_acct" name="head_of_acct" onchange="hoaChanged()" class="top-cell-input" th:field="*{headofaccounts}">
 										  <option value="PNSUB">PASSENGER[NON-SUB]</option>
-										  <option value="PSUB">PASSENGER[SUB]</option>
+										  <!-- <option value="PSUB">PASSENGER[SUB]</option> -->
 										  <option value="OTHC">OTHER COACHING</option>
 										</select>
 									</td>
 									
-		
 									
-									<td>
-										<p class="para-design">Division:</p>
-										<select id="division" name="division" class="top-cell-input" onchange="divisionChanged(this)" th:field="*{division}">
-										  <option value="-1">-- Select --</option>
-										  <option value="KUR">KUR</option>
-										  <option value="SBP">SBP</option>							  
-										  <option value="WAT">WAT</option>
-										</select>
-									</td>
-									
-									<td>
+									<!-- <td>
 										<p class="para-design">Station Type:</p> 
-										<select	id="stn-type" name="stn-type" onchange="stnTypeChanged(this)" class="top-cell-input">
+										<select	id="stn-type" name="stn-type" onchange="stnTypeChanged()" class="top-cell-input" th:field="*{stationtype}">
 											<option value="-1">--Select--</option>
 											<option value="90">90%</option>
 											<option value="10">10%</option>									
 										</select>
-									</td>
-									<td>
+									</td> -->
+									<!-- <td>
 										<p class="para-design">Station:</p>
-										<select id="station" name="station" class="top-cell-input" th:field="*{stationcode}">
+										<select id="station" name="station" size="1" class="top-cell-input" th:field="*{stationcode}">
 										  <option value="-1">-- Select --</option>								  
 										</select>
-									</td>
-									<td>
-										<p class="para-design">Value Type:</p>
-										<select id="value-type" name="value-type" class="top-cell-input" onchange="valueTypeChanged(this)" th:field="*{valuetype}">
-										  <option value="A">APPROXIMATE</option>
-										  <option value="O">ORIGINAL</option>							  
-										</select>
-									</td>
-									<td>
-										<p class="para-design">Received On:</p>
-										<input name="received_on" id="received_on"  type="date" class="top-cell-input" th:field="*{receivedon}" disabled>
-									</td>
-									<td>
-										<p class="para-design">Remarks:</p>
-										<select id="remarks" name="remarks" class="top-cell-input" th:field="*{remarks}">
-										  <option value="Late Received">Late Received</option>
-										</select>
-									</td>	
-									<td >
-										<button id="btn_go" type="button" onclick="goClicked(this)" >Go</button>
-										<!-- <button type="submit" id="btn_go"  name="action" value="go" >Go</button> -->						 							  
-									</td>						
+									</td> -->
+										
+									<!-- <td >
+										<button id="btn_go" type="button" onclick="goClicked()" >Go</button>
+										<button type="submit" id="btn_go"  name="action" value="go" >Go</button>						 							  
+									</td> -->		
+													
 								 </tr>
-							</table>	
-							</fieldset>
-						</div>
+								 
+								 <tr>
+								 	<td rowspan="2" style="padding: 0px; vertical-align: top; height: 1px;" >
+								 	
+								 		<!-- ROW 1: Zone + Division in one line -->
+    									<div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 6px;">
+											
+											<div style="display: flex; align-items: center; gap: 4px;">
+												<label for="zone">Zone:</label> 
+												<select id="zone" name="zone" class="top-cell-input">
+													<option value="1">ECoR</option>
+												</select>
+											</div>
 
-						<div id='detail-container' class="bottom-section">						
-							 <th:block th:replace="~{fragments/header_footer :: PNSUB-DIV(null)}"></th:block>
-						</div>
+											<div style="display: flex; align-items: center; gap: 4px;">
+												<label for="division">Division:</label> 
+												<select	id="division" name="division" class="top-cell-input"
+													onchange="divisionChanged()" th:field="*{divisionid}">
+													<option value="-1">-- Select --</option>
+													<option value="1">KUR</option>
+													<option value="2">SBP</option>
+													<option value="3">WAT</option>
+												</select>
+											</div>
+										</div> 
+										
+										<!-- ROW 2: Station Type +  Station dropdown (hidden/minimal — updated by UL click) -->
+										
+										<div style="display: flex; gap: 10px; align-items: center;  margin-bottom: 6px;">
+										
+											<div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+												<label for="stn-type">Type:</label> 
+												<select	id="stn-type" name="stn-type" onchange="stnTypeChanged()" class="top-cell-input" th:field="*{stationtype}">
+													<option value="-1">--Select--</option>
+													<option value="90">90%</option>
+													<option value="10">10%</option>									
+												</select>
+											</div>
+										
+	    									<div style="display: flex; align-items: center; gap: 4px; margin-bottom: 6px;">
+												<label for="station">Station:</label> 
+												<select id="station" name="station"	th:field="*{stationcode}" class="top-cell-input read-only">
+													<option value="-1">-- Select --</option>
+												</select>
+											</div> 
+											
+											
+										</div>
+										<!-- ROW 3: Station List — takes remaining height and full width -->
+										<ul id="station-list" >
+											<!-- Populated dynamically -->
+										</ul> 
+										
+										<!-- <label>Zone :</label>
+								 		<select id="zone" name="zone">
+										  <option value="ECoR">ECoR</option>								  
+										</select>
+										
+										<label>Division:</label>
+										<select id="division" name="division" onchange="divisionChanged()" th:field="*{divisionid}">
+										  <option value="-1">-- Select --</option>
+										  <option value="1">KUR</option>
+										  <option value="2">SBP</option>							  
+										  <option value="3">WAT</option>
+										</select> <br>
+										
+								 		<label for="station">Station:</label>
+										<select id="station" name="station" th:field="*{stationcode}" disabled="disabled">
+										  <option value="-1">-- Select --</option>								  
+										</select> -->
+								 	</td>
+								 	<td colspan="1" style="white-space: nowrap;">
+									 	<div style="display: flex;">
+										 	<label class="para-design">Value Type:</label>
+											<select id="value-type" name="value-type" class="top-cell-input" onchange="valueTypeChanged(this)" th:field="*{valuetype}">
+											  <option value="A">APPROXIMATE</option>
+											  <option value="O">ORIGINAL</option>							  
+											</select>
+									 	</div>
+									
+									</td>
+									<td colspan="3" style="white-space: nowrap;">
+										
+										<div style="display: flex;">
+										<label class="para-design" >Received On:</label>
+											<select id="receivedfy" name="receivedfy" class="top-cell-input" disabled="disabled" onchange="receivedFyChanged()" th:field="*{receivedfy}">
+											  <option value="-1">-- Financial Year --</option>								  
+											</select>
+											<select id="receivedmonth" name="receivedmonth" class="top-cell-input" disabled="disabled" onchange="receivedMonthChanged()" th:field="*{receivedmonth}">
+											  <option value="-1">-- Month --</option>								  
+											</select>
+											<select id="receivedperiod" name="receivedperiod" class="top-cell-input"  disabled="disabled" th:field="*{receivedperiod}">
+											  <option value="-1">-- Period --</option>								  
+											</select>
+										</div>
+									</td>
+									<td colspan="1">
+										<div style="display: flex;">
+											<label class="para-design">Remarks:</label>
+											<select id="remarks" name="remarks" class="top-cell-input" th:field="*{remarks}" disabled="disabled">
+											  <option value="-1">-- Select --</option>
+											  <option value="LR">Late Received</option>
+											</select>
+										</div>
+									</td>
+								 </tr>
+								 
+								 <tr>
+								 	<td colspan="5">
+										<div id='detail-container' class="bottom-section">
+											<th:block th:replace="~{fragments/earning_fragment :: PNSUB-DIV(null)}"></th:block>
+										</div>
+									</td>
+								 </tr>
+								 												 								
+							</table>	
+							
+							 </fieldset>
+							
+						</div>						
 				
 					</form>
-			</div>						
+			</div>				
+			
+			<div id="color-div">
+			
+				<!-- Color Legend — top right corner -->
+				<div id="color-legend">
+				
+					<div class="legend-item">
+						<span class="legend-dot" style="background-color: red;"></span> <span
+							class="legend-label">LR</span>
+					</div>
+
+					<div class="legend-item">
+						<span class="legend-dot" style="background-color: green;"></span>
+						<span class="legend-label">Original</span>
+					</div>
+
+					<div class="legend-item">
+						<span class="legend-dot" style="background-color: goldenrod;"></span>
+						<span class="legend-label">Approximate</span>
+					</div>
+
+					<div class="legend-item">
+						<span class="legend-dot" style="background-color: black;"></span>
+						<span class="legend-label">No Data</span>
+					</div>
+				</div>
+			
+			</div>		
 		
 		</div>
 	</main>
+	
+	
+	<!-- ✅ Modal Overlay -->
+	<div id="modal_overlay" style="display:none;">
+    	<div id="modal_box">
+
+	        <!-- Header -->
+	        <div id="modal_header">
+	            <h3 id="modal_title">Get Approximate Data</h3>
+	            <span id="modal_close" onclick="closeModal()">&times;</span>
+	        </div>
+	
+	        <!-- Body — Input Fields -->
+	        <div id="modal_body">
+	            <table id = "table_model_design">
+	            	<tr>
+	            		<th>Financial Year</th>
+	            		<th>Month</th>
+	            		<th>Period</th>
+	            		<th>Import From</th>
+	            	</tr>
+	            	<tr>
+	            		<td> 
+	            			<select id="aprx_fy" onchange="appxFyChanged()">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>
+	            		<td> 
+	            			<select id="aprx_month" onchange="appxMonthChanged()">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>
+	            		<td> 
+	            			<select id="aprx_period" onchange="appxPeriodChanged()">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>
+	            		<td> 
+	            			<select id="aprx_value_type">
+	            				<option value="-1">-- Select --</option>
+	            			</select> 
+	            		</td>	            			            		
+	            	</tr>
+	            	
+	            </table>
+	        </div>
+	
+	        <!-- Footer — Action Buttons -->
+	        <div id="modal_footer">
+	        	
+	        	<div id="chkbox_div">
+	        		<div>
+		        		<input id="chk_exact_value" type="checkbox">
+		        		<label for="chk_exact_value">Exact Value of The Period</label>
+	        		</div>
+	        	</div>
+	        	
+	        	<div>
+		            <button type="button" id="btn_modal_confirm" onclick="getDataClicked()">Get Data</button>
+		            <button type="button" id="btn_modal_cancel" onclick="closeModal()">Cancel</button>
+	            </div>
+	            
+	        </div>
+	
+	    </div>
+	</div>
+	
+	
 </body>
 
 
@@ -190,24 +365,45 @@
 <script type="text/javascript">
 
 let formdata = {};
-let currenthoa = "PNSUB"; 
+let currenthoa = "PNSUB";
+let selectedDataId = null;
 let isBottomFormdisabled = true;
+const COMPLETE_IGNORE_FIELDS = ["value-type","receivedfy","receivedmonth","receivedperiod","remarks"];
+const IGNORE_FIELDS = ["entry-type","system","head_of_acct"];
+/* const FIELDS_TO_TRIGGER_DIV = ["txt-financial-year-1","for-month","period","entry-type","system","head_of_acct"]; */
+const FIELDS_TO_TRIGGER_DIV = ["txt-financial-year-1","for-month","period","system"];
+
 const GROUPS = {
 	    AC:  ["EC","1AC","2AC","3AC","3E","CC"],
 	    FC:  ["FCSEA","FCME","FCORD"],
 	    SLC: ["SLSEA","SLME","SLORD"],
 	    SC:  ["SCSEA","SCME","SCORD"],
-	    TOT: ["AC","FC","SLC","SC"]
+	    TOT: ["AC","FC","SLC","SC"],
+	    OTHC_TOT: ["OTHC_LIMB","OTHC_CHDMT","OTHC_PCFIT","OTHC_PTPT","OTHC_PPT","OTHC_STARC","OTHC_LLDWSCP","OTHC_MOCE","OTHC_UDBS","OTHC_OABS"],
+	    OTHG_TOT: ["OTHG_DWSC","OTHG_OMGE","OTHG_UDBS","OTHG_OABS"],
+	    SUN_TOT: ["SUN_TE","SUN_SEBBO","SUN_SEBGO"]
+	    
 	};
 	
 	
 
 	
- /* document.addEventListener("DOMContentLoaded", function(){
-	 
+document.addEventListener("DOMContentLoaded", function(){
 	
-	 
- }); */
+	let financialYear = getFinancialYear();
+	const [fromYear, toYear] = financialYear.split("-");
+	$("#txt-financial-year-1").val(fromYear);
+	$("#txt-financial-year-2").val(toYear);
+	$("#financialyear").val(financialYear);
+	
+	let currMonth = getCurrentMonth();
+	$("#for-month").val(currMonth);
+	
+	let currPeriod = getCurrentPeriod();
+	$("#period").val(currPeriod);
+	
+		
+ }); 
 
 document.addEventListener('keydown', function (event) {
 
@@ -231,20 +427,163 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-$('#top-fieldset').on('change input', 'input, select', function() {
+
+//✅ Close modal when clicking outside the modal box
+$("#modal_overlay").on('click', function(e) {
+   if ($(e.target).is('#modal_overlay')) {
+       closeModal();
+   }
+});
+
+// ✅ Close modal on ESC key
+$(document).on('keydown', function(e) {
+   if (e.key === 'Escape') {
+       closeModal();
+   }
+});
+
+/* $('#top-fieldset').on('blur', 'input', function() {
+    let fieldId = $(this).attr('id');
+    console.log('Input changed: ' + fieldId);
+    handleTopFieldChange(fieldId);
+}); */
+
+/* $('#top-fieldset').on('change', 'select', function() {
+    let fieldId = $(this).attr('id');
+    console.log('Select changed: ' + fieldId);
+    handleTopFieldChange(fieldId);
+}); */
+
+
+
+function handleTopFieldChange(fieldId){
+		
+	console.log("handleTopFieldChange called");
+	if(COMPLETE_IGNORE_FIELDS.includes(fieldId))
+		return;
 	
-	console.log('Value changed in:');
+	$("#recordid").val("");
+	
+	
+	 if(FIELDS_TO_TRIGGER_DIV.includes(fieldId))
+		 divisionChanged(); 
 
 	if(!isBottomFormdisabled){
+	
 		console.log('Inside form reset');
 		isBottomFormdisabled = !isBottomFormdisabled;
 		/* resetBottomForm();
 		$("#formFields").prop("disabled",true); */
-		$("#head_of_acct").trigger("change");
+		if(!IGNORE_FIELDS.includes(fieldId))
+			hoaChanged();
+			/* $("#head_of_acct").trigger("change"); */
 	}
-		
+}
+
+
+function getFinancialYear() {
+	
+    const today = new Date();
+    const month = today.getMonth() + 1; // getMonth() is 0-indexed
+    const year = today.getFullYear();
     
-});
+
+    if (month >= 4) {
+        return year + "-" + String(year + 1).slice(-2);  // e.g., "2026-27"
+    } else {
+        return (year - 1) + "-" + String(year).slice(-2); // e.g., "2025-26"
+    }
+}
+
+/* function getNextFinancialYear() {
+	
+	const financialyear = $("#financialyear").val();
+	const formonth = $("#formonth").val();
+	
+	const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+
+    if (month >= 4) {
+        return (year + 1) + "-" + String(year + 2).slice(-2);  // e.g., "2027-28"
+    } else {
+        return year + "-" + String(year + 1).slice(-2);         // e.g., "2026-27"
+    }
+} */
+
+function getCurrentMonth() {
+    const today = new Date();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+	return month;
+}
+
+function getCurrentPeriod() {
+    const today = new Date();
+    const date = today.getDate();
+    if(date<=10)
+    	return "I";
+    else if(date<=20)
+    	return "II";
+    else
+    	return "III";	
+}
+
+function loadReceivedOnFinancialYear() {
+	
+    // Remove all options except the default placeholder
+    $('#receivedfy option[value!="-1"]').remove();
+    $('#receivedmonth option[value!="-1"]').remove();
+    $('#receivedperiod option[value!="-1"]').remove();
+    
+    let valtype = $("#value-type").val();
+	if(valtype === 'A')
+		return;
+    
+	const financialyear = $("#financialyear").val();
+	const formonth = $("#for-month").val();
+	const period = $("#period").val();
+	
+	if(financialyear !=null && financialyear.length == 7 &&
+			formonth !=null && formonth.length == 2 &&
+			period !=null){
+		
+   	    const monthInt = parseInt(formonth);
+		
+	    const years = [financialyear];
+	   /*  if(monthInt === 3 && (period === "III" || period === "MON")  ){
+	    	console.log("Current fy not needed")	
+	    }else{
+	    	
+	    	years.push(financialyear);
+	    } */
+	    
+	    
+	    // Add next FY only if we're in Jan, Feb, or March (approaching new FY)
+	    if (monthInt < 4) {
+	    	
+			const [fromYear, toYear] = financialyear.split("-");
+			const nextFY = String(+fromYear + 1)+"-"+ String(+toYear + 1)	    	 
+	        years.push(nextFY);
+	    }
+
+	    years.forEach(fy => {
+	        $('#receivedfy').append(`<option value="${fy}">${fy}</option>`);
+	    });
+	    
+	    
+	    const rfy = $("#txt_rfy").val();
+	    if(rfy != null && rfy != "-1" && rfy.length >0)
+	    	$('#receivedfy').val(rfy);	    
+	    else if(years.length > 0)
+	    	$('#receivedfy').val(years[0]);
+	    
+	    
+	    /* $("#receivedfy").trigger("change"); */
+	    receivedFyChanged();
+	}
+    
+}
+
 
 function resetBottomForm(){
 	
@@ -269,6 +608,7 @@ function fyValueChanged(ele){
 		let fy = year+"-"+nextyear;
 		$("#financialyear").val(fy);
 		/* getMaxBudgetNumber(); */
+		
 	}
 	else{
 		
@@ -283,6 +623,27 @@ function fyValueChanged(ele){
             ele.focus();
         }, 0);
 	}	
+	
+	/* hoaChanged();
+	divisionChanged();
+	loadReceivedOnFinancialYear(); */
+	
+	divisionChanged();
+	loadReceivedOnFinancialYear();
+}
+
+function monthChanged(ele){
+	
+	divisionChanged();
+	loadReceivedOnFinancialYear();
+}
+
+function periodChanged(ele){
+
+	
+	/* receivedMonthChanged(); */
+	divisionChanged();
+	loadReceivedOnFinancialYear();
 }
 
 function entryTypeChanged(ele){
@@ -306,22 +667,23 @@ function entryTypeChanged(ele){
 		
 		//Update head of accounts
 		option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
-			     '<option value="PSUB">PASSENGER[SUB]</option>' +
+			     /* '<option value="PSUB">PASSENGER[SUB]</option>' + */
 			     '<option value="OTHC">OTHER COACHING</option>' ;
 		$('#head_of_acct').append(option);	
 		
 		
 		
 		
-		
 		$("#division").val("-1");
-		$("#division").prop("disabled",false);
+		/* $("#division").prop("disabled",false); */
+		$('#division').removeClass('read-only');
 		
 		$("#stn-type").val("-1");
-		$("#stn-type").prop("disabled",false);
+		/* $("#stn-type").prop("disabled",false); */
+		$('#stn-type').removeClass('read-only');
 		
 		$("#station").val("-1");
-		$("#station").prop("disabled",false);
+		/* $("#station").prop("disabled",false); */
 		
 	}else if(entrytype === "DW"){
 		
@@ -330,7 +692,8 @@ function entryTypeChanged(ele){
 		
 		$('#system option[value!="-1"]').remove();
 		option = '<option value="M">MANUAL</option>' +
-				 '<option value="P">PRS</option>';		  		 	
+				 '<option value="P">PRS</option>'+
+				 '<option value="T">TC & TT RETURN</option>' ;		  		 	
 		$('#system').append(option);
 		
 		
@@ -343,13 +706,15 @@ function entryTypeChanged(ele){
 		$('#head_of_acct').append(option);	
 		
 		$("#division").val("-1");
-		$("#division").prop("disabled",false);
+		/* $("#division").prop("disabled",true); */
+		$('#division').addClass('read-only');
 		
 		$("#stn-type").val("-1");
-		$("#stn-type").prop("disabled",true);
+		/* $("#stn-type").prop("disabled",true); */
+		$('#stn-type').addClass('read-only');
 		
 		$("#station").val("-1");
-		$("#station").prop("disabled",true);
+		/* $("#station").prop("disabled",true); */
 		
 	}else if(entrytype === "ZW"){
 		
@@ -358,32 +723,71 @@ function entryTypeChanged(ele){
 
 
 		//Update System
-		$('#system option[value!="-1"]').remove();
+		$('#system option[value !="-1"]').remove();
 		option = '<option value="M">MANUAL</option>';		  		 	
-		$('#system').append(option);	
+		$('#system').append(option);
 
 		
 		option = '<option value="OTHG">OTHER GOODS</option>' +
 			  	 '<option value="SUN">SUNDRY</option>' ;
 		$('#head_of_acct').append(option);	
 		
-		
 		$("#division").val("-1");
-		$("#division").prop("disabled",true);
+		/* $("#division").prop("disabled",true); */
+		$('#division').addClass('read-only');
 		
 		$("#stn-type").val("-1");
-		$("#stn-type").prop("disabled",true);
+		/* $("#stn-type").prop("disabled",true); */
+		$('#stn-type').addClass('read-only');
 		
 		$("#station").val("-1");
-		$("#station").prop("disabled",true);
+		/* $("#station").prop("disabled",true); */
+		
 	}	
 	
-	$("#head_of_acct").trigger("change");
+	/* hoaChanged(); */
+	divisionChanged();
 }
 
-function hoaChanged(ele){
+function systemChanged(ele){
+	
+	$('#head_of_acct option[value!="-1"]').remove();
+	let systype = $(ele).val();
+	if(systype === 'P' || systype === 'T'){
+				
+		let option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
+	     			 /* '<option value="PSUB">PASSENGER[SUB]</option>' + */
+	     			 '<option value="OTHC">OTHER COACHING</option>' ;
+		$('#head_of_acct').append(option);
+				
+	}else if(systype === 'M'){
+				
+		option = '<option value="ORGG">ORIGINATING GOODS</option>';
+		$('#head_of_acct').append(option);	
+	} 
 		
-	currenthoa = $(ele).val();
+	
+	/* hoaChanged(); */
+	
+	divisionChanged();
+	
+}
+
+function hoaChanged(){
+	
+	divisionChanged();
+}
+
+function hoaChanged_bkp(){
+
+	console.log("hoaChanged called 111111111111111111");
+	selectedDataId = null;
+	currenthoa = $("#head_of_acct").val();
+	
+/* 	$("#division").val("-1");
+	$("#division").trigger("change");
+ */	
+	
 	let formData = $("#top-form").serialize();				
 	$.ajax({
 		
@@ -427,112 +831,479 @@ function hoaChanged(ele){
     	bottomform.reset();
     } */
     
-    
         
 }
 
-function systemChanged(ele){
-	
-	$('#head_of_acct option[value!="-1"]').remove();
-	let systype = $(ele).val();
-	if(systype === 'P'){
-				
-		let option = '<option value="PNSUB">PASSENGER[NON-SUB]</option>' +
-	     			 '<option value="PSUB">PASSENGER[SUB]</option>' +
-	     			 '<option value="OTHC">OTHER COACHING</option>' ;
-		$('#head_of_acct').append(option);
-				
-	}else if(systype === 'M'){
-				
-		option = '<option value="ORGG">ORIGINATING GOODS</option>';
-		$('#head_of_acct').append(option);	
-	} 
-		
-	$("#head_of_acct").trigger("change");
-}
+
 
 function valueTypeChanged(ele){
+	
+	$("#recordid").val(""); 
 	let valtype = $(ele).val();
 	if(valtype === 'A'){
 		
-		$("#received_on").val("");
-		$("#received_on").prop("disabled",true);
+		$("#receivedfy").val("-1");
+		$("#receivedmonth").val("-1");
+		$("#receivedperiod").val("-1");
+		$("#remarks").val("-1");
+		
+		$("#receivedfy").prop("disabled",true);
+		$("#receivedmonth").prop("disabled",true);
+		$("#receivedperiod").prop("disabled",true);
+		$("#remarks").prop("disabled",true);
+		
 	}else{
 		
-		$("#received_on").prop("disabled",false);
+		$("#receivedfy").prop("disabled",false);
+		$("#receivedmonth").prop("disabled",false);
+		$("#receivedperiod").prop("disabled",false);
+		$("#remarks").prop("disabled",false);
+		
+		/* loadReceivedOnFinancialYear(); */	
+		
 	}
+	goClicked();
 }
 
-function divisionChanged(ele){
+function receivedFyChanged(){
 	
-	/* let division = $(ele).val(); */
-	let entrytype = $("#entry-type").val();
+	console.log("receivedFyChanged called");
+	$('#receivedmonth option[value!="-1"]').remove();
+	const rcvdFy = $("#receivedfy").val();
+	const fy = $("#financialyear").val();
+	const formonth = $("#for-month").val();
+	const monthint = parseInt(formonth);
+	const period = $("#period").val();
+	
+	// FY months with their corresponding month numbers
+    const months = [
+        { val: "04", label: "Apr" },
+        { val: "05", label: "May" },
+        { val: "06", label: "June" },
+        { val: "07", label: "July" },
+        { val: "08", label: "Aug" },
+        { val: "09", label: "Sep" },
+        { val: "10", label: "Oct" },
+        { val: "11", label: "Nov" },
+        { val: "12", label: "Dec" },
+        { val: "01", label: "Jan" },
+        { val: "02", label: "Feb" },
+        { val: "03", label: "Mar" }
+    ];
+	
+	let currentIndex  =  monthint >= 4 ? monthint - 4 : monthint + 8;
+	if(fy === rcvdFy){
+						
+		if(currentIndex <= 11){
+			const next = months[currentIndex];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+	        $('#receivedmonth').val(next.val);
+		}
+			
+		currentIndex ++;
+		if(currentIndex <= 11){
+			
+			const next = months[currentIndex];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+		}
+			
+		
+		currentIndex ++;
+		if(currentIndex <= 11){
+			const next = months[currentIndex];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+		}	
+		
+	}else{ //This is for the next financial year
+		
+		if(monthint === 2){
+			
+			const next = months[0];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+	        $('#receivedmonth').val(next.val);
+			
+		}else if(monthint === 3){
+			const next = months[0];
+	        $('#receivedmonth').append(`<option value="${next.val}">${next.label}</option>`);
+	        $('#receivedmonth').val(next.val);
+	        
+	        const next1 = months[1];
+	        $('#receivedmonth').append(`<option value="${next1.val}">${next1.label}</option>`);
+		}
+	}
+	
+	const rmonth = $("#txt_rmonth").val();
+    if(rmonth != null && rmonth != "-1" && rmonth.length >0)
+    	$('#receivedmonth').val(rmonth);	    
+	
+	/* $("#receivedmonth").trigger("change"); */
+	receivedMonthChanged()
+	
+}
+
+function receivedMonthChanged(){
+	
+	const valuetype = $("#value-type").val();
+	if(valuetype === "A")
+		return;	
+	
+	$('#receivedperiod option[value !="-1"]').remove();
+	const rcvdmonth = $("#receivedmonth").val();
+	const fy = $("#financialyear").val();
+	const formonth = $("#for-month").val();
+	const period = $("#period").val();
+	
+	const receivedfy = $("#receivedfy").val();
+	const receivedmonth = $("#receivedmonth").val();
+	
+	if(fy === receivedfy && formonth === receivedmonth){
+		
+		if(period === "I"){
+			
+			 $('#receivedperiod').append(`<option value="I">I</option>`);
+			 $('#receivedperiod').append(`<option value="II">II</option>`);
+			 $('#receivedperiod').append(`<option value="III">III</option>`);	
+			 $('#receivedperiod').val("I");
+		}else if(period === "II"){
+		
+			 $('#receivedperiod').append(`<option value="II">II</option>`);
+			 $('#receivedperiod').append(`<option value="III">III</option>`);
+			 $('#receivedperiod').val("II");
+			 
+		}else if(period === "III" || period === "MON"){
+						 
+			 $('#receivedperiod').append(`<option value="III">III</option>`);
+			 $('#receivedperiod').val("III");
+		}		
+		
+	}else{
+		
+		 $('#receivedperiod').append(`<option value="I">I</option>`);
+		 $('#receivedperiod').append(`<option value="II">II</option>`);
+		 $('#receivedperiod').append(`<option value="III">III</option>`);		 	
+		 $('#receivedperiod').val("I");
+	}	
+	
+	
+	const rperiod = $("#txt_rperiod").val();
+    if(rperiod != null && rperiod != "-1" && rperiod.length >0)
+    	$('#receivedperiod').val(rperiod);	
+    
+    const rremarks = $("#txt_rremarks").val();
+    if(rremarks != null && rremarks != "-1" && rremarks.length >0)
+    	$('#remarks').val(rremarks);	
+}
+
+
+
+
+function divisionChanged(){
+	
+	console.log("divisionChanged called");
+	
+	$("#recordid").val("");
+	selectedDataId = null;
+	
+	$("#value-type").removeClass("read-only");
+	$("#value-type").val("A");
+	
+	$("#txt_rfy").val("");
+	$("#txt_rmonth").val("");
+	$("#txt_rperiod").val("");
+	$("#txt_rremarks").val("");
+	
+	$('#receivedfy option[value !="-1"]').remove();
+	$('#receivedmonth option[value !="-1"]').remove();
+	$('#receivedperiod option[value !="-1"]').remove();
+	$("#remarks").val("-1");
+	
+	$("#receivedfy").prop("disabled",true);
+	$("#receivedmonth").prop("disabled",true);
+	$("#receivedperiod").prop("disabled",true);
+	$("#remarks").prop("disabled",true);
+	
+	
+	stnTypeChanged();
+	 
+	/* let entrytype = $("#entry-type").val();
 	if(entrytype !=null && entrytype === "SW"){		
 		$("#stn-type").val("-1");
 		$('#station option[value!="-1"]').remove();
-	}
+	} */
 }
 
-function stnTypeChanged(ele){
+function stnTypeChanged(){
 	
-	$('#station option[value!="-1"]').remove();
+	console.log("stnTypeChanged called");
+	$('#station option[value !="-1"]').remove();
+	$('#station-list').empty();
+	
+	let entrytype = $("#entry-type").val();
+	let stntype = $("#stn-type").val();
 
-	let stntype = $(ele).val();
-	let division = $("#division").val();
+	if(entrytype === "SW" && (stntype === null || stntype === "-1")){
+		//When we chnage between SWDW AND ZW we need to change form
+		selectItemById();
+		return;	
+	}
+			
+	if(entrytype === "ZW" || entrytype === "DW")
+		$("#division").val("-1");
 	
+	let fy = $("#financialyear").val();
+	let formonth = $("#for-month").val();
+	let period = $("#period").val();
+	let hoa = $("#head_of_acct").val();
+	let system = $("#system").val();
+	let division = $("#division").val();
+
+	let errormsg = null;
+	if(fy != null && fy.length != 7){
+		errormsg ="Enter valid financial year";
+	}else if(formonth == null || formonth.length != 2){
+		errormsg = "Select for month.";
+	}else if(period == null || period.length == 0){
+		errormsg = "Select period.";
+	}else if(hoa == null || hoa.length == 0){
+		errormsg = "Select head of account.";
+	}else if(system == null || system.length == 0){
+		errormsg = "Select system.";
+	}else if(entrytype == null || entrytype.length != 2){
+		errormsg = "Select entry type.";
+	}else if(entrytype === "SW" && (division == null || division === "-1")){
+		errormsg = "Select division.";
+	}else if(entrytype === "SW" && (stntype == null || stntype === "-1" || stntype.length != 2)){
+		errormsg = "Select station type.";
+	}
+	
+	 if (errormsg) {
+	        alert(errormsg);
+	        $("#stn-type").val("-1");   // ← reset stntype dropdown back to -1
+	        return;
+	   }
+	
+	var jsondata = {
+			fy:fy,
+			formonth:formonth,
+			period:period,
+			hoa:hoa,
+			system:system,
+			entrytype:entrytype,
+			division: division,
+			stntype: stntype		
+		};
+
+		$.ajax({
+			url: "/earning/getstationdata",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+
+				if (response.status === "success") {
+					
+					console.log("Success.");
+					$.each(response.data, function(index, obj) {
+						
+						let colorcode = getColorCodeforValueTypeAndRemarks(obj.valuetype,obj.remarks);							
+						/* let option = '<option style="color:'+colorcode+';"'+ ' value="'+obj.stncode+'">'+obj.stncode+'</option>'; */
+						if(entrytype === "SW"){
+							let option = '<option value="'+obj.code+'">'+obj.code+'</option>';
+							$('#station').append(option);			
+						}						
+						
+						let li = $('<li>')
+			            .text(obj.code)
+			            .attr('data-code', obj.code)
+			            .attr('data-id', obj.id)
+			            .attr('data-parentid', obj.parentrecordid)
+			            .attr('data-valuetype', obj.valuetype)
+			            .attr('data-rfy', obj.receivedfy)
+			            .attr('data-rmonth', obj.receivedmonth)
+			            .attr('data-rperiod', obj.receivedperiod)
+			            .attr('data-remarks', obj.remarks)
+			            .css('color', colorcode);
+
+			        // ✅ Reference separate function — not inline
+				        li.on('click', function() {
+				            onListItemClick(this);
+				        });
+			        
+				        $('#station-list').append(li);
+			        
+	       			}); 
+					
+					selectItemById(); 
+
+					
+				} else {
+					console.log("Some error occured.");
+				}
+			},
+			error: function() {
+
+				console.log("Something went wrong!");
+				alert("Something went wrong!");
+			}
+		});		
+	
+	
+	
+	/* 
 	if(stntype === "90"){
 		$("#period").val("I");
 	}else if(stntype === "10"){
 		$("#period").val("MON");
-	}
+	} */
 	
-	
-	if(stntype == null || stntype.length != 2){
-		alert("Select station type.");
-	}else if(division == null || division == '-1'){
-		alert("Select division.");
+}
+
+
+function selectItemById(){
+
+	if(selectedDataId != null){
+				
+		let liElement = $('#station-list li').filter(function() {
+		    return $(this).attr('data-id') == selectedDataId;  // == handles type coercion
+		})[0];
+		
+	    if (liElement) {
+	        onListItemClick(liElement);
+	    } else {
+	        console.log("Station not found in list for id: " + String(selectedDataId));
+	    }
+	    
 	}else{
 		
-		/* alert("Get station"); */
-		var jsondata = {
-				division: division,
-				percentage: stntype		
-			};
-
-			$.ajax({
-				url: "/station_earning/getstationdata",
-				type: "POST",
-				contentType: "application/json",
-				data: JSON.stringify(jsondata),
-				success: function(response) {
-
-					if (response.status === "success") {
-						
-						console.log("Success.");
-						$.each(response.data, function(index, stncode) {
-							
-							let option = '<option value="'+stncode+'">'+stncode+'</option>';
-							$('#station').append(option);		       		  
-		       			}); 
-						
-					} else {
-						console.log("Some error occured.");
-					}
-				},
-				error: function() {
-
-					console.log("Something went wrong!");
-					alert("Something went wrong!");
-				}
-			});
+		let hoa = $("#head_of_acct").val();
+		if(isBottomFormdisabled && currenthoa === hoa)
+			return;
+		
+		isBottomFormdisabled = !isBottomFormdisabled;
+		currenthoa = hoa;
+		loadBlankForm();
 	}
+		
+}
+
+function onListItemClick(liElement){
+	
+	$("#recordid").val("");
+	 let datacode = $(liElement).attr('data-code');
+	 let dataid = $(liElement).attr('data-id');
+	 let dataparentid = $(liElement).attr('data-parentid');
+	 selectedDataId = dataid;
+	 
+	 let valuetype = $(liElement).attr('data-valuetype');
+	 console.log("valuetype ="+valuetype);
+	 if(valuetype == null){
+		 $("#value-type").val("A");
+		 valuetype = "A";
+	 }
+	 else{
+		 $("#value-type").val(valuetype);
+	 }
+	 
+	 let entrytype = $("#entry-type").val();
+	    // Highlight selected item
+	    $('#station-list li').removeClass('selected-station');
+	    $(liElement).addClass('selected-station');
+
+	    if(entrytype === "ZW"){
+	    	 let select = $('#zone');
+			 select.val(dataid); 
+	    }else if(entrytype === "DW"){
+	    	
+	    	 let select = $('#division');
+			 select.val(dataid); 
+	    	
+	    }else if(entrytype === "SW"){
+	    	
+	    	  // ✅ Update the station <select> value	    	 
+		    let select = $('#station');
+		    select.val(datacode);   // ✅ Mark as selected — auto submits with form
+		
+	    }
+	    
+	   /*  console.log("valuetype ="+valuetype);
+  	  if(valuetype != null)
+  		   $("#value-type").val(valuetype);
+  	   else
+  		 $("#value-type").val("A"); */
+
+	    
+	 
+	    if(valuetype === "A"){
+	    	$("#value-type").removeClass("read-only");
+	    	$("#receivedfy").val("-1");
+			$("#receivedmonth").val("-1");
+			$("#receivedperiod").val("-1");
+			$("#remarks").val("-1");
+			
+			$("#receivedfy").prop("disabled",true);
+			$("#receivedmonth").prop("disabled",true);
+			$("#receivedperiod").prop("disabled",true);
+			$("#remarks").prop("disabled",true);
+	    	
+	    }else if(valuetype === "O"){
+	    
+	    	/* $("#value-type").addClass("read-only"); */
+			loadReceivedOnFinancialYear();	
+
+			 let rfy = $(liElement).attr('data-rfy');
+			 rfy = (rfy==null?"-1":rfy);
+			 let rmonth = $(liElement).attr('data-rmonth');
+			 rmonth = (rmonth==null?"-1":rmonth);
+			 let rperiod = $(liElement).attr('data-rperiod');
+			 rperiod = (rperiod==null?"-1":rperiod);
+			 let remarks = $(liElement).attr('data-remarks');
+			 remarks = (remarks==null?"-1":remarks);
+			 
+	    	$("#receivedfy").prop("disabled",false);
+			$("#receivedmonth").prop("disabled",false);
+			$("#receivedperiod").prop("disabled",false);
+			$("#remarks").prop("disabled",false);
+			
+			$("#receivedfy").val(rfy);
+			receivedFyChanged();			
+			$("#receivedmonth").val(rmonth);
+			receivedMonthChanged();
+			$("#receivedperiod").val(rperiod);
+			$("#remarks").val(remarks);
+	    }
+	    else{ //in case of null, when we are going to feed data for new station
+	    	$("#value-type").removeClass("read-only");
+	    }
+  		 
+  		 /* if(dataparentid != null)
+  			$("#value-type").addClass("read-only"); */
+  		 
+	    goClicked();
+	  
+	    // ✅ Trigger controller call
+	    /* stationSelected(val); */
+}
+
+function getColorCodeforValueTypeAndRemarks(valtype,remark){
+	
+	if(valtype == null)
+		return "black";
+	
+	if(valtype === "O" && remark === "LR")
+		return "red";
+	else if(valtype === "O")
+		return "green";
+	else if(valtype === "A")
+		return "goldenrod";
+	else
+		return "black";
 }
 
 function loadDetails(ele){
 	
 }
 
-function captureFormValue(ele){
+/* function captureFormValue(ele){
 	
 	if ($(ele).is('[readonly]')) {
 		console.log("readonly")
@@ -594,8 +1365,8 @@ function captureFormValue(ele){
 	}	
 	
 	
-	/* dynamicallyUpdateTotalValue(field_name); */	
-}
+	 // dynamicallyUpdateTotalValue(field_name);  	
+} */
 
 function enableBottomForm(enable){
 	
@@ -607,7 +1378,31 @@ function enableBottomForm(enable){
 }
 
 
-function goClicked(ele){
+function loadBlankForm(){
+	
+	console.log("loadBlankForm called");
+	let formData = $("#top-form").serialize();				
+	$.ajax({
+		
+	     url: "/earning/getdetails?mode=blank",
+	     type: "POST",        
+	     data: formData,
+	     success: function (response) {
+	   	  	   	  
+	   	  $("#detail-container").html(response);
+	   	  enableBottomForm(false);
+	
+	     },
+	     error: function () {
+	   	  enableBottomForm(false);
+	         alert("Something went wrong!");
+	     }
+ 	}); 
+}
+
+function goClicked(){
+	
+	console.log("goClicked called");
 	
 	let fy1 = $("#txt-financial-year-1").val();
 	let fy2 = $("#txt-financial-year-2").val();
@@ -637,7 +1432,7 @@ function goClicked(ele){
 		alert("Select system.")
 	}else if(entry_type == null || entry_type.length != 2){
 		alert("Select entry type.")
-	}else if(entry_type != "ZW" && (division == null || division.length != 3)){
+	}else if(entry_type != "ZW" && (division == null || division === "-1")){
 		alert("Select division.")
 	}else if(entry_type == "SW" && (stn_type == null || stn_type === "-1")){
 		alert("Select station type.")
@@ -645,7 +1440,14 @@ function goClicked(ele){
 		alert("Select station.")
 	}else if(value_type == null || value_type === "-1"){
 		alert("Select value type.")
+	}else if(entry_type == "SW" && period == 'MON' && stn_type !='10'){
+		
+		alert("For  period = MONTHLY station type should be 10% ");
 	}
+	/* else if(entry_type == "SW" && (period == 'I' || period == 'II' || period == 'III')  && stn_type !='90'){
+		
+		alert("For period = (I,II,III) station type should be 90%");
+	} */
 	else{
 		
 		/* let fy = fy1+"-"+fy2;
@@ -674,9 +1476,18 @@ function goClicked(ele){
           success: function (response) {
         	  
         	  
-        	  /* console.log("response = " +response); */
+        	  
         	  $("#detail-container").html(response);
+        	  loadReceivedOnFinancialYear();
         	  enableBottomForm(true);
+        	  
+        	  
+        	  /* if(stn_type == '10' && period == 'MON')
+        	  	enableBottomForm(true);
+        	  else if(stn_type == '90' && period != 'MON')
+        		  enableBottomForm(true);
+        	  else
+        		  enableBottomForm(false); */
 
           },
           error: function () {
@@ -692,6 +1503,8 @@ function submitClicked(){
 	
 	let fy1 = $("#txt-financial-year-1").val();
 	let fy2 = $("#txt-financial-year-2").val();
+	let fy = $("#financialyear").val();
+	
 	let formonth = $("#for-month").val();
 	let period = $("#period").val();
 	let entry_type = $("#entry-type").val();
@@ -701,7 +1514,11 @@ function submitClicked(){
 	let stn_type = $("#stn-type").val();
 	let station = $("#station").val();
 	let value_type = $("#value-type").val();
- 	let received_on = $("#received_on").val() == null?"":$("#received_on").val();
+	
+ 	let receivedfy = $("#receivedfy").val();
+ 	let receivedmonth = $("#receivedmonth").val();
+ 	let receivedperiod = $("#receivedperiod").val();
+ 	
 	let remarks = $("#remarks").val() == null?"":$("#remarks").val();
 		
 	if(fy1 != null && fy1.length != 4){
@@ -718,7 +1535,7 @@ function submitClicked(){
 		alert("Select system.")
 	}else if(entry_type == null || entry_type.length != 2){
 		alert("Select entry type.")
-	}else if(division == null || division.length != 3){
+	}else if(entry_type != "ZW" && (division == null || division === "-1")){
 		alert("Select division.")
 	}else if(entry_type == "SW" && (stn_type == null || stn_type === "-1")){
 		alert("Select station type.")
@@ -726,62 +1543,42 @@ function submitClicked(){
 		alert("Select station.")
 	}else if(value_type == null || value_type === "-1"){
 		alert("Select value type.")
-	}else if(value_type =="ORG" && (received_on == null || received_on.length == 0)){
-		alert("Enter received on date");
+	}else if(entry_type == "SW" && period == 'MON' && stn_type !='10'){
+		alert("For  period = MONTHLY station type should be 10% ");
+	}else if(value_type === "O" && period != "MON" && !(fy === receivedfy && formonth === receivedmonth && period === receivedperiod) 
+			&& (remarks == null || remarks === "-1")){		
+		alert("Select remarks.");
+	}else if(value_type === "O" && period === "MON" && !(fy === receivedfy && formonth === receivedmonth) 
+			&& (remarks == null || remarks === "-1")){
+		
+		alert("Select remarks.");
 	}
 	else{
 		
-		let fy = fy1+"-"+fy2;
-		
-		 var jsondata = {
-
-			financialyear: fy,
-			formonth: formonth,
-			period: period,
-			entrytype: entry_type,
-			system: system,
-			headofaccount: head_of_acct,
-			divcode: division,
-			stntype: stn_type,
-			stncode: station,
-			valuetype: value_type,
-			receivedon: received_on,
-			remarks: remarks,
-			data : formdata			
-  		};
-		
-		 console.log(" data to server = "+JSON.stringify(jsondata));
+		let formData = $("#top-form").serialize();
 		 		
 		$.ajax({
-          url: "/station_earning/savestationearningdata",
+          url: "/earning/process?action=save",
           type: "POST",
-          contentType: "application/json",
-          data: JSON.stringify(jsondata),
+          data: formData,
           success: function (response) {
-          	console.log("response ="+response.status);
-              if (response.status === "success") {
-              		
-            	  alert("Data saved successfully");
-				/* isBottomFormdisabled = false;
-          		$("#formFields").prop("disabled",false); */				
-
-          		/* console.log("data from DB ="+JSON.stringify(response.data)); */
-          		
-           	  /* renderData(response.data); */
-           	 
-           	   /* updateTotalValues(); */
-           	 /* console.log("my constructed data = "+JSON.stringify(formdata)); */
-           	   
-              } else {
-              	
-					isBottomFormdisabled = true;
-					$("#formFields").prop("disabled",true);
-                  alert("Some error occured.");
-              }
+        	  
+        	  if(response.status === "success"){
+        			
+        		  /* $("#detail-container").html(response); */
+            	  alert("Data saved successfully.");
+            	  enableBottomForm(true);
+            	  stnTypeChanged();
+            	 /*  handleFlashMessage(); */
+        	  }else{
+        		  
+        		  alert(response.msg);
+        	  }
+        	  
+          
           },
           error: function () {
-				isBottomFormdisabled = true;
-				$("#formFields").prop("disabled",true);
+        	  
               alert("Something went wrong!");
           }
       }); 
@@ -873,19 +1670,62 @@ function recalcAll() {
 
 		    // 3️⃣ Grand total
 		    recalcGroup("TOT");
+		    
+	}else if(currenthoa === "OTHC"){
+		
+		recalcOtherCoaching("OTHC_TOT");
+		
+	}else if(currenthoa === "OTHG"){
+		
+		recalcOtherGoods("OTHG_TOT");
+		
+	}else if(currenthoa === "SUN"){
+		
+		recalcOtherGoods("SUN_TOT");
 	}
    
+}
+
+function recalcOtherGoods(groupCode){
+	
+	let totEarning=0;
+
+    GROUPS[groupCode].forEach(code => {
+    	
+    	totEarning += get(code,"earning");
+    });
+    
+    set(groupCode,"earning", totEarning);
+
+    /* recalcRow(groupCode); */
+}
+
+function recalcOtherCoaching(groupCode){
+	
+	let totWeight=0, totEarning=0;
+
+    GROUPS[groupCode].forEach(code => {
+    	
+    	totWeight += get(code,"weight");
+    	totEarning += get(code,"earning");
+    });
+
+    
+    set(groupCode,"weight", totWeight);
+    set(groupCode,"earning", totEarning);
+
+    /* recalcRow(groupCode); */
 }
 
 function recalcRow(cls) {
 	/* console.log("Class = " +cls); */
     const totalNo =
-        get(cls,"bookedcount") +
+        get(cls,"bookedcount") -
         get(cls,"refundcount") +
         get(cls,"excesscount");
 
     const totalRs =
-        get(cls,"bookedamt") +
+        get(cls,"bookedamt") -
         get(cls,"refundamt") +
         get(cls,"excessamt");
 
@@ -924,6 +1764,7 @@ function recalcGroup(groupCode) {
 
 
 function get(classCode, field) {
+	
     const el = document.querySelector(
         `input[data-class="${classCode}"][data-field="${field}"]`
     );
@@ -947,6 +1788,491 @@ function getsafevalue(v) {
 
 function clearClicked(){
 	location.reload();
+}
+
+
+function toggleValueType(){
+	
+	let headerid = $("#recordid").val();	
+	if(headerid.length >0){
+		
+		var jsondata = {
+				headerid: headerid
+			};
+
+			$.ajax({
+				url: "/earning/toggle_value_type",
+				type: "POST",
+				contentType: "application/json",
+				data: JSON.stringify(jsondata),
+				success: function(response) {
+					
+					if (response.status === "success") {
+
+						/* $("#value-type").val(response.valuetype); */
+						if(response.valuetype === 'O'){							
+							$("#btn_approx_to_org").text('Original to Approximate');
+							alert("Converted to Original.");
+						}							
+						else if(response.valuetype === 'A'){
+							
+							$("#btn_approx_to_org").text('Approximate to Original');
+							alert("Converted to Approximate.");
+						}else{
+							
+							alert("Invalid value type!");
+						}				
+						
+						stnTypeChanged();
+						
+					} else {
+						
+						alert("Something went wrong!");
+					}
+				},
+				error: function() {
+
+					alert("Something went wrong!");
+				}
+			});
+		
+	}else{
+		alert("Some exception occured. Please try later");
+	}
+	
+}
+
+function getApproximateData(){
+	
+	// Show overlay
+    $("#modal_overlay").fadeIn(200);
+    $('#aprx_fy option[value!="-1"]').remove();
+	$('#aprx_month option[value!="-1"]').remove();
+    $('#aprx_period option[value!="-1"]').remove();
+    $('#aprx_value_type option[value!="-1"]').remove();
+    getLast3EarningFy();
+}
+
+function deleteData(){
+
+	
+	let recordid = $("#recordid").val();
+	if(recordid != null && recordid.length >0){
+		
+		let formData = $("#top-form").serialize();		
+		$.ajax({
+			url: "/earning/deleteData",
+			type: "POST",
+			data: formData,
+			success: function(response) {
+			
+				if(response === "SUCCESS"){
+					
+					/*  $("#detail-container").html(response);   
+					 handleFlashMessage();
+					 enableBottomForm(false); */	
+					 alert("Data deleted successfully.");
+					 enableBottomForm(false);
+					 stnTypeChanged();
+					 
+				}else{
+					alert("Something went wrong!");
+				}
+				
+			
+			},
+			error: function() {				
+				enableBottomForm(false);
+				alert("Something went wrong!");
+			}
+		});
+	}
+}
+
+//✅ Close modal
+function closeModal() {
+	
+    $("#modal_overlay").fadeOut(200);
+}
+
+function getDataClicked(){
+		
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	let period = $("#aprx_period").val();
+	let valuetype = $("#aprx_value_type").val();
+	
+	
+	let org_period = $("#period").val();
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	
+	
+	if(fy == null || fy === "-1"  || fy.length != 7 )
+		alert("Select financial year !");
+	else if(formonth == null || formonth.length == 0 || formonth === "-1" )
+		alert("Select month !");
+	else if(period == null || period.length == 0 || period === "-1" )
+		alert("Select period !");
+	else if(valuetype == null || valuetype.length == 0 || valuetype === "-1" )
+		alert("Select value type !");
+	else{
+		
+			$.ajax({
+				url: "/earning/getApproximateData",
+				type: "POST",
+				data: {
+					
+					financialyear:fy,
+					formonth:formonth,
+					period:period,
+					entrytype: entry_type,
+					systemtype:system,
+					headofaccounts:head_of_acct,
+					divisionid:division,
+					stationcode:station,
+					valuetype:valuetype,
+					org_period:org_period
+				},
+				success: function(response) {
+				
+					 $("#detail-container").html(response);   
+					 enableBottomForm(true);
+					 closeModal();
+				
+				},
+				error: function() {
+
+					closeModal();
+					enableBottomForm(false);
+					alert("Something went wrong!");
+				}
+			});
+	}
+	
+}
+
+function appxFyChanged(){
+	
+	$('#aprx_month option[value!="-1"]').remove();
+	$("#aprx_month").trigger("change");
+	let fy = $("#aprx_fy").val();
+	if(fy != null && fy.length >0 && fy !="-1")
+		getEarningMonths();	
+}
+
+function appxMonthChanged(){
+	$('#aprx_period option[value!="-1"]').remove();
+	$("#aprx_period").trigger("change");
+	
+	let month = $("#aprx_month").val();
+	if(month != null && month.length >0 &&  month !="-1")
+		getEarningPeriod();
+}
+
+function appxPeriodChanged(){
+	
+	$('#aprx_value_type option[value!="-1"]').remove();
+	
+	let period = $("#aprx_period").val();
+	if(period != null && period.length >0 && period != "-1")
+		getEarningValueType();
+	
+}
+
+
+
+
+function getLast3EarningFy(){
+	
+	$('#aprx_fy option[value!="-1"]').remove();
+	
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getLast3EarningFy",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, fy) {
+						
+						let option = '<option value="'+fy+'">'+fy+'</option>';
+						$('#aprx_fy').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+}
+
+function getEarningMonths(){
+	
+	$('#aprx_month option[value!="-1"]').remove();	
+	let fy = $("#aprx_fy").val();
+	
+	if(fy == null || fy.lebgth == 0 || fy === "-1")
+		return;
+	
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			fy: fy,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningMonths",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, month) {
+						
+						let option = '<option value="'+month.monthNumber+'">'+month.monthName+'</option>';
+						$('#aprx_month').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+}
+
+function getEarningPeriod(){
+	
+	$('#aprx_period option[value!="-1"]').remove();
+	
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	
+	if(fy == null || fy.length != 7 || formonth == null || formonth.length != 2)
+		return;
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			
+			fy:fy,
+			formonth:formonth,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningPeriod",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, fy) {
+						
+						let option = '<option value="'+fy+'">'+fy+'</option>';
+						$('#aprx_period').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+}
+
+/* function getEarningPeriod(){
+	
+	$('#aprx_period option[value!="-1"]').remove();
+	
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	
+	if(fy == null || fy.length != 7 || formonth == null || formonth.length != 2)
+		return;
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			
+			fy:fy,
+			formonth:formonth,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningPeriod",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, fy) {
+						
+						let option = '<option value="'+fy+'">'+fy+'</option>';
+						$('#aprx_period').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+	
+} */
+
+function getEarningValueType(){
+	
+	
+	$('#aprx_value_type option[value!="-1"]').remove();
+	
+	let fy = $("#aprx_fy").val();
+	let formonth = $("#aprx_month").val();
+	let period = $("#aprx_period").val();
+	
+	if(fy == null || fy.length != 7 || formonth == null || formonth.length != 2 || period == null || period.length == 0)
+		return;
+	let entry_type = $("#entry-type").val();
+	let system = $("#system").val();
+	let head_of_acct = $("#head_of_acct").val();		
+	let division = $("#division").val();
+	let station = $("#station").val();
+	
+	var jsondata = {
+			
+			fy:fy,
+			formonth:formonth,
+			period:period,
+			entrytype: entry_type,
+			system:system,
+			hoa:head_of_acct,
+			division:division,
+			station:station
+		};
+
+		$.ajax({
+			url: "/earning/getEarningValueType",
+			type: "POST",
+			contentType: "application/json",
+			data: JSON.stringify(jsondata),
+			success: function(response) {
+				
+				if (response.status === "success") {
+
+					$.each(response.data, function(index, valuetype) {
+						
+						let option ="";
+						if(valuetype === "O")
+							option = '<option value="'+valuetype+'">'+"ORIGINAL"+'</option>';
+						else if(valuetype === "A")
+							option = '<option value="'+valuetype+'">'+"APPROXIMATE"+'</option>';
+					
+						if(option.length > 0)
+							$('#aprx_value_type').append(option);		       		  
+	       			}); 
+					
+				} else {
+					
+					console.log("Something went wrong!");
+					
+				}
+			},
+			error: function() {
+
+				alert("Something went wrong!");
+			}
+		});
+		
+}
+
+function handleFlashMessage() {
+
+    const msg = document.getElementById("flash-message");
+
+    if (msg) {
+        setTimeout(() => {
+            msg.classList.add("flash-hide");
+        }, 3000);
+
+        setTimeout(() => {
+            msg.remove();
+        }, 3800);
+    }
 }
 
 

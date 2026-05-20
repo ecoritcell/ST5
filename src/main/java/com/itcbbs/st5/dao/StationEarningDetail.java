@@ -39,7 +39,11 @@ public class StationEarningDetail {
 	private BigDecimal earning = BigDecimal.ZERO;
 		
 	private int userid;
+	
+	@jakarta.persistence.Transient
 	private Date createdon;
+	
+	@jakarta.persistence.Transient
 	private Date lastupdated;
 	
 	@ManyToOne
@@ -354,13 +358,13 @@ public class StationEarningDetail {
 
     @Transient
     public Integer getTotalno() {
-        return safe(bookedcount) + safe(refundcount) + safe(excesscount);
+        return safe(bookedcount) - safe(refundcount) + safe(excesscount);
     }
 
     @Transient
     public BigDecimal getTotalrs() {
         return safe(bookedamt)
-                .add(safe(refundamt))
+                .subtract(safe(refundamt))
                 .add(safe(excessamt));
     }
 

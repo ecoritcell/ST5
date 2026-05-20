@@ -31,8 +31,19 @@
     padding: 0px; 
 }
 
+.nowrap-design{
+	white-space: nowrap;
+}
+
+.tot-design{
+	
+	font-weight: bold;
+	color: red;
+}
+
+
 .cell-input {
-    width: 100%; 
+    width: 100%;     
     min-width: 40px; 
     /* Remove default input border/outline if desired, add padding for readability */
     
@@ -45,6 +56,20 @@
     height: 100%; */ 
     /* Optional: if you want the input height to match the row height */
 }
+
+.alert {
+    margin: 0px 0px;
+    padding: 0px,0px;
+}
+.alert-success {
+    color: #008000;
+    font-weight: bold;
+}
+.alert-danger {
+    color: #991b1b;
+    font-weight: bold;
+}
+
 
 input[readonly] {
     background-color: #f0f0f0;

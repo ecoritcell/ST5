@@ -28,7 +28,10 @@ public class StationEarningServiceImp {
 		List<String> dataList = null;	
 		try {
 			
-			dataList = smrepo.getStationsByDivByPercentage(div,percent);
+			int divid = -1;
+			if(div != null && div.length() >0)
+				divid = Integer.parseInt(div);			
+			dataList = smrepo.getStationsByDivByPercentage(divid,percent);
 			
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -40,14 +43,14 @@ public class StationEarningServiceImp {
 	@Transactional
 	public List<StationEarning> getStationEarning(String fy, String formonth, String period,
 			String entrytype, String system, String headofacct,   
-			String divcode,String stntype,String stncode, String valtype){
+			int divisionid,String stntype,String stncode, String valtype){
 		
 		List<StationEarning> dataList = null;	
 		try {
 			
 			dataList = serepo.getStationEarning(fy,formonth,period,
 					entrytype,system,headofacct,
-					divcode,stntype,stncode,valtype);
+					divisionid,stntype,stncode,valtype);
 			
 		} catch (Exception e) {
 			// TODO: handle exception

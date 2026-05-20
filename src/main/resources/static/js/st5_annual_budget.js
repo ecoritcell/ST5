@@ -6,7 +6,30 @@ let formdata ={};
 /* let formtotal ={}; */
 const allheads =["PASSENGER","OTHER COACHING","ORIGINATING GOODS","OTHER GOODS","SUNDRY","PASSENGER Units"];
 let isBottomFormdisabled = true;
-document.addEventListener('DOMContentLoaded', function () {
+
+document.addEventListener('keydown', function (event) {
+
+    // Check Enter key
+    if (event.key !== 'Enter') return;
+
+    // Only act for inputs inside detail table
+    if (!event.target.matches('#tbl_budget_body input')) return;
+
+    event.preventDefault();      // stop form submit
+    event.stopPropagation();     // stop bubbling
+
+    const inputs = Array.from(
+        document.querySelectorAll('#tbl_budget_body input:not([readonly])')
+    );
+    const index = inputs.indexOf(event.target);
+    const next = inputs[index + 1];
+
+    if (next) {
+        next.focus();
+    }
+});
+
+/*document.addEventListener('DOMContentLoaded', function () {
     // Select all input fields inside your table
     const inputs = document.querySelectorAll('#tbl_budget_body input');
 
@@ -23,81 +46,143 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-});
+});*/
 
 
-$(function(){              // shorthand for $(document).ready(...)
+/*$(function(){              // shorthand for $(document).ready(...)
   
 	$('#top-fieldset').on('change input', 'input, select', function() {
 		
-		/*console.log('Value changed in:');*/
-
 		if(!isBottomFormdisabled){
 			
 			isBottomFormdisabled = !isBottomFormdisabled;
 			resetBottomForm();
-			$("#formFields").prop("disabled",true);	
-		}
-			
+			$("#formFields").prop("disabled",true);
+			$("#budget-no").trigger("change");
+		}			
 	    
 	});
 	
 });
-
+*/
 
 
 function checkValue(ele){
 	
+	//console.log("checkValue called");
 	/*resetBottomForm();*/
 	let year = ele.value;	
 	if(year !=null && year.length == 4){
 		
 		let nextyear = +year.slice(-2) + 1;
-		console.log("nextyear = " +nextyear);
-		$("#txt-financial-year-2").val(nextyear);		
-		getMaxBudgetNumber();
+		//console.log("nextyear = " +nextyear);
+		$("#txt-financial-year-2").val(nextyear);				
+		let fy = year+"-"+nextyear;
+		$("#financialYear").val(fy);
+		/*getMaxBudgetNumber();*/
 	}
 	else{
 		
-		$("#formFields").prop('disabled', true);	
+		$("#financialYear").val("");
+		/*$("#formFields").prop('disabled', true);*/	
 		$("#txt-financial-year-1").val("");
-		$("#txt-financial-year-2").val("");
+		$("#txt-financial-year-2").val("");					
 		alert("Enter valid year.");
 	}	
 	
+	$("#division").val("-1").trigger("change");
+
+}
+
+function divisionChanged(ele){
+	
+	//console.log("divisionChanged called");
+	let div = $(ele).val();
+	if(div !=null && div != "-1"){		
+		getMaxBudgetNumber();
+		
+	}else{
+		
+		$('#budget-no option[value!="-1"]').remove();
+		$('#budget-no').prop("disabled",true);
+	}
+	
+	$("#budget-no").trigger("change");
 }
 
 function budgetNoChanged(ele){
 	
+	//console.log("budgetNoChanged called");
 	/*resetBottomForm();*/
-	let budgetno = ele.value;
-	if(budgetno == '1' || budgetno == '-1'){
-		$("#for-month").val("04");
-		$("#for-month").prop('disabled', true);
-	}
-	else{
-		
-		getForMonthForBudgetNo(budgetno);
-		/*$("#for-month").prop('disabled', false);*/
-	}	
+	if(!isBottomFormdisabled){
 	
+		isBottomFormdisabled = !isBottomFormdisabled;		
+		reloadBottomPart();	
+	}else{
+		loadMonthValueFromDB();
+	}
+	
+}
+
+function loadMonthValueFromDB(){
+	
+	//console.log("loadMonthValueFromDB called");
+	
+		let budgetno = $("#budget-no").val();
+		if(budgetno == '1' || budgetno == '-1'){
+			$("#for-month").val("04").trigger('change');
+			$("#for-month").prop('disabled', true);
+		}
+		else{
+			
+			getForMonthForBudgetNo();
+			/*$("#for-month").prop('disabled', false);*/
+		}	
+}
+
+function reloadBottomPart(){
+	
+	//console.log("reloadBottomPart called");
+	
+	let formData = $("#top-form").serialize();
+	$.ajax({
+	    url: "/budget/getbudgetdata?mode=blank",
+		type: "POST",
+		data: formData,
+		success: function(response) {
+
+			$("#detail-container").html(response);
+			disableBottomForm(true);
+			loadMonthValueFromDB();
+
+		},
+		error: function() {
+			disableBottomForm(true);
+			alert("Something went wrong!");
+		}
+   }); 
 }
 
 function monthChanged(ele){
 	
+	//console.log("monthChanged called");	
 	/*resetBottomForm();*/
-	resetAllReadonlyTextfields();
+	/*resetAllReadonlyTextfields();*/
 
+	/*SETTING HIDDEN FOR MONTH TEXTFIELD FOR VALUE TO PASS TO THE CONTROLLER*/
 	let monthval = $("#for-month").val();
-	if(monthval === "-1" || monthval === "04" || monthval === "05")
-		return;
+	$("#input-formonth").val(monthval);
+/*	if(monthval === "-1" || monthval === "04" || monthval === "05")
+		return;*/
 	
-	makeTextReadonlyForMonth(monthval);
+	makeTextReadonlyForMonth();
+	
+	/*$("#budget-no").trigger('change');*/
 }
 
 function resetAllReadonlyTextfields(){
 
-	/*console.log("resetAllReadonlyTextfields called");*/
+	//console.log("resetAllReadonlyTextfields called");
 	let tempfield_name = null;
 	let inputfield = null;
 	allheads.forEach((head, index) => {
@@ -130,72 +215,99 @@ function resetAllReadonlyTextfields(){
 		});
 }
 
-function makeTextReadonlyForMonth(formonth){
-	
-	/*console.log("makeTextReadonlyForMonth called 1");*/
+function makeTextReadonlyForMonth(){
 
-	
-	if(formonth ==null || formonth.length == 0)
-		return;
-	/*console.log("makeTextReadonlyForMonth called 2");*/
-
-	let indexForMonth =  +getIndexFromMonth(formonth);
-	let month_index_to_disable = indexForMonth - 2;
-	if(month_index_to_disable < 1)
+	//console.log("inside makeTextReadonlyForMonth");
+	/*changeHeaderTitle("-1");*/
+	let budgetno =  $("#budget-no").val();
+	if(budgetno == null || budgetno == ''  || budgetno == '-1')
 		return;
 	
-	let tempfield_name = null;
-	let inputfiield = null;
-	allheads.forEach((head, index) => {
+						
+	let monthval = $("#for-month").val();
 	
-		for(let i=1;i<=month_index_to_disable;i++){
-			
-			if(head !== "PASSENGER Units"){
-				
-				tempfield_name = "input_" + head + "_" + "1" + "_" + i;
-				inputfiield = document.getElementsByName(tempfield_name);
-				if (inputfiield != null){
-					
-					$(inputfiield).prop('readonly', true);
-					
-				}
-					
+	//console.log("monthval = " + monthval);
 
-				tempfield_name = "input_" + head + "_" + "2" + "_" + i;
-				inputfiield = document.getElementsByName(tempfield_name);
-				if (inputfiield != null){
-					
-					$(inputfiield).prop('readonly', true);
-				}					
-					
+	
+	if(monthval == null || monthval.length == 0)
+		return;
 
-			}else{
-				
-				tempfield_name = "input_" + head + "_" + i;
-				inputfiield = document.getElementsByName(tempfield_name);
-				if (inputfiield != null)
-					$(inputfiield).prop('readonly', true);
-			}
-			
-		}
+	
+	const monthCodes = ["04","05","06","07","08","09","10","11","12","01","02","03"];
+	let monthindex = monthCodes.indexOf(monthval);
+	if(monthindex != -1){
 		
-	});
-	
+		changeHeaderTitle(monthval);
+		monthindex -=2;		
+		monthCodes.forEach((month,index)=>{
+						
+			document.querySelectorAll("input[data-col='" + month + "']")
+				.forEach(inp => {
+		
+					if(inp.dataset.row =="TEARN_UNIT" || inp.dataset.row == "TEARN_AMT"){
+						$(inp).prop('readonly', true);
+						$(inp).prop('disabled', true);
+					}else{
+						
+						if (index <= monthindex) {
+							//console.log("index =" +index);
+							/*$(inp).val("1");*/
+							$(inp).prop('readonly', true);
+							$(inp).prop('disabled', true);
+						} else {
+
+							/*$(inp).val("12");*/
+							$(inp).prop('readonly', false);
+							$(inp).prop('disabled', false);
+						}
+
+					}
+				});
+
+		});
+			
+	}	
 }
 
+function changeHeaderTitle(monthcode){
+	
+	const monthCodes = ["04","05","06","07","08","09","10","11","12","01","02","03"];
+	const monthNames = ["Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec","Jan","Feb","Mar"];
+	
+	//First reset all header
+	monthCodes.forEach((month,index)=>{
+		
+		const headname ="#thead-"+month;
+		$(headname).text(monthNames[index]);
+			
+	});
+	
+	/*Change Consolidated month header*/
+	if(monthcode !== "-1"){
+		let monthindex = monthCodes.indexOf(monthcode);
+		const consolidatedMonth = monthNames[monthindex -1];
+		const headname ="#thead-"+monthCodes[monthindex -1]; 
+		$(headname).html("Cummulative Upto " +consolidatedMonth);	
+	}
+}
 
-function getForMonthForBudgetNo(budgetno){
+function getForMonthForBudgetNo(){
 
+	//console.log("getForMonthForBudgetNo called");
 	let fy = $("#txt-financial-year-1").val() + "-" + $("#txt-financial-year-2").val();
+	let div = $("#division").val();
+	let budgetno = $("#budget-no").val();
+	
 	if (fy.length == 7 && budgetno != null && budgetno.length >0) {
 		
 		var jsondata = {
 			financialyear: fy,
-			budgetnumber: budgetno		
+			budgetnumber: budgetno,
+			division:div		
 		};
 
 		$.ajax({
-			url: "/annual_budget/getForMonthForBudgetnumber",
+			url: "/budget/getForMonthForBudgetnumber",
 			type: "POST",
 			contentType: "application/json",
 			data: JSON.stringify(jsondata),
@@ -204,50 +316,48 @@ function getForMonthForBudgetNo(budgetno){
 				if (response.status === "success") {
 					
 					if(response.formonth === "-1"){
-						$("#for-month").prop('disabled', false);	
 						$("#for-month").val("-1");
+						$("#for-month").prop('disabled', false);	
+						$("#input-formonth").val("");						
 					}					
 					else{
-						
 						$("#for-month").val(response.formonth);
+						$("#input-formonth").val(response.formonth);
 						$("#for-month").prop('disabled', true);
 					}
 						
-					resetAllReadonlyTextfields();
-					makeTextReadonlyForMonth(response.formonth);
+					/*resetAllReadonlyTextfields();*/
+					makeTextReadonlyForMonth();
 					
 				} else {
 
 					$("#for-month").prop('disabled', true);
-					console.log("Some error occured.");
+					$("#input-formonth").val("");
+					//console.log("Some error occured.");
 				}
 			},
 			error: function() {
 				$("#for-month").prop('disabled', true);
+				$("#input-formonth").val("");
 				alert("Something went wrong!");
 			}
 		});
 
 		
 	}else{
-		console.log("Invalid data.");
+		//console.log("Invalid data.");
 	}
 }
 
 function getMaxBudgetNumber(){
 	
 	let fy = $("#txt-financial-year-1").val() + "-" + $("#txt-financial-year-2").val();
-	if (fy.length == 7) {
-
-		var jsondata = {
-			financialyear: fy
-		};
-
+	let div = $("#division").val();
+	if (fy.length == 7 && div !=null && div != "-1") {
 		$.ajax({
-			url: "/annual_budget/getMaxBudgetnumber",
+			url: "/budget/getMaxBudgetnumber",
 			type: "POST",
-			contentType: "application/json",
-			data: JSON.stringify(jsondata),
+			data: {financialyear: fy, division:div},
 			success: function(response) {
 
 				if (response.status === "success") {
@@ -258,7 +368,7 @@ function getMaxBudgetNumber(){
 					
 				} else {
 
-					console.log("Some error occured.");
+					//console.log("Some error occured.");
 				}
 			},
 			error: function() {
@@ -268,7 +378,7 @@ function getMaxBudgetNumber(){
 
 	} else {
 
-		console.log("Invalid financial Year")
+		//console.log("Invalid financial Year or Division")
 	}
 }
 
@@ -296,84 +406,29 @@ function showBudgetDetailClicked(ele){
 		alert("Enter valid financial year")
 	}else if(fy2 != null && fy2.length != 2){
 		alert("Enter valid financial year")
+	}else if(division == "-1"){
+		alert("Select division.")
 	}else if(budgetno == "-1"){
 		alert("Select budget number.")
 	}else if(formonth == "-1"){
 		alert("Select for month.")
-	}else if(division == "-1"){
-		alert("Select division.")
 	}else{
 				
-		let fy = fy1+"-"+fy2;
+		let formData = $("#top-form").serialize();
 		
-		 var jsondata = {
-			financialyear: fy,
-			budgetno: budgetno,
-			formonth:formonth,
-			division:division,
-   		};
-		
-		 console.log("jsondata = "+JSON.stringify(jsondata));
-					
 		$.ajax({
-           url: "/annual_budget/getbudgetdata",
+           url: "/budget/getbudgetdata?mode=load",
            type: "POST",
-           contentType: "application/json",
-           data: JSON.stringify(jsondata),
+           data: formData,
            success: function (response) {
-           	console.log("response ="+response.status);
-               if (response.status === "success") {
-               		
-				isBottomFormdisabled = false;
-           		$("#formFields").prop("disabled",false);
-				
-
-           		/* console.log("data from DB ="+JSON.stringify(response.data)); */
-            	   $.each(response.data, function(index, annualbudget) {
-            		   
-            		   let head = annualbudget.head; 
-            		   let subhead = (annualbudget.subhead === "Units"?"1":"2");
-            		   let monthindex = getIndexFromMonth(annualbudget.month);
-            		   let field_name = "";
-            		   let tol_field_name = "";
-            		   if(head === "PASSENGER Units"){
-            			   field_name = "input_"+head+"_"+monthindex;
-            			   tol_field_name = "input_"+head+"_"+"13";
-            		   }            			   
-            		   else{
-            			   
-            			   field_name = "input_"+head+"_"+subhead+"_"+monthindex;
-            			   tol_field_name = "input_"+head+"_"+subhead+"_"+"13";
-            		   }
-            			                   		   
-            		   
-            		   if (!formdata[field_name]) {
-        				   formdata[field_name] = {};   // create new key
-               			}
-        			   
-        			   formdata[field_name]["recordid"] = annualbudget.recordid;
-        			   formdata[field_name]["orgval"] = annualbudget.value;
-        			   formdata[field_name]["isedited"] = 0;                			   
-        			   formdata[field_name]["newval"] = annualbudget.value;
-        			   
-        			   let inputfiield =  document.getElementsByName(field_name);
-        			   $(inputfiield).val(annualbudget.value >0?annualbudget.value:"");  
-            		  
-       			}); 
-            	 
-            	   updateTotalValues();
-            	 /* console.log("my constructed data = "+JSON.stringify(formdata)); */
-            	   
-               } else {
-               	
-					isBottomFormdisabled = true;
-					$("#formFields").prop("disabled",true);
-                   alert("Some error occured.");
-               }
+			
+			$("#detail-container").html(response);
+			disableBottomForm(false);
+			makeTextReadonlyForMonth();
+           	
            },
            error: function () {
-				isBottomFormdisabled = true;
-				$("#formFields").prop("disabled",true);
+				disableBottomForm(true);
                alert("Something went wrong!");
            }
        }); 
@@ -381,6 +436,11 @@ function showBudgetDetailClicked(ele){
 	}	
 }
 
+function disableBottomForm(disable){
+	
+	isBottomFormdisabled = disable;
+	$("#budget-detail-fieldset").prop("disabled",disable);
+}
 
 
 function submitClicked(){
@@ -403,64 +463,48 @@ function submitClicked(){
 	}else if(division == "-1"){
 		alert("Select division.")
 	}else{
-				
-		/* let tabledata = getJsonFormData(); */
-		if (Object.keys(formdata).length === 0) {
-		    
-			alert("Enter month wise data.");
 			
-		} else {
-			
-		    
-			let fy = fy1+"-"+fy2;
-			
-			 let jsondata = {
-				financialyear: fy,
-				budgetno: budgetno,
-				formonth:formonth,
-				division:division,
-				data : formdata
-	    	};
-			
-			console.log("jsondata = "+JSON.stringify(jsondata));			
-			$.ajax({
-	            url: "/annual_budget/savebudgetdata",
-	            type: "POST",
-	            contentType: "application/json",
-	            data: JSON.stringify(jsondata),
-	            success: function (response) {
-	            	console.log("response ="+response);
-	                if (response.status === "success") {
-	                	
-						$("#status_span").text("Data saved successfully!");	                	
-	                	$("#status_span").removeClass('error').addClass('success');
-	                	
-	                } else {
-	                	
-	                	$("#status_span").text("Some error occured.");
-	                	$("#status_span").removeClass('success').addClass('error');
-	                }
-	                
-	                resetAllFormAndData();
-	            },
-	            error: function () {
-	                alert("Something went wrong!");
-	                resetAllFormAndData();
-	            }
-	        }); 
-	        
-	        
-		}		
+		let formData = $("#top-form").serialize();	
+		
+		$.ajax({			
+			url: "/budget/savebudgetdata",
+			type: "POST",			
+			data: formData,
+			success: function(response) {
+				//console.log("response =" + response);
+				if (response.status === "success") {
+
+					$("#status_span").text("Data saved successfully!");
+					$("#status_span").removeClass('error').addClass('success');
+
+				} else {
+
+					$("#status_span").text("Some error occured.");
+					$("#status_span").removeClass('success').addClass('error');
+				}
+
+				resetAllFormAndData();
+			},
+			error: function() {
+				alert("Something went wrong!");
+				resetAllFormAndData();
+			}
+		}); 	
 		
 	}	
 	
+}
+
+function fyValueEdited(ele){
+	
+	$("#financialYear").val("");
 }
 
 
 function captureFormValue(ele){
 	
 	if ($(ele).is('[readonly]')) {
-		console.log("readonly")
+		//console.log("readonly")
 		return;
 	}
 	
@@ -536,7 +580,7 @@ function captureFormValue(ele){
 	dynamicallyUpdateTotalValue(field_name);
 	
 	
-	/* console.log("edited data = " +JSON.stringify(formdata)); */	
+	/* //console.log("edited data = " +JSON.stringify(formdata)); */	
 }
 
 function dynamicallyUpdateTotalValue(field_name){
@@ -616,7 +660,7 @@ function updateTotalValues(){
 			totlval += +fieldData["newval"];	    
 		}
 		
-		/* console.log("totFieldName = "+totFieldName +"value = "+totlval); */
+		/* //console.log("totFieldName = "+totFieldName +"value = "+totlval); */
 		totl_inputfiield =  document.getElementsByName(totFieldName);
 		if(totl_inputfiield !=null)
 			$(totl_inputfiield).val(totlval!=0?totlval:"");  
@@ -635,7 +679,7 @@ function updateTotalValues(){
 				totlval += +fieldData["newval"];	    
 			}
 					
-			/* console.log("totFieldName = "+totFieldName +"value = "+totlval); */
+			/* //console.log("totFieldName = "+totFieldName +"value = "+totlval); */
 			totl_inputfiield =  document.getElementsByName(totFieldName);
 			if(totl_inputfiield != null)
 				$(totl_inputfiield).val(totlval!=0?totlval:"");  
@@ -670,13 +714,13 @@ function updateTotalValues(){
 		
 		//update total for unit
 		totFieldName = "input_TOTAL EARNING"+"_"+"1"+"_"+i;
-		/* console.log("Vertical toal unit field name ="+totFieldName + "& value = "+totl_unit_val); */
+		/* //console.log("Vertical toal unit field name ="+totFieldName + "& value = "+totl_unit_val); */
 		totl_inputfiield =  document.getElementsByName(totFieldName);
 		if(totl_inputfiield != null)
 			$(totl_inputfiield).val(totl_unit_val!=0?totl_unit_val:"");
 		
 		totFieldName = "input_TOTAL EARNING"+"_"+"2"+"_"+i;
-		/* console.log("Vertical toal unit amount name ="+totFieldName + "& value = "+totl_amount_val); */
+		/* //console.log("Vertical toal unit amount name ="+totFieldName + "& value = "+totl_amount_val); */
 		totl_inputfiield =  document.getElementsByName(totFieldName);
 		if(totl_inputfiield != null)
 			$(totl_inputfiield).val(totl_amount_val!=0?totl_amount_val:"");
@@ -845,9 +889,80 @@ function getIndexFromMonth(val){
 }
 
 function clearClicked(){
-	resetAllFormAndData();
-	$("#formFields").prop("disabled",true);	
+	location.reload();
 }
+
+function recalculate(el){
+	
+	const rowKey = el.dataset.row;
+	const colKey = el.dataset.col;
+
+	calculateRowTotal(rowKey);
+	calculateColumnTotal(colKey);
+	calculateGrandTotals();
+}
+
+function parseVal(v) {
+    return v === "" || isNaN(v) ? 0 : parseFloat(v);
+}
+
+function calculateRowTotal(rowKey) {
+
+	let sum = 0;
+    document.querySelectorAll('input[data-row='+rowKey+']')
+        .forEach(inp =>{ 	
+		
+				if (inp.dataset.col !== "TOT") {
+	            	sum += parseVal(inp.value);
+	        	}
+		});
+			
+    const totalCell = document.querySelector("input[data-row="+rowKey+"][data-col='TOT']" );
+    if (totalCell) {
+        totalCell.value = sum.toFixed(2);
+    }
+}
+
+function calculateColumnTotal(colKey) {
+	
+	let unitSum = 0;
+	let amtSum  = 0;
+
+	document.querySelectorAll("input[data-col='"+colKey+"']")
+	        .forEach(inp => {
+				
+				
+	            if (inp.disabled || inp.readOnly) return;
+
+	            const val = parseVal(inp.value);
+
+	            if (inp.dataset.row.endsWith("_UNIT")) {
+	                unitSum += val;
+	            } 
+	            else if (inp.dataset.row.endsWith("_AMT")) {
+	                amtSum += val;
+	            }
+	        });
+
+	    /* TEARN_UNIT column total */
+	    const unitTotal = document.querySelector( "input[data-row='TEARN_UNIT'][data-col='"+colKey+"']");
+	    if (unitTotal) {			
+	        unitTotal.value = unitSum !=0.0?unitSum.toFixed(2):"";
+	    }
+
+	    /* TEARN_AMT column total */
+	    const amtTotal = document.querySelector("input[data-row='TEARN_AMT'][data-col='"+colKey+"']" );
+	    if (amtTotal) {
+	        amtTotal.value = amtSum !=0.0?amtSum.toFixed(2):"";
+	    }
+}
+
+function calculateGrandTotals() {
+    /* Recalculate TOT column for TOTAL row */
+    calculateRowTotal("TEARN_UNIT");
+    calculateRowTotal("TEARN_AMT");
+}
+
 
 function resetAllFormAndData(){
 	

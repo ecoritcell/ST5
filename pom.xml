@@ -11,7 +11,7 @@
 	<groupId>com.itcbbs</groupId>
 	<artifactId>ST5</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>ST5</name>
 	<description>ST5</description>
 	<url/>

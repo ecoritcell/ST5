@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>ST-5 Annual Budget</title>
+<script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js}"></script>
+<script th:src="@{/js/st5_annual_budget.js}"></script>
+<script th:src="@{/js/global.js}"></script>
+<link rel="stylesheet" th:href="@{/css/headerfooter.css}">
+<link rel="stylesheet" th:href="@{/css/st5_annual_budget.css}">
+</head>
+<body>
+
+	<!-- Header Section  -->
+	<div th:replace="~{fragments/header_footer :: custom_header}"> </div>
+	
+	 <main class="page">
+	 
+	 	<div id="div_main_content">
+	 	
+	 		<!-- <div th:if="${msg}" class="alert"
+     			th:classappend="${#strings.contains(msg,'error') ? 'alert-danger' : 'alert-success'}">
+    			<span th:text="${msg}"></span>
+			</div> -->
+			
+			<div th:if="${msg}"
+			     id="flash-message"
+			     th:text="${msg}"
+			     th:class="'flash-msg ' + (${msgType} == 'success' ? 'flash-success' : 'flash-error')">
+			</div>
+			
+	 		<form id="top-form" name="top-form" th:action="@{/budget/savebudgetdata}" th:object="${budgetForm}" method="post">
+	 	
+				<div id="div_topform">		
+					<fieldset name="top-fieldset" id="top-fieldset" style="padding: 0px;margin: 0px; border: none;" >
+					<h3 style="text-align: center;text-decoration: underline; padding: 0px;margin: 0px;">ST-5 ANNUAL BUDGET</h3>									
+						<table>
+							<tr>
+								<td>
+									
+									<input type="text" hidden="true" th:field="*{bheaderid}">
+									
+									<label for="txt-financial-year-1" >Financial year:</label>
+									<input type="text" id="txt-financial-year-1" placeholder="YYYY" maxlength="4" pattern="\d{4}" 
+									title="Please enter exactly 4 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width: 80px;" onchange="fyValueEdited(this)" onblur="checkValue(this)"  required >
+									
+									<label for="txt-financial-year-2" ></label>							
+									<input type="text" id="txt-financial-year-2"  placeholder="YY" maxlength="2" pattern="\d{2}" 
+									title="Please enter exactly 2 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '')" style="width: 30px;" disabled="disabled"  required >
+									
+									<input type="text" hidden="true" th:field="*{financialYear}">
+																		
+								</td>
+								
+								<td>
+									<label for="division">Division:</label>
+									<select id="division" name="division" th:field="*{divisionId}" onchange="divisionChanged(this)">
+									  <option value="-1">-- Select --</option>		
+									  <option value="1">KUR</option>
+									  <option value="2">SBP</option>							  
+									  <option value="3">WAT</option>
+									</select>
+								</td>
+								
+								<td>
+									<label for="budget-no" >Budget No:</label>
+									<select id="budget-no" name="budget-no" onchange="budgetNoChanged(this)" th:field="*{budgetNo}" disabled>
+									  <option value="-1">-- Select --</option>		
+									</select>
+								</td>
+								
+								<td>
+									<input id="input-formonth" name="input-formonth" type="hidden" th:field="*{forMonth}">
+									<label for="for-month">For Month:</label>
+									<select id="for-month" name="for-month" onchange="monthChanged(this)" disabled>
+									  <option value="-1">-- Select --</option>		
+									  <option value="04">Apr</option>
+									  <option value="05">May</option>							  
+									  <option value="06">June</option>
+									  <option value="07">July</option>							  
+									  <option value="08">Aug</option>
+									  <option value="09">Sep</option>
+									  <option value="10">Oct</option>
+									  <option value="11">Nov</option>
+									  <option value="12">Dec</option>
+									  <option value="01">Jan</option>
+									  <option value="02">Feb</option>
+									  <option value="03">Mar</option>
+									</select>
+								</td>
+								
+								<td>
+									<button id="btn_budget_dtl" type="button" onclick="showBudgetDetailClicked(this)" >Show Budget Details</button>						 							  
+								</td>
+							 </tr>
+						</table>	
+						</fieldset>										
+					</div>						
+					
+					
+					<div id='detail-container' class="bottom-section">						
+						 <th:block th:replace="~{fragments/budget_fragment :: BUDGET-DETAIL-DIV}"></th:block>
+					</div>
+					
+			</form>
+		</div>	
+	 </main>
+</body>
+
+<!-- <script>
+$('#top-fieldset').on('change input', 'input, select', function() {
+	
+	console.log('Value changed in:');
+
+	if(!isBottomFormdisabled){
+		
+		console.log('Form reset');
+		isBottomFormdisabled = !isBottomFormdisabled;
+		resetBottomForm();
+		$("#formFields").prop("disabled",false);	
+	}
+		
+    
+});
+
+
+</script>
+ -->
+
+</html>
